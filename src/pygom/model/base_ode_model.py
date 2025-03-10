@@ -181,101 +181,115 @@ class BaseOdeModel(object):
             just a single array like object
 
         """
+        # TODO: Requiring to specify full set of params is not ideal.
+        # e.g for model fitting we might only want to set a subset of the known ones
+        # TODO: change this properly so that there are two different
+        # types of parameter input.  One is when we initialize and
+        # another when we set new ones
 
+        # shorthands for frequently used message and function
         err_string = "The number of input parameters is %s but %s expected"
-        # setting up a shorthand for the most used function within this method
-        f = self._extractParamSymbol
-        # A stupid and complicated type checking procedure.  Someone please
-        # kill me when you read this.
-        # TODO: Would be good to clean this up.
-        param_out = dict()
+        f = self._extractParamSymbol                                        
+
         if parameters is not None:
-            # currently only accept 3 main types here, obviously apart
-            # from the dict type below
+            # Currently accept 3 main types of parameter input:
+
+            # (1) List/tuple/array. Input could be:
+            # parameters=[('name1', val1), ('name2', val2) .... ]
+            # parameters=[val1, val2 .... ] - better get the order right!
             if isinstance(parameters, (list, tuple, np.ndarray)):
-                # length checking, we are assuming here that we always set
-                # the full set of parameters
-                # TODO: for model fitting, we might only want to set a subset of the known ones
+                # Length checking, requires that we always specify the full set of parameters
                 if len(parameters) == self.num_param:
                     if isinstance(parameters, np.ndarray):
                         if parameters.size == self.num_param:
                             parameters = parameters.ravel()
                         else:
-                            raise InputError(err_string % \
-                                             (parameters.size, self.num_param))
+                            raise InputError(err_string % (parameters.size, self.num_param))
                 else:
-                    raise InputError(err_string % \
-                                     (parameters.size, self.num_param))
+                    raise InputError(err_string % (parameters.size, self.num_param))
 
-                # type checking, making sure that all the different types
-                # are accepted
+                # Type checking, making sure that all the different types are accepted
+
+                # (i) Tuple, implying parameters=[('name1', val1), ('name2', val2) .... ]
                 if isinstance(parameters[0], tuple):
+                    param_out = dict()             # container for dict form of parameters
                     if len(parameters) == self.num_param:
-                        for i in range(0, len(parameters)):
+                        for i in range(len(parameters)):
                             index_temp = f(parameters[i][0])
                             value_temp = parameters[i][1]
                             param_out[index_temp] = value_temp
-                # we are happy... I guess
+
+                # (ii) Number, implying parameters=[val1, val2 .... ] 
                 elif isinstance(parameters[0], Number):
+                    param_out = dict()             # container for dict form of parameters
+
+                    # TODO: Potentially risky timesaver which the user should be aware of. If
+                    # a list of parameter values is given, then PyGOM assumes that they have been
+                    # handed in order (otherwise, what else should it assume...)
+                    self._paramValue=parameters
+                    
                     for i, pi in enumerate(parameters):
                         if isinstance(self._paramList[i], ODEVariable):
                             param_out[str(self._paramList[i])] = pi
                         else:
                             param_out[self._paramList[i]] = pi
                 else:
-                    raise InputError("Input type should either be a list of " +
-                                     "tuple with elements (str,numeric) or " +
-                                     "a list of numeric value")
+                    raise InputError("Input type should either be a list of tuple with " +
+                                     "elements (str,numeric) or a list of numeric value")
+                
+            # (2) Dictionary
+            # Key of the dictionary is a string and value is a single value or a distribution
+            # parameters={'par1':val1, 'par2':val2 .... }
+            # parameters={'par1':dist1, 'par2':dist2 .... }
             elif isinstance(parameters, dict):
-                # we assume that the key of the dictionary is a string and
-                # the value can be a single value or a distribution
-                if len(parameters) > self.num_param:
-                    raise Exception("Too many input parameters")
+                # Length checking
+                if len(parameters) != self.num_param:
+                    raise InputError(err_string % (parameters.size, self.num_param))
 
-                # holder
-                # TODO: change this properly so that there are two different
-                # types of parameter input.  One is when we initialize and
-                # another when we set new ones
+                # TODO: Not sure the point of this. It's not done for list inputs.
                 if hasattr(self, "_parameters"):
-                    param_out = self._parameters
+                    param_out = self._parameters        # container for dict form of parameters   
+                else:
+                    param_out = dict()                  # container for dict form of parameters
 
                 # extra the key from the parameters dictionary
-                for inParam in parameters:
-                    value = parameters[inParam]
-                    if isinstance(value, Number):
-                        # get index
-                        if isinstance(inParam, sympy.Symbol):
-                            param_out[f(str(inParam))] = value
-                        else:
-                            param_out[f(inParam)] = value
-                        # and replace only that specific one
-                    elif isinstance(value, rv_frozen):
-                        # we always assume that we have a frozen distribution
-                        param_out[f(inParam)] = value.rvs(1)[0]
-                        # output of the rv from a frozen distribution is a
-                        # np.ndarray even when the number of sample is one
-                        ## Now we are going make damn sure to record it down!
-                        self._stochasticParam = parameters
-                    elif isinstance(value, tuple):
-                        if callable(value[0]):
-                            # using a temporary variable to shorten the line.
-                            if isinstance(value[1], dict):
-                                paramTemp = value[0](1, **value[1])
-                            else:
-                                paramTemp = value[0](1, *value[1])
+                for key, val in parameters.items():
 
-                            param_out[f(inParam)] = paramTemp
+                    # (i) Parameter is a number
+                    # TODO: We are basically duplicating the dict, the only reason why is
+                    # that the keys are symbols. This is not assumed for (ii) and (iii), why?
+                    if isinstance(val, Number):
+                        # get index and replace only that specific one
+                        if isinstance(key, sympy.Symbol):
+                            param_out[f(str(key))] = val
+                        else:
+                            param_out[f(key)] = val
+
+                    # (ii) Parameter is a distribution
+                    elif isinstance(val, rv_frozen):
+                        # we always assume that we have a frozen distribution
+                        param_out[f(key)] = val.rvs(1)[0]
+                        # output of the rv from a frozen distribution is a np.ndarray even when the
+                        # number of sample is one. Now we are going make damn sure to record it down!
+                        self._stochasticParam = parameters
+
+                    # (iii) Parameter is a tuple
+                    elif isinstance(val, tuple):
+                        if callable(val[0]):
+                            # using a temporary variable to shorten the line.
+                            if isinstance(val[1], dict):
+                                paramTemp = val[0](1, **val[1])
+                            else:
+                                paramTemp = val[0](1, *val[1])
+
+                            param_out[f(key)] = paramTemp
                             self._stochasticParam = parameters
                         else:
-                            raise InputError("First element should be a " +
-                                             "callable when using multi " +
-                                             "argument distribution " +
-                                             "definition.  Type of input " +
-                                             "was " + str(type(value)))
+                            raise InputError("First element should be a callable when using multi argument " +
+                                             "distribution definition. Type of input was " + str(type(val)))
                     else:
-                        raise InputError("No supported input type " +
-                                         str(type(value)) + " for " +
-                                         "dict() input yet.")
+                        raise InputError("No supported input type " + str(type(val)) + " for dict() input yet.")
+                    
             elif self.num_param == 1:
                 # a single parameter ode and you are not evaluating it
                 # analytically! fair enough! no further comments your honour.
@@ -288,24 +302,28 @@ class BaseOdeModel(object):
                     raise InputError("Input type should either be a tuple of " +
                                      "(str,numeric) or a single numeric value")
             else:
-                raise InputError("Expecting a dict, list or a tuple input " +
-                                 "because there are a total of " +
-                                 str(self.num_param)+ " parameters")
+                raise InputError("Expecting a dict, list or a tuple input because there " +
+                                 "are a total of " + str(self.num_param) + " parameters")
         else:
             if self.num_param != 0:
-                raise Warning("Did not set the values of the parameters. " +
-                              "Input was None.")
-
+                raise Warning("Did not set the values of the parameters. Input was None.")
+            
         self._parameters = param_out
 
         # unroll the parameter values into the appropriate list
-        # if self._paramValue is None or isinstance(self._paramValue, list):
-        #     self._paramValue = dict()
-        self._paramValue = [0]*len(self._paramList)
 
-        for key, val in self._parameters.items():
-            index = self.get_param_index(key)
-            self._paramValue[index] = val
+        # TODO: This takes a very long time if you try to input large numbers of parameters
+        # as a dict (typically the safer and more logical option).
+        # For now, let's assume that if the user has given a list then they are sure
+        # they got the order right.
+        # Could consider parallelising this bit as a time saver.
+
+        if self._paramValue is None:
+            self._paramValue = [0]*len(self._paramList)
+            
+            for key, val in self._parameters.items():
+                index = self.get_param_index(key)
+                self._paramValue[index] = val
 
         self.set_sp()
 
