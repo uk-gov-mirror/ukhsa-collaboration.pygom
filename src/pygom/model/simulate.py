@@ -23,21 +23,6 @@ from .transition import TransitionType, Transition
 from ._model_errors import InputError, SimulationError
 from ._model_verification import checkEquation, simplifyEquation
 from . import _ode_composition
-from . import ode_utils
-
-
-class HasNewTransition(ode_utils.CompileCanary):
-    states = ['ode',
-              'jacobian',
-              'diff_jacobian',
-              'grad',
-              'grad_jacobian',
-              'transitionJacobian',
-              "pureOdeVector",
-              "vMat",
-              "eventRateVector",
-              "transitionMean",
-              "transitionVar"]
 
 class SimulateOde(DeterministicOde):
     '''
@@ -62,6 +47,15 @@ class SimulateOde(DeterministicOde):
         A list of ode (:class:`Transition`)
 
     '''
+    # The compiled math functions within this class
+    _compiled_functions = {
+        'vMat': 'get_StateChangeMatrix',
+        'eventRateVector': 'get_EventRateVector',
+        'transitionMean': 'get_TransitionMean',
+        'transitionVar': 'get_TransitionVar',
+        'pureOdeVector': 'get_pureOdeVector',
+        'transitionJacobian': 'get_TransitionJacobian'
+    }
 
     def __init__(self,
                  state=None,
@@ -74,6 +68,10 @@ class SimulateOde(DeterministicOde):
         '''
         Constructor that is built on top of DeterministicOde
         '''
+        # Make the list of compiled functions complete
+        compiled_functions = DeterministicOde._compiled_functions.copy()
+        compiled_functions.update(self._compiled_functions)
+        self._compiled_functions = compiled_functions
 
         super(SimulateOde, self).__init__(state,
                                           param,
@@ -83,37 +81,18 @@ class SimulateOde(DeterministicOde):
                                           birth_death,
                                           ode)
 
-        # Ledger keeping record of whether each important function is up to date with
-        # underlying model, or needs to be recompiled. Colloquially, each function has
-        # an associated canary and if True (dead) it means something needs to be done.
-        self._hasNewTransition = HasNewTransition()
-
         self.pre_tau=None       # If tau is set, then this overrides the adaptive tau leap.
         self._epsilon=0.03      # Default parameter recommended by Cao et al.
 
         self._stochasticParam=None
 
-        # TODO: I think the changes I've made might result in compilation for every iteration
-        #       if working in parallel. Must check this.
-
-        # Compile the code.  Note that we need the class because we
-        # compile both the formatted and unformatted version.
-        # Need a manual override of backend because it is possible that we
-        # want to perform simulation in a parallel/distributed manner
-        # and there are issues with pickling fortran objects
-        self._SC = ode_utils.compileCode(backend='cython')
 
         # Add templates of compiled sympy functions with:
         # 1) Name of the compiled version of the sympy object
         # 2) The function used to generate the underlying sympy object
         #    (convention: starts with "get_", in previous versions have
         #     started with get_ or _compute)
-        self.add_func("vMat", self.get_StateChangeMatrix)
-        self.add_func("eventRateVector", self.get_EventRateVector)
-        self.add_func("transitionMean", self.get_TransitionMean)
-        self.add_func("transitionVar", self.get_TransitionVar)
-        self.add_func("pureOdeVector", self.get_pureOdeVector)
-        self.add_func("transitionJacobian", self.get_TransitionJacobian)
+
 
     def __repr__(self):
         return "SimulateOde" + self._get_model_str()

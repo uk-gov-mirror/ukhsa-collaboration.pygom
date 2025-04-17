@@ -7,8 +7,8 @@
 """
 
 __all__ = ['DeterministicOde']
-
-# TODO: check through these dependencies
+import logging
+from functools import partial
 
 import copy
 import io
@@ -54,6 +54,19 @@ class DeterministicOde(BaseOdeModel):
         A list of ode (:class:`Transition`)
 
     '''
+    # This is a dictionary of the methods that will get compiled from
+    # the dynamic ode equation. We omit ode itself from this dict as we 
+    # treat it as a special case. Child classes may add there own dicts
+    # of the same name and join them with this to ensure that all are 
+    # compiled. 
+    # By having this list we result in a single source of truth for all
+    # the functions are dynamically compiled.
+    _compiled_functions = {
+        'jacobian': 'get_jacobian_eqn',
+        'diff_jacobian': 'get_diff_jacobian_eqn',
+        'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
+        'grad_jacobian': 'get_grad_jacobian_eqn'
+    }
 
     def __init__(self,
                  state=None,
@@ -74,15 +87,23 @@ class DeterministicOde(BaseOdeModel):
                                                birth_death,
                                                ode)
 
+        # Add a compiler for the maths code.  Note that we need the class because we
+        # compile both the formatted and unformatted version.
+        # Need a manual override of backend because it is possible that we
+        # want to perform simulation in a parallel/distributed manner
+        # and there are issues with pickling fortran objects
+        self._SC = ode_utils.compileCode(backend='cython')
+
+        # Ledger keeping record of whether each important function is up to date with
+        # underlying model, or needs to be recompiled. Colloquially, each function has
+        # an associated canary and if True (dead) it means something needs to be done.
+        self._hasNewTransition = ode_utils.CompileCanary(self._compiled_functions.keys())
+
         # # First, set up system of odes upon instance being initialised
         # self.get_ode_eqn()
 
-        # Tell pygom what it needs if it wants to compile
-        self.add_func("ode", self.get_ode_eqn, oT="vec", is_master_canary=True)
-        self.add_func("jacobian", self.get_jacobian_eqn)
-        self.add_func("diff_jacobian", self.get_diff_jacobian_eqn)
-        self.add_func("grad", self.get_grad_eqn, oT="mat")
-        self.add_func("grad_jacobian", self.get_grad_jacobian_eqn)
+        self._init_compiled_methods()
+
         # TODO: update _Hessian and _HessianWithParam to this framework.
         self._Hessian=None
         self._HessianWithParam=None
@@ -112,6 +133,22 @@ class DeterministicOde(BaseOdeModel):
         # memory when operating, but the output is required to be of
         # the vector form
         self._SAUtil = ode_utils.shapeAdjust(self.num_state, self.num_param)
+
+    def _init_compiled_methods(self):
+        '''
+        A helper function
+        '''
+        self.add_func("ode", self.get_ode_eqn, oT="vec", is_master_canary=True)
+
+        for fn_name, fn_def in self._compiled_functions:
+            if isinstance(fn_def, tuple):
+                fn_closure = fn_def[0]
+                fn_params = fn_def[1]
+            else:
+                fn_closure = fn_def
+                fn_params = {}
+
+            self.add_func(fn_name, f'self.{fn_closure}', **fn_params)
 
     def __eq__(self, other):
         if isinstance(other, DeterministicOde):
@@ -152,6 +189,18 @@ class DeterministicOde(BaseOdeModel):
     #
     ########################################################################
 
+    def __getattr__(self, name):
+        '''
+        Implement a method to get the values of attributes
+        '''
+        if name == '_states':
+            return self._states
+
+        if name in self._states:
+            return self._states[name]
+        msg = "'{0}' object has no attribute '{1}'"
+        raise AttributeError(msg.format(type(self).__name__, name))
+
     def add_func(self, method_name, sympy_obj_generator_func, oT=None, is_master_canary=False):
         '''
         Template to add a method, called with method_name, which gives the numerical output of
@@ -160,7 +209,7 @@ class DeterministicOde(BaseOdeModel):
         This carries out the essential check to see if recompilation is necessary
         and acts accordingly.
         '''
-        compiled_obj_name=method_name+"Compiled"
+        compiled_obj_name=method_name + "Compiled"
 
         def func(self, state, t):
             # Check if compiled function is being created for the first time or
@@ -172,6 +221,12 @@ class DeterministicOde(BaseOdeModel):
             return getattr(self, compiled_obj_name)(time=t, state=state)
         setattr(self, method_name, func.__get__(self))
 
+    def _compiled_fn_wrapper(self, compiled_function, state, time):
+        '''
+        Helper function for wrapping compiled maths functions
+        '''
+        return compiled_function(self._getEvalParam(state, time, None))
+
     def add_compiled_sympy_object(self, method_name, compiled_obj_name, sympy_obj_generator_func, oT, is_master_canary):
         '''
         Take sympy_obj_generator_func
@@ -180,27 +235,21 @@ class DeterministicOde(BaseOdeModel):
         sympy_obj=sympy_obj_generator_func()
 
         # Compile the sympy object
-        if self.verbose:
-            print("... Compiling sympy object with name:", method_name, "...", end="")
-        f = self._SC.compileExprAndFormat
+        logging.debug(f'Compiling sympy object with name: {method_name}')
         if self._isDifficult:
-            compiled_obj=f(self._sp,
-                        sympy_obj,
-                        modules='mpmath',
-                        outType=oT)
+            compiled_obj=self._SC.compileExprAndFormat(self._sp,
+                                                       sympy_obj,
+                                                       modules='mpmath', # TODO: do we really want to be explicit here?
+                                                       outType=oT)
         else:
-            compiled_obj=f(self._sp,
-                        sympy_obj,
-                        outType=oT)
-        if self.verbose:
-            print("done")
-
+            compiled_obj=self._SC.compileExprAndFormat(self._sp,
+                                                       sympy_obj,
+                                                       outType=oT)
         # Wrap the compiled object
-        def comp_obj(state, time):
-            return compiled_obj(self._getEvalParam(state, time, None))
+        partial_fn = partial(self._compiled_fn_wrapper, compiled_function=compiled_obj)
 
         # Add this as an attribute in the right place
-        setattr(self, compiled_obj_name, comp_obj)
+        setattr(self, compiled_obj_name, partial_fn)
 
         # If all other objects depend on this one, kill all their canaries 
         # (set to True) to indicate something needs to be done.
@@ -1054,9 +1103,8 @@ class DeterministicOde(BaseOdeModel):
             else:
                 raise InputError("Have not set the parameters yet")
 
-        if isinstance(state, list):
-            eval_param = state + [time]
-        elif hasattr(state, '__iter__'):
+        if hasattr(state, '__iter__'):
+            # just in case this isn't a list already
             eval_param = list(state) + [time]
         else:
             eval_param = [state] + [time]
