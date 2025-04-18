@@ -31,7 +31,7 @@ class MathsMethod:
         time: The
         '''
         # Check to see if we need to compile
-        if self.needs_recompile or self._compiled_fn is None:
+        if self.needs_recompile or self._compiled_obj is None:
             self.compile_function()
 
         # perform the numerical calculation

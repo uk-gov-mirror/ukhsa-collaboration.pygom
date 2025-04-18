@@ -12,8 +12,7 @@ class Jacobian(MathsMethod):
             A matrix of dimension [number of state x number of state]
 
         '''        
-        self._parent_ode.get_ode_eqn()
         states = [s for s in self._parent_ode._iterStateList()]
-        self._Jacobian = self._parent_ode._ode.jacobian(states)
+        self._Jacobian = self._parent_ode.ode.get_equation().jacobian(states)
 
         return self._Jacobian
