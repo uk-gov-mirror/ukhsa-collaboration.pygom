@@ -30,7 +30,8 @@ from . import ode_utils
 from . import _transition_graph
 from .ode_utils import compileCode
 
-from .maths import ODESystem, Jacobian
+from .maths import ODESystem, Jacobian, DiffJacobian, \
+    Grad
 
 
 class DeterministicOde(BaseOdeModel):
@@ -63,8 +64,9 @@ class DeterministicOde(BaseOdeModel):
     # the functions are dynamically compiled.
     _compiled_functions = [
         ODESystem,
-        Jacobian
- #       'diff_jacobian': 'get_diff_jacobian_eqn',
+        Jacobian,
+        DiffJacobian,
+        Grad
  #       'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
  #       'grad_jacobian': 'get_grad_jacobian_eqn'
     ]
@@ -602,29 +604,29 @@ class DeterministicOde(BaseOdeModel):
     #
     ########################################################################
 
-    def get_grad_eqn(self):
-        '''
-        Return the gradient of the ode in algebraic form
+    # def get_grad_eqn(self):
+    #     '''
+    #     Return the gradient of the ode in algebraic form
 
-        Returns
-        -------
-        :class:`sympy.matrices.matrices`
-            A matrix of dimension [number of state x number of parameters]
+    #     Returns
+    #     -------
+    #     :class:`sympy.matrices.matrices`
+    #         A matrix of dimension [number of state x number of parameters]
 
-        '''
+    #     '''
 
-        ode = self.get_ode_eqn()
-        self._Grad = sympy.zeros(self.num_state, self.num_param)
+    #     ode = self.get_ode_eqn()
+    #     self._Grad = sympy.zeros(self.num_state, self.num_param)
 
-        for i in range(self.num_state):
-            # need to adjust such that the first index is not
-            # included because it correspond to time
-            for j, p in enumerate(self._iterParamList()):
-                eqn, isDifficult = simplifyEquation(diff(ode[i], p, 1))
-                self._Grad[i,j] = eqn
-                self._isDifficult = self._isDifficult or isDifficult
+    #     for i in range(self.num_state):
+    #         # need to adjust such that the first index is not
+    #         # included because it correspond to time
+    #         for j, p in enumerate(self._iterParamList()):
+    #             eqn, isDifficult = simplifyEquation(diff(ode[i], p, 1))
+    #             self._Grad[i,j] = eqn
+    #             self._isDifficult = self._isDifficult or isDifficult
 
-        return self._Grad
+    #     return self._Grad
 
     def grad_T(self, t, state):
         '''
