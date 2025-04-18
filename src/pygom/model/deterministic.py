@@ -29,8 +29,10 @@ from ._model_errors import ArrayError, InputError, \
 from ._model_verification import simplifyEquation, checkEquation
 
 from . import ode_utils
-
 from . import _transition_graph
+from .ode_utils import compileCode
+
+from .maths import Jacobian
 
 
 class DeterministicOde(BaseOdeModel):
@@ -54,28 +56,32 @@ class DeterministicOde(BaseOdeModel):
         A list of ode (:class:`Transition`)
 
     '''
-    # This is a dictionary of the methods that will get compiled from
-    # the dynamic ode equation. We omit ode itself from this dict as we 
-    # treat it as a special case. Child classes may add there own dicts
+    # This is a list of the methods that will get compiled from
+    # the dynamic ode equation. We omit ode itself from this as we 
+    # treat it as a special case. Child classes may add their own lists
     # of the same name and join them with this to ensure that all are 
     # compiled. 
     # By having this list we result in a single source of truth for all
     # the functions are dynamically compiled.
-    _compiled_functions = {
-        'jacobian': 'get_jacobian_eqn',
-        'diff_jacobian': 'get_diff_jacobian_eqn',
-        'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
-        'grad_jacobian': 'get_grad_jacobian_eqn'
-    }
+    _compiled_functions = [
+        Jacobian
+ #       'diff_jacobian': 'get_diff_jacobian_eqn',
+ #       'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
+ #       'grad_jacobian': 'get_grad_jacobian_eqn'
+    ]
 
     def __init__(self,
+                 # Modelling arguments
                  state=None,
                  param=None,
                  derived_param=None,
                  transition=None,
                  event=None,
                  birth_death=None,
-                 ode=None):
+                 ode=None,
+                 # Technical arguments
+                 backend=None
+                 ):
         '''
         Constructor that is built on top of a BaseOdeModel
         '''
@@ -87,22 +93,25 @@ class DeterministicOde(BaseOdeModel):
                                                birth_death,
                                                ode)
 
-        # Add a compiler for the maths code.  Note that we need the class because we
-        # compile both the formatted and unformatted version.
-        # Need a manual override of backend because it is possible that we
-        # want to perform simulation in a parallel/distributed manner
-        # and there are issues with pickling fortran objects
-        self._SC = ode_utils.compileCode(backend='cython')
-
         # Ledger keeping record of whether each important function is up to date with
         # underlying model, or needs to be recompiled. Colloquially, each function has
         # an associated canary and if True (dead) it means something needs to be done.
-        self._hasNewTransition = ode_utils.CompileCanary(self._compiled_functions.keys())
+        # TODO: This canary cage needs replacing with the in class canarys.
+        self._hasNewTransition = ode_utils.CompileCanary([fn.method_name for fn in self._compiled_functions])
+        #self._hasNewTransition = False
 
         # # First, set up system of odes upon instance being initialised
         # self.get_ode_eqn()
 
-        self._init_compiled_methods()
+        # Setup the maths methods compiler
+        # Note that we need the class because we
+        # compile both the formatted and unformatted version.
+        # Need a manual override of backend because it is possible that we
+        # want to perform simulation in a parallel/distributed manner
+        # and there are issues with pickling fortran objects
+        self._SC = compileCode(backend=backend)
+
+        self._init_maths_methods()
 
         # TODO: update _Hessian and _HessianWithParam to this framework.
         self._Hessian=None
@@ -134,21 +143,20 @@ class DeterministicOde(BaseOdeModel):
         # the vector form
         self._SAUtil = ode_utils.shapeAdjust(self.num_state, self.num_param)
 
-    def _init_compiled_methods(self):
+    def _init_maths_methods(self):
         '''
-        A helper function
+        A helper function to add the maths methods
         '''
+        # Add the ode object
+        # currently this is a special case.
+        # TODO: does this have to stay a special case?
         self.add_func("ode", self.get_ode_eqn, oT="vec", is_master_canary=True)
 
-        for fn_name, fn_def in self._compiled_functions:
-            if isinstance(fn_def, tuple):
-                fn_closure = fn_def[0]
-                fn_params = fn_def[1]
-            else:
-                fn_closure = fn_def
-                fn_params = {}
-
-            self.add_func(fn_name, f'self.{fn_closure}', **fn_params)
+        for fn_class in self._compiled_functions:
+            # Create an instance of the maths class with this class as the 
+            # associated ode system
+            maths_class_instance = fn_class(parent_ode=self)
+            setattr(self, maths_class_instance.method_name, maths_class_instance)
 
     def __eq__(self, other):
         if isinstance(other, DeterministicOde):
@@ -188,18 +196,6 @@ class DeterministicOde(BaseOdeModel):
     # Methods to add compiled functions
     #
     ########################################################################
-
-    def __getattr__(self, name):
-        '''
-        Implement a method to get the values of attributes
-        '''
-        if name == '_states':
-            return self._states
-
-        if name in self._states:
-            return self._states[name]
-        msg = "'{0}' object has no attribute '{1}'"
-        raise AttributeError(msg.format(type(self).__name__, name))
 
     def add_func(self, method_name, sympy_obj_generator_func, oT=None, is_master_canary=False):
         '''

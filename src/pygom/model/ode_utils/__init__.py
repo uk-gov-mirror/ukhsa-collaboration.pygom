@@ -480,7 +480,7 @@ class compileCode(object):
         those linked with Theano are not.
         '''
         if backend is None:
-            print("...Finding available backend...", end="")
+            logging.debug('Finding available backend.')
             self._backend = None
             x = sympy.Symbol('x')
             expr = sympy.sin(x)/x

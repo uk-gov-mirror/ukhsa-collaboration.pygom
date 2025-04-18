@@ -17,6 +17,7 @@ import sympy
 import sympy.matrices.matrices
 import scipy.stats
 
+from . import ode_utils
 from .deterministic import DeterministicOde
 from .stochastic_simulation import cle, exact, firstReaction, tauLeap, hybrid
 from .transition import TransitionType, Transition
@@ -48,14 +49,14 @@ class SimulateOde(DeterministicOde):
 
     '''
     # The compiled math functions within this class
-    _compiled_functions = {
-        'vMat': 'get_StateChangeMatrix',
-        'eventRateVector': 'get_EventRateVector',
-        'transitionMean': 'get_TransitionMean',
-        'transitionVar': 'get_TransitionVar',
-        'pureOdeVector': 'get_pureOdeVector',
-        'transitionJacobian': 'get_TransitionJacobian'
-    }
+    _compiled_functions = []
+        # 'vMat': 'get_StateChangeMatrix',
+        # 'eventRateVector': 'get_EventRateVector',
+        # 'transitionMean': 'get_TransitionMean',
+        # 'transitionVar': 'get_TransitionVar',
+        # 'pureOdeVector': 'get_pureOdeVector',
+        # 'transitionJacobian': 'get_TransitionJacobian'
+    
 
     def __init__(self,
                  state=None,
@@ -70,7 +71,7 @@ class SimulateOde(DeterministicOde):
         '''
         # Make the list of compiled functions complete
         compiled_functions = DeterministicOde._compiled_functions.copy()
-        compiled_functions.update(self._compiled_functions)
+        compiled_functions.extend(self._compiled_functions)
         self._compiled_functions = compiled_functions
 
         super(SimulateOde, self).__init__(state,
