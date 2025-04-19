@@ -25,13 +25,14 @@ class DiffJacobian(MathsMethod):
         # self.get_ode_eqn()
         diffJac = list()
 
-        for eqn in self._parent_ode.ode:
-            J = sympy.zeros(self.num_state, self._parent_ode.num_state)
+        for eqn in self._parent_ode.ode.get_equation():
+            J = sympy.zeros(self._parent_ode.num_state, 
+                            self._parent_ode.num_state)
             for i, si in enumerate(self._parent_ode._iterStateList()):
                 diffEqn, D1 = simplifyEquation(diff(eqn, si, 1))
                 for j, sj in enumerate(self._parent_ode._iterStateList()):
                     J[i,j], D2 = simplifyEquation(diff(diffEqn, sj, 1))
-                    self._isDifficult = self._isDifficult or D1 or D2
+                    self._isDifficult = self._parent_ode._isDifficult or D1 or D2
             #binding.
             diffJac.append(J)
 

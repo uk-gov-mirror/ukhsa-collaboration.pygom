@@ -31,7 +31,7 @@ from . import _transition_graph
 from .ode_utils import compileCode
 
 from .maths import ODESystem, Jacobian, DiffJacobian, \
-    Grad
+    Grad, GradJacobian
 
 
 class DeterministicOde(BaseOdeModel):
@@ -66,7 +66,8 @@ class DeterministicOde(BaseOdeModel):
         ODESystem,
         Jacobian,
         DiffJacobian,
-        Grad
+        Grad,
+        GradJacobian
  #       'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
  #       'grad_jacobian': 'get_grad_jacobian_eqn'
     ]
@@ -161,7 +162,7 @@ class DeterministicOde(BaseOdeModel):
     def __repr__(self):
         return "DeterministicOde" + self._get_model_str()
     
-    ## Funcitons  to allow pickling and unpickling      TODO: are these being utilised?
+    ## Funcitons  to allow pickling and unpickling
     def __getstate__(self):
         '''
         Grab the class's dict and remove the compiled objects
@@ -638,34 +639,34 @@ class DeterministicOde(BaseOdeModel):
     # jacobian of the Gradiant
     #
 
-    def get_grad_jacobian_eqn(self):
-        '''
-        Return the jacobian of the gradient in algebraic form
+    # def get_grad_jacobian_eqn(self):
+    #     '''
+    #     Return the jacobian of the gradient in algebraic form
 
-        Returns
-        -------
-        :class:`sympy.matrices.matrices`
-            A matrix of dimension [number of state *
-            number of parameters x number of state]
+    #     Returns
+    #     -------
+    #     :class:`sympy.matrices.matrices`
+    #         A matrix of dimension [number of state *
+    #         number of parameters x number of state]
 
-        See also
-        --------
-        :meth:`.get_grad_eqn`
+    #     See also
+    #     --------
+    #     :meth:`.get_grad_eqn`
 
-        '''
-        self._GradJacobian = sympy.zeros(self.num_state*self.num_param,
-                                            self.num_state)
-        G = self.get_grad_eqn()
-        for k in range(0, self.num_param):
-            for i in range(0, self.num_state):
-                for j, s in enumerate(self._iterStateList()):
-                    z = k*self.num_state + i
-                    eqn, isDifficult = simplifyEquation(diff(G[i,k], s, 1))
-                    self._GradJacobian[z,j] = eqn
-                    self._isDifficult = self._isDifficult or isDifficult
-        # end of the triple loop.  All elements are now filled
+    #     '''
+    #     self._GradJacobian = sympy.zeros(self.num_state*self.num_param,
+    #                                         self.num_state)
+    #     G = self.get_grad_eqn()
+    #     for k in range(0, self.num_param):
+    #         for i in range(0, self.num_state):
+    #             for j, s in enumerate(self._iterStateList()):
+    #                 z = k*self.num_state + i
+    #                 eqn, isDifficult = simplifyEquation(diff(G[i,k], s, 1))
+    #                 self._GradJacobian[z,j] = eqn
+    #                 self._isDifficult = self._isDifficult or isDifficult
+    #     # end of the triple loop.  All elements are now filled
 
-        return self._GradJacobian
+    #     return self._GradJacobian
 
     def grad_jacobianT(self, t, state):
         '''
