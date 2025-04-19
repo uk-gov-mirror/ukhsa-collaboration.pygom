@@ -1,5 +1,7 @@
 import logging
 
+from .._model_errors import InputError
+
 class MathsMethod:
     _compiled_obj = None # Will store the compiled function in child classes
     method_name = None # Should be overloaded in child classes to the method name that the class attaches 
@@ -21,21 +23,21 @@ class MathsMethod:
         self._SC = parent_ode._SC
 
 
-    def __call__(self, state, time, skip_compilation=False):
+    def __call__(self, state, time):
         '''
         Dunder function so that when added to the ODE system object it acts like a method
         
         Parameters
         ----------
         state: The values for the system states
-        time: The
+        time: The timepoint to evaluate for
         '''
         # Check to see if we need to compile
         if self.needs_recompile or self._compiled_obj is None:
             self.compile_function()
 
         # perform the numerical calculation
-        return self._compiled_obj(self._parent_ode._getEvalParam(state, time, None))
+        return self._compiled_obj(self._getEvalParam(state, time))
 
     def get_equation(self):
         '''
@@ -57,3 +59,19 @@ class MathsMethod:
                                                          modules='mpmath', 
                                                          outType=self.outType)
         self.needs_recompile = False
+
+    def _getEvalParam(self, state, time):
+        if state is None or time is None:
+            raise InputError("Have to input both state and time")
+
+        elif not hasattr(self._parent_ode, "_parameters") or self._parent_ode._parameters is None:
+            if self._parent_ode.num_param != 0:
+                raise InputError("Have not set the parameters yet")
+
+        if hasattr(state, '__iter__'):
+            # just in case this isn't a list already
+            eval_param = list(state) + [time]
+        else:
+            eval_param = [state] + [time]
+
+        return eval_param + self._parent_ode._paramValue

@@ -580,11 +580,11 @@ class DeterministicOde(BaseOdeModel):
         '''
         return self.jacobian(state, t)
 
-    def _Jacobian_NoCheck(self, state, t):
-        return self._evalJacobian_NoCheck(time=t, state=state)
+    # def _Jacobian_NoCheck(self, state, t):
+    #     return self._evalJacobian_NoCheck(time=t, state=state)
 
-    def _JacobianT_NoCheck(self, t, state):
-        return self._Jacobian_NoCheck(state, t)
+    # def _JacobianT_NoCheck(self, t, state):
+    #     return self._Jacobian_NoCheck(state, t)
 
     def sens_jacobian_state_T(self, t, state):
         '''
@@ -680,126 +680,126 @@ class DeterministicOde(BaseOdeModel):
     #
     ########################################################################
 
-    def get_hessian_eqn(self):
-        '''
-        Return the Hessian of the ode in algebraic form
+    # def get_hessian_eqn(self):
+    #     '''
+    #     Return the Hessian of the ode in algebraic form
 
-        Returns
-        -------
-        list
-            list of dimension number of state, each with matrix
-            [number of parameters x number of parameters] in
-            :mod:`sympy.matricies.matricies`
+    #     Returns
+    #     -------
+    #     list
+    #         list of dimension number of state, each with matrix
+    #         [number of parameters x number of parameters] in
+    #         :mod:`sympy.matricies.matricies`
 
-        Notes
-        -----
-        We deliberately return a list instead of a 3d array of a
-        tensor to avoid confusion
+    #     Notes
+    #     -----
+    #     We deliberately return a list instead of a 3d array of a
+    #     tensor to avoid confusion
 
-        '''
+    #     '''
 
-        if self._Hessian is None:
-            ode = self.get_ode_eqn()
-            self._Hessian = list()
-            # roll out the equation one by one.  Each H below is a the
-            # second derivative of f_{j}(x), the j^{th} ode.  Each ode
-            # correspond to a state
-            for eqn in ode:
-                H = sympy.zeros(self.num_param, self.num_param)
-                # although this can be simplified by first finding the gradient
-                # it is not required so we will be slow here
-                for i, pi in enumerate(self._iterParamList()):
-                    a = diff(eqn, pi, 1)
-                    for j, pj in enumerate(self._iterParamList()):
-                        H[i,j], isDifficult = simplifyEquation(diff(a, pj, 1))
-                        self._isDifficult = self._isDifficult or isDifficult
-                # end of double loop.  Finished one state
-                self._Hessian.append(H)
+    #     if self._Hessian is None:
+    #         ode = self.get_ode_eqn()
+    #         self._Hessian = list()
+    #         # roll out the equation one by one.  Each H below is a the
+    #         # second derivative of f_{j}(x), the j^{th} ode.  Each ode
+    #         # correspond to a state
+    #         for eqn in ode:
+    #             H = sympy.zeros(self.num_param, self.num_param)
+    #             # although this can be simplified by first finding the gradient
+    #             # it is not required so we will be slow here
+    #             for i, pi in enumerate(self._iterParamList()):
+    #                 a = diff(eqn, pi, 1)
+    #                 for j, pj in enumerate(self._iterParamList()):
+    #                     H[i,j], isDifficult = simplifyEquation(diff(a, pj, 1))
+    #                     self._isDifficult = self._isDifficult or isDifficult
+    #             # end of double loop.  Finished one state
+    #             self._Hessian.append(H)
 
-        return self._Hessian
+    #     return self._Hessian
 
-    def hessian(self, state, time):
-        """
-        Evaluate the hessian given state and time
+    # def hessian(self, state, time):
+    #     """
+    #     Evaluate the hessian given state and time
 
-        Parameters
-        ----------
-        state: array like
-            The current numerical value for the states which can be
-            :class:`numpy.ndarray` or :class:`list`
-        t: double
-            The current time
+    #     Parameters
+    #     ----------
+    #     state: array like
+    #         The current numerical value for the states which can be
+    #         :class:`numpy.ndarray` or :class:`list`
+    #     t: double
+    #         The current time
 
-        Returns
-        -------
-        list
-            list of dimension number of state, each with matrix
-            [number of parameters x number of parameters] in
-            :mod:`sympy.matricies.matricies`
+    #     Returns
+    #     -------
+    #     list
+    #         list of dimension number of state, each with matrix
+    #         [number of parameters x number of parameters] in
+    #         :mod:`sympy.matricies.matricies`
 
-        """
-        A = self.eval_hessian(state=state, time=time)
-        return [np.array(H, float) for H in A]
+    #     """
+    #     A = self.eval_hessian(state=state, time=time)
+    #     return [np.array(H, float) for H in A]
 
-    def eval_hessian(self, parameters=None, time=None, state=None):
-        '''
-        Evaluate the hessian given parameters, state and time. An extension
-        of :meth:`hessian` but now also include the parameters.
+    # def eval_hessian(self, parameters=None, time=None, state=None):
+    #     '''
+    #     Evaluate the hessian given parameters, state and time. An extension
+    #     of :meth:`hessian` but now also include the parameters.
 
-        Parameters
-        ----------
-        parameters: list
-            see :meth:`.parameters`
-        time: double
-            The current time
-        state: array list
-            The current numerical value for the states which can be
-            :class:`numpy.ndarray` or :class:`list`
+    #     Parameters
+    #     ----------
+    #     parameters: list
+    #         see :meth:`.parameters`
+    #     time: double
+    #         The current time
+    #     state: array list
+    #         The current numerical value for the states which can be
+    #         :class:`numpy.ndarray` or :class:`list`
 
-        Returns
-        -------
-        list
-            list of dimension number of state, each with matrix
-            [number of parameters x number of parameters] in
-            :mod:`sympy.matricies.matricies`
+    #     Returns
+    #     -------
+    #     list
+    #         list of dimension number of state, each with matrix
+    #         [number of parameters x number of parameters] in
+    #         :mod:`sympy.matricies.matricies`
 
-        See Also
-        --------
-        :meth:`.grad`, :meth:`.eval_grad`
+    #     See Also
+    #     --------
+    #     :meth:`.grad`, :meth:`.eval_grad`
 
-        '''
-        if self._hasNewTransition:
-            self.get_ode_eqn()
+    #     '''
+    #     if self._hasNewTransition:
+    #         self.get_ode_eqn()
 
-        eval_param = list()
-        eval_param = self._addTimeEvalParam(eval_param, time)
-        eval_param = self._addStateEvalParam(eval_param, state)
+    #     eval_param = list()
+    #     eval_param = self._addTimeEvalParam(eval_param, time)
+    #     eval_param = self._addStateEvalParam(eval_param, state)
 
-        if parameters is None:
-            if self._HessianWithParam is None:
-                self._computeHessianParam()
-        else:
-            self.parameters = parameters
+    #     if parameters is None:
+    #         if self._HessianWithParam is None:
+    #             self._computeHessianParam()
+    #     else:
+    #         self.parameters = parameters
 
-        if self._Hessian is None:
-            self._computeHessianParam()
+    #     if self._Hessian is None:
+    #         self._computeHessianParam()
 
-        if len(eval_param) == 0:
-            return self._Hessian
-        else:
-            H = list()
-            for i in range(0, self.num_state):
-                H = self._HessianWithParam[i].subs(eval_param)
-            return H
+    #     if len(eval_param) == 0:
+    #         return self._Hessian
+    #     else:
+    #         H = list()
+    #         for i in range(0, self.num_state):
+    #             H = self._HessianWithParam[i].subs(eval_param)
+    #         return H
 
-    def _computeHessianParam(self):
-        self._Hessian = self.get_hessian_eqn()
+    # def _computeHessianParam(self):
+    #     self._Hessian = self.get_hessian_eqn()
 
-        self._HessianWithParam = copy.deepcopy(self._Hessian)
-        for H in self._HessianWithParam:
-            H = H.subs(self._parameters)
+    #     self._HessianWithParam = copy.deepcopy(self._Hessian)
+    #     for H in self._HessianWithParam:
+    #         H = H.subs(self._parameters)
 
-        return None
+    #     return None
 
     ########################################################################
     #
@@ -1041,38 +1041,33 @@ class DeterministicOde(BaseOdeModel):
     # t
     # state
     ########################################################################
+    # def _addStateEvalParam(self, eval_param, state):
+    #     super(DeterministicOde, self).state = state
+    #     if self._state is not None:
+    #         eval_param += self._state
 
-    def _addTimeEvalParam(self, eval_param, t):
-        eval_param.append((self._t, t))
-        return eval_param
+    #     return eval_param
 
-    def _addStateEvalParam(self, eval_param, state):
-        super(DeterministicOde, self).state = state
-        if self._state is not None:
-            eval_param += self._state
+    # def _getEvalParam(self, state, time, parameters):
+    #     if state is None or time is None:
+    #         raise InputError("Have to input both state and time")
 
-        return eval_param
+    #     if parameters is not None:
+    #         self.parameters = parameters
+    #     elif not hasattr(self, "_parameters") or self._parameters is None:
+    #     #elif self._parameters is None:
+    #         if self.num_param == 0:
+    #             pass
+    #         else:
+    #             raise InputError("Have not set the parameters yet")
 
-    def _getEvalParam(self, state, time, parameters):
-        if state is None or time is None:
-            raise InputError("Have to input both state and time")
+    #     if hasattr(state, '__iter__'):
+    #         # just in case this isn't a list already
+    #         eval_param = list(state) + [time]
+    #     else:
+    #         eval_param = [state] + [time]
 
-        if parameters is not None:
-            self.parameters = parameters
-        elif not hasattr(self, "_parameters") or self._parameters is None:
-        #elif self._parameters is None:
-            if self.num_param == 0:
-                pass
-            else:
-                raise InputError("Have not set the parameters yet")
-
-        if hasattr(state, '__iter__'):
-            # just in case this isn't a list already
-            eval_param = list(state) + [time]
-        else:
-            eval_param = [state] + [time]
-
-        return eval_param + self._paramValue
+    #     return eval_param + self._paramValue
 
 
 
