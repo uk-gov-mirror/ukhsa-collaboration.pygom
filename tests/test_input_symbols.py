@@ -7,7 +7,7 @@ class TestInputSymbols(TestCase):
 
     def test_Signs(self):
         """
-        Making sure that the illegal symbols are catched
+        Making sure that the illegal symbols are caught
         """
         state_list = [['S+'], ['S-'], ['S*'], ['S\\'], ['_S']]
         param_list = ['beta']
@@ -33,7 +33,7 @@ class TestInputSymbols(TestCase):
 
         ode = SimulateOde(state=state_list, param=param_list, ode=odeList)
         # this should not throw an error if the model is initialized correctly
-        A = ode.get_ode_eqn()
+        A = ode.ode.get_equation()
 
 
 if __name__ == '__main__':

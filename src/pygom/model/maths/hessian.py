@@ -100,7 +100,7 @@ class Hessian(MathsMethod):
 
         '''
         if self._hasNewTransition:
-            self.get_ode_eqn()
+            self.ode.get_equation()
 
         eval_param = list()
         # add time to the evaluated parameters

@@ -22,7 +22,7 @@ class DiffJacobian(MathsMethod):
 
         '''
 
-        # self.get_ode_eqn()
+        # self.ode.get_equation()
         diffJac = list()
 
         for eqn in self._parent_ode.ode.get_equation():

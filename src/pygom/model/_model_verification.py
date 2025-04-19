@@ -2,14 +2,6 @@ import numpy as np
 
 from sympy import parse_expr
 
-# Although reimporting * is not generally recommended
-# we have to do it here so that it has all the mathematical
-# functions ready to use when evaluating the equations.
-# An alternative is to check for all the maths functions, such
-# as exp, log, trigonometric etc.. and convert them to sympy
-
-# TODO: is the above comment still relevant? Can't see any * import.
-
 from sympy.functions.elementary.exponential import (exp_polar, exp, log,
     LambertW)
 ln = log

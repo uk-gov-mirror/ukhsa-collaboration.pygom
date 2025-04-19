@@ -28,7 +28,7 @@ class TestModelVector(unittest.TestCase):
         # initialize the model
         ode = SimulateOde(state_list, param_list,
                                transition=transition_list)
-        ode.get_ode_eqn()
+        ode.ode.get_equation()
 
         t = numpy.append(0, 4*numpy.logspace(-6, 6, 1000))
         ode.initial_values = ([1.0, 0.0, 0.0], t[0])
@@ -57,7 +57,7 @@ class TestModelVector(unittest.TestCase):
 
         ode = SimulateOde(state_list, param_list,
                                transition=transition_list)
-        ode.get_ode_eqn()
+        ode.ode.get_equation()
 
         t = numpy.append(0, 4*numpy.logspace(-6, 6, 1000))
         ode.initial_values = ([1.0, 0.0, 0.0], t[0])
@@ -88,7 +88,7 @@ class TestModelVector(unittest.TestCase):
 
         ode = SimulateOde(state_list, param_list,
                                transition=transition_list)
-        ode.get_ode_eqn()
+        ode.ode.get_equation()
 
         t = numpy.append(0, 4*numpy.logspace(-6, 6, 1000))
         ode.initial_values = ([1.0, 0.0, 0.0], t[0])

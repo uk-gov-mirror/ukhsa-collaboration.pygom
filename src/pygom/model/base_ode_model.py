@@ -100,7 +100,7 @@ class BaseOdeModel(object):
         # # but lets leave it here for now
         #self._parameters = None
         self._stochasticParam = None
-        self._hasNewTransition = HasNewTransition()
+        #self._hasNewTransition = HasNewTransition()
 
         # # dictionary for mapping
         self._paramDict = dict()
@@ -152,6 +152,13 @@ class BaseOdeModel(object):
     # Getters and setters
     #
     ###########################################################################
+    def _invalidate_caches(self)->None:
+        """
+        Tell objects that have cached components to reset their caches as
+        the underlying system has changed
+        """
+        # This method should be overloaded in child classes to invlidate caches
+        pass
 
     @property
     def parameters(self):
@@ -416,7 +423,8 @@ class BaseOdeModel(object):
         else:
             raise InputError("Expecting a list")
 
-        self._hasNewTransition.trip()
+        self._invalidate_caches()
+        #self._hasNewTransition.trip()
 
     @property
     def param_list(self):
@@ -449,8 +457,8 @@ class BaseOdeModel(object):
             self._addParamSymbol(param_list)
         else:
             raise InputError("Expecting a list")
-
-        self._hasNewTransition.trip()
+        self._invalidate_caches()
+        #self._hasNewTransition.trip()
 
     @property
     def derived_param_list(self):
@@ -951,7 +959,8 @@ class BaseOdeModel(object):
         fixed_eqn = checkEquation(eqn, *self._getListOfVariablesDict())
         self._addVariable(fixed_eqn, var_obj, self._derivedParamList, self._derivedParamDict)
 
-        self._hasNewTransition.trip()
+        self._invalidate_caches()
+        #self._hasNewTransition.trip()
         self._derivedParamEqn += [(name, eqn)]
         return None
 
@@ -985,7 +994,8 @@ class BaseOdeModel(object):
 
                 self._eventList.append(event)
                 self._transitionList.append(transition)
-                self._hasNewTransition.trip()
+                self._invalidate_caches()
+                #self._hasNewTransition.trip()
             else:
                 raise InputError("Input is not a transition between two states")
         else:
@@ -1000,14 +1010,16 @@ class BaseOdeModel(object):
         """
         if isinstance(event, Event):
             self._eventList.append(event)
-            self._hasNewTransition.trip()
+            self._invalidate_caches()
+            #self._hasNewTransition.trip()
         elif isinstance(event, Transition):             # Convert single transition into event
             rate=event.equation
             event._equation=None
             derived_event=Event(rate=rate,
                                 transition_list=[event])
             self._eventList.append(derived_event)
-            self._hasNewTransition.trip()
+            self._invalidate_caches()
+            #self._hasNewTransition.trip()
         else:
             raise InputError("Input %s is not an Event or Transition." % type(event))
 
@@ -1035,7 +1047,8 @@ class BaseOdeModel(object):
 
                 self._eventList.append(birth_event)
                 self._birthDeathList.append(birth_event)
-                self._hasNewTransition.trip()            
+                self._invalidate_caches()
+                #self._hasNewTransition.trip()            
             elif t is TransitionType.D:
                 trans_death=Transition(origin=birth_death.origin, transition_type="D")
 
@@ -1044,7 +1057,8 @@ class BaseOdeModel(object):
 
                 self._eventList.append(death_event)
                 self._birthDeathList.append(death_event)
-                self._hasNewTransition.trip()   
+                self._invalidate_caches()
+                #self._hasNewTransition.trip()   
             else:
                 raise InputError("Input is not a birth death process")
         else:

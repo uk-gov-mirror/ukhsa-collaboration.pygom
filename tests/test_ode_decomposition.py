@@ -17,7 +17,7 @@ class TestOdeDecomposition(TestCase):
         ode = SimulateOde(state_list, param_list, ode=[ode1, ode2, ode3])
 
         ode2 = ode.get_unrolled_obj()
-        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.get_ode_eqn() - ode2.get_ode_eqn()))
+        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.ode.get_equation() - ode2.ode.get_equation()))
 
         self.assertTrue(numpy.all(numpy.array(list(diffEqZero))))
 #         if numpy.any(numpy.array(list(diffEqZero)) is False):
@@ -41,7 +41,7 @@ class TestOdeDecomposition(TestCase):
         ode = SimulateOde(state_list, param_list, ode=ode_list)
 
         ode2 = ode.get_unrolled_obj()
-        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.get_ode_eqn() - ode2.get_ode_eqn()))
+        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.ode.get_equation() - ode2.ode.get_equation()))
 
         self.assertTrue(numpy.all(numpy.array(list(diffEqZero))))
 
@@ -63,7 +63,7 @@ class TestOdeDecomposition(TestCase):
         ode = SimulateOde(state_list, param_list, ode=ode_list)
 
         ode2 = ode.get_unrolled_obj()
-        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.get_ode_eqn() - ode2.get_ode_eqn()))
+        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.ode.get_equation() - ode2.ode.get_equation()))
 
         self.assertTrue(numpy.all(numpy.array(list(diffEqZero))))
 
@@ -85,7 +85,7 @@ class TestOdeDecomposition(TestCase):
         ode1 = SimulateOde(ode.state_list, ode.param_list, ode._derivedParamEqn, ode=ode_list)
 
         ode2 = ode1.get_unrolled_obj()
-        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.get_ode_eqn() - ode2.get_ode_eqn()))
+        diffEqZero = map(lambda x: x==0, sympy.simplify(ode.ode.get_equation() - ode2.ode.get_equation()))
 
         self.assertTrue(numpy.all(numpy.array(list(diffEqZero))))
 

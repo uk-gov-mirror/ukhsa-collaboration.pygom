@@ -103,7 +103,7 @@ class DeterministicOde(BaseOdeModel):
         #self._hasNewTransition = False
 
         # # First, set up system of odes upon instance being initialised
-        # self.get_ode_eqn()
+        # self.ode.get_equation()
 
         # Setup the maths methods compiler
         # Note that we need the class because we
@@ -152,7 +152,7 @@ class DeterministicOde(BaseOdeModel):
 
     def __eq__(self, other):
         if isinstance(other, DeterministicOde):
-            if self.get_ode_eqn() == other.get_ode_eqn():
+            if self.ode.get_equation() == other.ode.get_equation():
                 return True
             else:
                 return False
@@ -548,7 +548,7 @@ class DeterministicOde(BaseOdeModel):
 
     #     '''
 
-    #     # self.get_ode_eqn()
+    #     # self.ode.get_equation()
     #     diffJac = list()
 
     #     for eqn in self._ode:
@@ -616,7 +616,7 @@ class DeterministicOde(BaseOdeModel):
 
     #     '''
 
-    #     ode = self.get_ode_eqn()
+    #     ode = self.ode.get_equation()
     #     self._Grad = sympy.zeros(self.num_state, self.num_param)
 
     #     for i in range(self.num_state):
@@ -699,7 +699,7 @@ class DeterministicOde(BaseOdeModel):
     #     '''
 
     #     if self._Hessian is None:
-    #         ode = self.get_ode_eqn()
+    #         ode = self.ode.get_equation()
     #         self._Hessian = list()
     #         # roll out the equation one by one.  Each H below is a the
     #         # second derivative of f_{j}(x), the j^{th} ode.  Each ode
@@ -769,7 +769,7 @@ class DeterministicOde(BaseOdeModel):
 
     #     '''
     #     if self._hasNewTransition:
-    #         self.get_ode_eqn()
+    #         self.ode.get_equation()
 
     #     eval_param = list()
     #     eval_param = self._addTimeEvalParam(eval_param, time)
