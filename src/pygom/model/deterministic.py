@@ -31,7 +31,7 @@ from . import _transition_graph
 from .ode_utils import compileCode
 
 from .maths import ODESystem, Jacobian, DiffJacobian, \
-    Grad, GradJacobian
+    Grad, GradJacobian, Hessian
 
 
 class DeterministicOde(BaseOdeModel):
@@ -67,7 +67,9 @@ class DeterministicOde(BaseOdeModel):
         Jacobian,
         DiffJacobian,
         Grad,
-        GradJacobian
+        GradJacobian,
+        Hessian
+
  #       'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
  #       'grad_jacobian': 'get_grad_jacobian_eqn'
     ]
@@ -113,16 +115,11 @@ class DeterministicOde(BaseOdeModel):
         # and there are issues with pickling fortran objects
         self._SC = compileCode(backend=backend)
 
-        # Add the maths methods
-        for fn_class in self._compiled_functions:
-            # Create an instance of the maths class with this class as the 
-            # associated ode system
-            maths_class_instance = fn_class(parent_ode=self)
-            setattr(self, maths_class_instance.method_name, maths_class_instance)
+        self._init_maths_methods()
 
         # TODO: update _Hessian and _HessianWithParam to this framework.
-        self._Hessian=None
-        self._HessianWithParam=None
+        #self._Hessian=None
+        #self._HessianWithParam=None
 
         # all the symbols that we need in order to compile
         # s = state + t
@@ -150,6 +147,17 @@ class DeterministicOde(BaseOdeModel):
         # the vector form
         self._SAUtil = ode_utils.shapeAdjust(self.num_state, self.num_param)
 
+    def _init_maths_methods(self):
+        """
+        Add all the maths method classes as methods to this class
+        """
+        # Add the maths methods
+        for fn_class in self._compiled_functions:
+            # Create an instance of the maths class with this class as the 
+            # associated ode system
+            maths_class_instance = fn_class(parent_ode=self)
+            setattr(self, maths_class_instance.method_name, maths_class_instance)
+
     def __eq__(self, other):
         if isinstance(other, DeterministicOde):
             if self.ode.get_equation() == other.ode.get_equation():
@@ -167,11 +175,12 @@ class DeterministicOde(BaseOdeModel):
         '''
         Grab the class's dict and remove the compiled objects
         '''
+        compiled_methods = {x.method_name for x in self._compiled_functions}
         state = self.__dict__.copy()
         
-        for state_name, value in state.items():
-            if 'compileExprAndFormat' in str(value):
-                state[state_name] = None
+        # Remove those compiled methods that have been added
+        for method in (compiled_methods & {x for x in state.keys()}):
+            del state[method]
         
         return state
     
@@ -181,7 +190,8 @@ class DeterministicOde(BaseOdeModel):
         '''
         self.__dict__.update(state)
         
-        self._hasNewTransition.trip()
+        # Add back the compiled methods
+        self._init_maths_methods()
 
     ########################################################################
     #
@@ -574,11 +584,11 @@ class DeterministicOde(BaseOdeModel):
     
     # Some additional maybe not necessary functions....
 
-    def jacobian_T(self, t, state):
-        '''
-        Same as :meth:`jacobian` but with t as first parameter
-        '''
-        return self.jacobian(state, t)
+    # def jacobian_T(self, t, state):
+    #     '''
+    #     Same as :meth:`jacobian` but with t as first parameter
+    #     '''
+    #     return self.jacobian(state, t)
 
     # def _Jacobian_NoCheck(self, state, t):
     #     return self._evalJacobian_NoCheck(time=t, state=state)

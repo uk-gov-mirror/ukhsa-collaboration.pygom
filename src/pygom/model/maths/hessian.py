@@ -1,5 +1,7 @@
 import copy
 
+import numpy as np
+
 import sympy
 from sympy.core.function import diff
 
