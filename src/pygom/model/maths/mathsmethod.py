@@ -38,6 +38,14 @@ class MathsMethod:
 
         # perform the numerical calculation
         return self._compiled_obj(self._getEvalParam(state, time))
+    
+    def T(self, t, state):
+        '''
+        Same as :meth:`__call__` (the main method) but with t as first parameter
+
+        This reordering is useful in the calling of integrate and similar functions.
+        '''
+        return self.__call__(state, t)
 
     def get_equation(self):
         '''

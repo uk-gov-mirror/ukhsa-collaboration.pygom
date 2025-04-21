@@ -284,8 +284,8 @@ class BaseLoss(object):
 
         # integrate forward using the extra time points
         f = ode_utils.integrateFuncJac
-        s_and_i = f(self._ode.ode_T,
-                               self._ode.jacobian_T,
+        s_and_i = f(self._ode.ode.T,
+                               self._ode.jacobian.T,
                                self._x0,
                                self._interpolateTime[0],
                                self._interpolateTime[1::],
@@ -1336,8 +1336,8 @@ class BaseLoss(object):
         # Note that the solution does not include the origin.  This is
         # because they do not contribute when the initial conditions are
         # given and we assume that they are accurate
-        solution = ode_utils.integrateFuncJac(self._ode.ode_T,
-                                              self._ode.jacobian_T,
+        solution = ode_utils.integrateFuncJac(self._ode.ode.T,
+                                              self._ode.jacobian.T,
                                               self._x0, self._t0,
                                               self._observeT,
                                               full_output=False,

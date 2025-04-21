@@ -602,11 +602,11 @@ class DeterministicOde(BaseOdeModel):
         '''
         return self.sens_jacobian_state(state, t)
 
-    def diff_jacobian_T(self, t, state):
-        '''
-        Same as :meth:`diff_jacobian` but with t as first parameter
-        '''
-        return self.diff_jacobian(state, t)
+    # def diff_jacobian_T(self, t, state):
+    #     '''
+    #     Same as :meth:`diff_jacobian` but with t as first parameter
+    #     '''
+    #     return self.diff_jacobian(state, t)
 
 
     ########################################################################
@@ -639,11 +639,11 @@ class DeterministicOde(BaseOdeModel):
 
     #     return self._Grad
 
-    def grad_T(self, t, state):
-        '''
-        Same as :meth:`grad_T` but with t as first parameter
-        '''
-        return self.grad(state, t)
+    # def grad_T(self, t, state):
+    #     '''
+    #     Same as :meth:`grad_T` but with t as first parameter
+    #     '''
+    #     return self.grad(state, t)
 
     #
     # jacobian of the Gradiant
@@ -1011,8 +1011,8 @@ class DeterministicOde(BaseOdeModel):
         assert self._x0 is not None, "Initial state not set"
 
         f = ode_utils.integrateFuncJac
-        self._odeSolution, self._odeOutput = f(self.ode_T,
-                                               self.jacobian_T,
+        self._odeSolution, self._odeOutput = f(self.ode.T,
+                                               self.jacobian.T,
                                                self._x0,
                                                t[0], t[1::],
                                                includeOrigin=True,
