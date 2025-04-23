@@ -3,10 +3,9 @@ import logging
 from .._model_errors import InputError
 
 class MathsMethod:
-    _compiled_obj = None # Will store the compiled function in child classes
-    method_name = None # Should be overloaded in child classes to the method name that the class attaches 
-    needs_recompile = True # This is a compile canary. Should be tripped by the parent ode if the system changes
-    outType = None # The type of output (matrix or vector) that the compiled expression produces, if None this will be determined automatically
+    # Should be overloaded in child classes to the method name that the class 
+    # attaches.
+    method_name = None 
     def __init__(self, parent_ode)->None:
         '''
         Init function
@@ -22,10 +21,42 @@ class MathsMethod:
         # Use the parent_ode's compiler class (don't want each MM having their own).
         self._SC = parent_ode._SC
 
-
-    def __call__(self, state, time):
+    def __call__(self,):
         '''
         Dunder function so that when added to the ODE system object it acts like a method
+        
+        Should be overloaded in child classes
+        '''
+        raise NotImplemented('This is the base class, implement this in a child class!')
+    
+    def get_equation(self):
+        '''
+        Give a symbolic form of the maths method
+
+        Returns
+        -------
+        A sympy object representing the symbolic form of this method
+        '''
+        raise NotImplemented('This is the base class, implement this in a child class!')
+class NumericalMethod(MathsMethod):
+    """
+    A class designed to be attached to an ode object the primary purpose is to 
+    produce a numerical evaluation. The symbolic version will be compiled and 
+    cached. By default you will need to provide the system state (as time and 
+    state values) to perform the evaluation.
+    """
+    # Will store the compiled function in child classes
+    _compiled_obj = None 
+    # This is a compile canary. Should be tripped by the parent ode if the 
+    # system changes
+    needs_recompile = True 
+    # The type of output (matrix or vector) that the compiled expression 
+    # produces, if None this will be determined automatically
+    outType = None 
+    def __call__(self, state, time):
+        '''
+        Dunder function so that when added to the ODE system object it acts 
+        like a standard method.
         
         Parameters
         ----------
@@ -43,20 +74,11 @@ class MathsMethod:
         '''
         Same as :meth:`__call__` (the main method) but with t as first parameter
 
-        This reordering is useful in the calling of integrate and similar functions.
+        This reordering is useful in the calling of integrate and similar 
+        functions.
         '''
         return self.__call__(state, t)
 
-    def get_equation(self):
-        '''
-        Give a symbolic form of the maths method
-
-        Returns
-        -------
-        A sympy object representing the symbolic form of this method
-        '''
-        raise NotImplemented('This is the base class, implement this in a child class!')
-    
     def compile_function(self):
         '''
         Compile the symbolic form so that rapid numerical evaluation may occur
@@ -72,7 +94,8 @@ class MathsMethod:
         if state is None or time is None:
             raise InputError("Have to input both state and time")
 
-        elif not hasattr(self._parent_ode, "_parameters") or self._parent_ode._parameters is None:
+        elif (not hasattr(self._parent_ode, "_parameters") or 
+              self._parent_ode._parameters is None):
             if self._parent_ode.num_param != 0:
                 raise InputError("Have not set the parameters yet")
 
@@ -83,3 +106,23 @@ class MathsMethod:
             eval_param = [state] + [time]
 
         return eval_param + self._parent_ode._paramValue
+
+class SymbolicMethod(MathsMethod):
+    """
+    A class designed to be attached to an ode object the primary purpose is to 
+    produce a symbolic representation. The symbolic representation will be 
+    cached.
+    """
+    _symbolic_function = None
+    def __call__(self):
+        '''
+        Returns the symbolic representation of the method
+        '''
+        # Check to see if we need to compile
+        if self.needs_recompile or self._symbolic_function is None:
+            self._symbolic_function = self.get_equation()
+        
+        return self._symbolic_function()
+
+
+

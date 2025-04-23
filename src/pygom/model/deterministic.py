@@ -62,16 +62,13 @@ class DeterministicOde(BaseOdeModel):
     # compiled. 
     # By having this list we result in a single source of truth for all
     # the functions are dynamically compiled.
-    _compiled_functions = [
+    _maths_methods = BaseOdeModel._maths_methods + [
         ODESystem,
         Jacobian,
         DiffJacobian,
         Grad,
         GradJacobian,
         Hessian
-
- #       'grad': ('get_grad_eqn', {'oT': "mat"}), #note the tuple of function name and the parameters to the compile function
- #       'grad_jacobian': 'get_grad_jacobian_eqn'
     ]
 
     def __init__(self,
@@ -101,7 +98,7 @@ class DeterministicOde(BaseOdeModel):
         # underlying model, or needs to be recompiled. Colloquially, each function has
         # an associated canary and if True (dead) it means something needs to be done.
         # TODO: This canary cage needs replacing with the in class canarys.
-        self._hasNewTransition = ode_utils.CompileCanary([fn.method_name for fn in self._compiled_functions])
+        self._hasNewTransition = ode_utils.CompileCanary([fn.method_name for fn in self._maths_methods])
         #self._hasNewTransition = False
 
         # # First, set up system of odes upon instance being initialised
@@ -152,7 +149,7 @@ class DeterministicOde(BaseOdeModel):
         Add all the maths method classes as methods to this class
         """
         # Add the maths methods
-        for fn_class in self._compiled_functions:
+        for fn_class in self._maths_methods:
             # Create an instance of the maths class with this class as the 
             # associated ode system
             maths_class_instance = fn_class(parent_ode=self)
@@ -175,7 +172,7 @@ class DeterministicOde(BaseOdeModel):
         '''
         Grab the class's dict and remove the compiled objects
         '''
-        compiled_methods = {x.method_name for x in self._compiled_functions}
+        compiled_methods = {x.method_name for x in self._maths_methods}
         state = self.__dict__.copy()
         
         # Remove those compiled methods that have been added

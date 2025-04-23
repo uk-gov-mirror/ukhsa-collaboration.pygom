@@ -1,11 +1,11 @@
 import logging
 import sympy
 
-from .mathsmethod import MathsMethod
+from .mathsmethod import NumericalMethod
 from .._model_verification import simplifyEquation, checkEquation
 from ..transition import TransitionType
 
-class ODESystem(MathsMethod):
+class ODESystem(NumericalMethod):
     method_name = 'ode'
     def get_equation(self):
         '''

@@ -52,6 +52,9 @@ class BaseOdeModel(object):
         A list of ode (:class:`.Transition`)
 
     """
+    _maths_methods = [
+
+    ]
 
     def __init__(self,
                  state=None,
@@ -146,6 +149,7 @@ class BaseOdeModel(object):
             self.ode_list = ode
 
         #self._computeEventRateVector()
+        self._invalidate_caches()
 
     ###########################################################################
     #
@@ -158,7 +162,7 @@ class BaseOdeModel(object):
         the underlying system has changed
         """
         # This method should be overloaded in child classes to invlidate caches
-        pass
+        self._vMat = None
 
     @property
     def parameters(self):
@@ -1167,32 +1171,37 @@ class BaseOdeModel(object):
 
         return self._eventRateVector
 
-    def get_StateChangeMatrix(self):
-        """
-        The state change matrix, where
-        .. math::
-            v_{i,j} = change in state i if transition j occurs
-            (this could still be in symbolic form at this stage)
-        """
-        # container for output
-        self._vMat = sympy.zeros(self.num_state, self.num_events)
+    # def get_StateChangeMatrix(self):
+    #     """
+    #     The state change matrix, where
+    #     .. math::
+    #         v_{i,j} = change in state i if transition j occurs
+    #         (this could still be in symbolic form at this stage)
+    #     """
+    #     # TODO: This should be replaced with a vMat attribute
+    #     # Cache the result
+    #     if self._vMat is not None:
+    #         return self._vMat
+        
+    #     # container for output
+    #     self._vMat = sympy.zeros(self.num_state, self.num_events)
 
-        for event_index, event in enumerate(self.event_list):
-            for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
-                if transition.transition_type==TransitionType.B:
-                    destination_index=self.state_list.index(transition.destination)
-                    self._vMat[destination_index, event_index] += magnitude
-                elif transition.transition_type==TransitionType.D:
-                    origin_index=self.state_list.index(transition.origin)
-                    self._vMat[origin_index, event_index] -= magnitude
-                elif transition.transition_type==TransitionType.T:
-                    origin_index=self.state_list.index(transition.origin)
-                    destination_index=self.state_list.index(transition.destination)
-                    self._vMat[origin_index, event_index] -= magnitude
-                    self._vMat[destination_index, event_index] += magnitude
+    #     for event_index, event in enumerate(self.event_list):
+    #         for transition in event.transition_list:
+    #             magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
+    #             if transition.transition_type==TransitionType.B:
+    #                 destination_index=self.state_list.index(transition.destination)
+    #                 self._vMat[destination_index, event_index] += magnitude
+    #             elif transition.transition_type==TransitionType.D:
+    #                 origin_index=self.state_list.index(transition.origin)
+    #                 self._vMat[origin_index, event_index] -= magnitude
+    #             elif transition.transition_type==TransitionType.T:
+    #                 origin_index=self.state_list.index(transition.origin)
+    #                 destination_index=self.state_list.index(transition.destination)
+    #                 self._vMat[origin_index, event_index] -= magnitude
+    #                 self._vMat[destination_index, event_index] += magnitude
             
-        return self._vMat
+    #     return self._vMat
 
     def get_pureOdeVector(self):
         '''
