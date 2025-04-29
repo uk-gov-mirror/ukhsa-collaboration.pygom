@@ -86,24 +86,6 @@ class DeterministicOde(BaseOdeModel):
         '''
         Constructor that is built on top of a BaseOdeModel
         '''
-        super(DeterministicOde, self).__init__(state,
-                                               param,
-                                               derived_param,
-                                               transition,
-                                               event,
-                                               birth_death,
-                                               ode)
-
-        # Ledger keeping record of whether each important function is up to date with
-        # underlying model, or needs to be recompiled. Colloquially, each function has
-        # an associated canary and if True (dead) it means something needs to be done.
-        # TODO: This canary cage needs replacing with the in class canarys.
-        self._hasNewTransition = ode_utils.CompileCanary([fn.method_name for fn in self._maths_methods])
-        #self._hasNewTransition = False
-
-        # # First, set up system of odes upon instance being initialised
-        # self.ode.get_equation()
-
         # Setup the maths methods compiler
         # Note that we need the class because we
         # compile both the formatted and unformatted version.
@@ -112,7 +94,16 @@ class DeterministicOde(BaseOdeModel):
         # and there are issues with pickling fortran objects
         self._SC = compileCode(backend=backend)
 
-        self._init_maths_methods()
+        super(DeterministicOde, self).__init__(state,
+                                               param,
+                                               derived_param,
+                                               transition,
+                                               event,
+                                               birth_death,
+                                               ode)
+
+        # # First, set up system of odes upon instance being initialised
+        # self.ode.get_equation()
 
         # TODO: update _Hessian and _HessianWithParam to this framework.
         #self._Hessian=None
@@ -143,17 +134,6 @@ class DeterministicOde(BaseOdeModel):
         # memory when operating, but the output is required to be of
         # the vector form
         self._SAUtil = ode_utils.shapeAdjust(self.num_state, self.num_param)
-
-    def _init_maths_methods(self):
-        """
-        Add all the maths method classes as methods to this class
-        """
-        # Add the maths methods
-        for fn_class in self._maths_methods:
-            # Create an instance of the maths class with this class as the 
-            # associated ode system
-            maths_class_instance = fn_class(parent_ode=self)
-            setattr(self, maths_class_instance.method_name, maths_class_instance)
 
     def __eq__(self, other):
         if isinstance(other, DeterministicOde):
@@ -381,10 +361,10 @@ class DeterministicOde(BaseOdeModel):
             B[i,1] = A[i]
 
         if latex_output:
-            print(sympy.latex(B, mat_str="array", mat_delim=None,
+            logging.debug(sympy.latex(B, mat_str="array", mat_delim=None,
                               inv_trig_style='full'))
         else:
-            sympy.pretty_print(B)
+            sympy.pretty_logging.debug(B)
 
     def get_transition_graph(self, file_name=None, show=True):
         '''

@@ -20,7 +20,7 @@ import time
 
 import pygom
 import pkg_resources
-print('PyGOM version %s' %pkg_resources.get_distribution('pygom').version)
+logging.debug('PyGOM version %s' %pkg_resources.get_distribution('pygom').version)
 
 from pygom import Transition, TransitionType, Event, SimulateOde
 import numpy as np

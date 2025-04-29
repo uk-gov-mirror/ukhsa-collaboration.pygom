@@ -25,7 +25,10 @@ from ._model_errors import InputError, SimulationError
 from ._model_verification import checkEquation, simplifyEquation
 from . import _ode_composition
 
-from .maths import StateChangeMatrix
+from .maths import (StateChangeMatrix, 
+                    TransitionMean, 
+                    TransitionVariance,
+                    TransitionJacobian)
 
 class SimulateOde(DeterministicOde):
     '''
@@ -52,7 +55,10 @@ class SimulateOde(DeterministicOde):
     '''
     # The compiled math functions within this class
     _maths_methods = DeterministicOde._maths_methods + [
-        StateChangeMatrix
+        StateChangeMatrix,
+        TransitionMean,
+        TransitionVariance,
+        TransitionJacobian
     ]
         # 'vMat': 'get_StateChangeMatrix',
         # 'eventRateVector': 'get_EventRateVector',
@@ -69,10 +75,13 @@ class SimulateOde(DeterministicOde):
                  transition=None,
                  event=None,
                  birth_death=None,
-                 ode=None):
+                 ode=None,
+                 backend=None
+                 ):
         '''
         Constructor that is built on top of DeterministicOde
         '''
+        logging.debug(self._maths_methods)
         super(SimulateOde, self).__init__(state,
                                           param,
                                           derived_param,
@@ -111,7 +120,7 @@ class SimulateOde(DeterministicOde):
         t1: double
             final time
         '''
-        return(exact(x0, t0, t1, self.vMat(), self.eventRateVector,
+        return(exact(x0, t0, t1, self.state_change_matrix(), self.eventRateVector,
                      output_time=output_time))
 
     ###########################################################################
@@ -139,7 +148,7 @@ class SimulateOde(DeterministicOde):
         t1: double
             final time
         '''
-        return(cle(x0, t0, t1, self.vMat(), self.eventRateVector,
+        return(cle(x0, t0, t1, self.state_change_matrix(), self.eventRateVector,
                    output_time=output_time))
 
     def hybrid(self, x0, t0, t1, output_time=False):
@@ -158,10 +167,10 @@ class SimulateOde(DeterministicOde):
         t1: double
             final time
         '''
-        return(hybrid(x0, t0, t1, self.vMat(),
+        return(hybrid(x0, t0, t1, self.state_change_matrix(),
                       self.eventRateVector,
-                      self.transitionMean,
-                      self.transitionVar,
+                      self.transition_mean,
+                      self.transition_variance,
                       output_time=output_time))
 
     def simulate_param(self, t, iteration, parallel=False, full_output=False):
@@ -229,8 +238,8 @@ class SimulateOde(DeterministicOde):
                 xtmp = dask.bag.from_sequence(y)
                 solutionList = xtmp.map(sim).compute()
             except Exception: # as e:
-                # print(e)
-                # print("Serial")
+                # logging.debug(e)
+                # logging.debug("Serial")
                 solutionList = [self.integrate(t) for i in range(iteration)]
         else:
             solutionList = [self.integrate(t) for i in range(iteration)]
@@ -309,8 +318,8 @@ class SimulateOde(DeterministicOde):
                     xtmp = dask.bag.from_sequence(y)
                     solutionList = xtmp.map(sim).compute()
                 except Exception: # as e:
-                    # print(e)
-                    # print("Serial")
+                    # logging.debug(e)
+                    # logging.debug("Serial")
                     solutionList = [self.integrate(t) for i in range(iteration)]
             else:
                 solutionList = [self.integrate(t) for i in range(iteration)]
@@ -488,7 +497,7 @@ class SimulateOde(DeterministicOde):
                     t, jump_time, x, jumps, success = firstReaction(x,
                                                                     self._state_lims,
                                                                     t,
-                                                                    self.vMat(),
+                                                                    self.state_change_matrix,
                                                                     self.eventRateVector,
                                                                     seed=seed)
                     if success==False:
@@ -502,12 +511,12 @@ class SimulateOde(DeterministicOde):
                     t_new, jump_time, x_new, jumps, success = tauLeap(x,
                                                                       self._state_lims,
                                                                       t,
-                                                                      self.vMat(),
+                                                                      self.state_change_matrix,
                                                                       self._lambdaMat,
-                                                                      self.get_EventRateVector(),
-                                                                      self.transitionMean,
-                                                                      self.transitionVar,
-                                                                      self.pureOdeVector,
+                                                                      self.event_rate_vector,
+                                                                      self.transition_mean,
+                                                                      self.transition_variance,
+                                                                      self.pure_ode_vector,
                                                                       epsilon=self._epsilon,
                                                                       seed=seed,
                                                                       pre_tau=self.pre_tau)
@@ -520,8 +529,8 @@ class SimulateOde(DeterministicOde):
                         t, jump_time, x, jumps, success = firstReaction(x,
                                                                         self._state_lims,
                                                                         t,
-                                                                        self.vMat(),
-                                                                        self.get_EventRateVector(),
+                                                                        self.state_change_matrix,
+                                                                        self.event_rate_vector,
                                                                         seed=seed)
                         
                         if success==False:
@@ -646,32 +655,32 @@ class SimulateOde(DeterministicOde):
     #
     ###########################################################################
 
-    def get_TransitionJacobian(self):
-        '''
-        Evaluate equation (7) from https://people.cs.vt.edu/~ycao/publication/newstepsize.pdf
-        where F_[i,j] is the change in transition rate a[i], if a transition of type j occurs:
-        F_[i,j] = sum_k diff(a[i], x_k) v_[k,j]
-        where k=state and v[k,j] is how much state x_k changes by if transition of type j occurs.
-        '''
+    # def get_TransitionJacobian(self):
+    #     '''
+    #     Evaluate equation (7) from https://people.cs.vt.edu/~ycao/publication/newstepsize.pdf
+    #     where F_[i,j] is the change in transition rate a[i], if a transition of type j occurs:
+    #     F_[i,j] = sum_k diff(a[i], x_k) v_[k,j]
+    #     where k=state and v[k,j] is how much state x_k changes by if transition of type j occurs.
+    #     '''
 
-        # Ensure objects, vMat and eventRateVector, are up to date
-        # TODO: Maybe a better naming convention, where generator function and the object
-        #       it creates have some similarity.
-        self.vMat()
-        self.get_EventRateVector()
+    #     # Ensure objects, vMat and eventRateVector, are up to date
+    #     # TODO: Maybe a better naming convention, where generator function and the object
+    #     #       it creates have some similarity.
+    #     self.vMat()
+    #     self.get_EventRateVector()
 
-        F = sympy.zeros(self.num_events, self.num_events)
+    #     F = sympy.zeros(self.num_events, self.num_events)
 
-        for event_index_i, rate in enumerate(self._eventRateVector):
-            for event_index_j in range(self.num_events):
-                for state_index, state in enumerate(self._iterStateList()):             
-                    diffEqn, isDifficult = simplifyEquation( sympy.diff(rate, state, 1)  )  # diff(a_i, x_k)
-                    F[event_index_i, event_index_j] += diffEqn*self.vMat()[state_index, event_index_j]
-                    self._isDifficult = self._isDifficult or isDifficult
+    #     for event_index_i, rate in enumerate(self._eventRateVector):
+    #         for event_index_j in range(self.num_events):
+    #             for state_index, state in enumerate(self._iterStateList()):             
+    #                 diffEqn, isDifficult = simplifyEquation( sympy.diff(rate, state, 1)  )  # diff(a_i, x_k)
+    #                 F[event_index_i, event_index_j] += diffEqn*self.vMat()[state_index, event_index_j]
+    #                 self._isDifficult = self._isDifficult or isDifficult
 
-        self._transitionJacobian = F
+    #     self._transitionJacobian = F
 
-        return self._transitionJacobian    
+    #     return self._transitionJacobian    
 
     # def get_TransitionMean(self):
     #     '''
@@ -708,29 +717,29 @@ class SimulateOde(DeterministicOde):
     #     return  self._transitionMean
 
 
-    def get_TransitionVar(self):
-        '''
-        This is the mean and variance of the changes in the transition rates
-        (aka propensity funtions) after a potential timestep:
-        equations (8a) and (8b) from https://people.cs.vt.edu/~ycao/publication/newstepsize.pdf
-        For n transitions the outputs are 2 vectors, each of length n.
-        Outputs are added to self as mu and sigma2
-        '''
+    # def get_TransitionVar(self):
+    #     '''
+    #     This is the mean and variance of the changes in the transition rates
+    #     (aka propensity funtions) after a potential timestep:
+    #     equations (8a) and (8b) from https://people.cs.vt.edu/~ycao/publication/newstepsize.pdf
+    #     For n transitions the outputs are 2 vectors, each of length n.
+    #     Outputs are added to self as mu and sigma2
+    #     '''
 
-        # Ensure objects are up to date
-        self.get_TransitionJacobian()
-        self.get_EventRateVector()
+    #     # Ensure objects are up to date
+    #     self.get_TransitionJacobian()
+    #     self.get_EventRateVector()
 
-        F = self._transitionJacobian
+    #     F = self._transitionJacobian
 
-        sigma2 = sympy.zeros(self.num_events, 1)
-        for event_index_i in range(self.num_events):
-            for event_index_j, rate_j in enumerate(self._eventRateVector):
-                sigma2[event_index_i] += F[event_index_i, event_index_j] * F[event_index_i, event_index_j] * rate_j
+    #     sigma2 = sympy.zeros(self.num_events, 1)
+    #     for event_index_i in range(self.num_events):
+    #         for event_index_j, rate_j in enumerate(self._eventRateVector):
+    #             sigma2[event_index_i] += F[event_index_i, event_index_j] * F[event_index_i, event_index_j] * rate_j
 
-        self._transitionVar = sigma2
+    #     self._transitionVar = sigma2
 
-        return  self._transitionVar
+    #     return  self._transitionVar
 
 
     ###########################################################################

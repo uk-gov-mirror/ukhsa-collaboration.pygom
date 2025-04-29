@@ -788,7 +788,7 @@ def _checkJump(x, x_new, x_lims, t, jump_time, jumps):
                     failed_jump=True
 
     if failed_jump:
-        print("Illegal jump, x: %s, new x: %s" % (x, x_new))
+        logging.debug("Illegal jump, x: %s, new x: %s" % (x, x_new))
         success=False
         x_new=x
         t_new=t

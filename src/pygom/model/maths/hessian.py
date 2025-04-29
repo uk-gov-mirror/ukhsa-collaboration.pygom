@@ -5,10 +5,10 @@ import numpy as np
 import sympy
 from sympy.core.function import diff
 
-from .mathsmethod import NumericalMethod
+from .mathsmethod import NumericMethod
 from .._model_verification import simplifyEquation
 
-class Hessian(NumericalMethod):
+class Hessian(NumericMethod):
     method_name = 'hessian'
     def get_equation(self):
         '''

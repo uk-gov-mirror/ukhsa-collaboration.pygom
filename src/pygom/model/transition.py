@@ -144,7 +144,7 @@ class Transition:
         if self.transition_type == TransitionType.B:
             if origin is not None:
                 # TODO: This warning can be really annoying, I want it to just appear once.
-                # print("Update: In the latest version, you should define births as having a destination state instead of an origin.")
+                # logging.debug("Update: In the latest version, you should define births as having a destination state instead of an origin.")
                 destination=origin
             elif destination is None:
                 raise InputStateError("Birth process has no origin or destination")

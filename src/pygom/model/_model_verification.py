@@ -79,9 +79,9 @@ def checkEquation(input_str, input_var, derived_var, subs_derived=True):
         assert isinstance(_inputStr, str), "Equation should be in string format"
         # create the symbols in the local environment
         for _d in input_var:
-            #print(_d)
+            #logging.debug(_d)
             for _s in _d.keys():
-                #print(_s)
+                #logging.debug(_s)
                 if isinstance(_d[_s], tuple):
                     # only the first element, as we made this as a vector
                     _isReal = True if _d[_s][0].is_real else False
@@ -91,7 +91,7 @@ def checkEquation(input_str, input_var, derived_var, subs_derived=True):
                 else:
                     _isReal = True if _d[_s].is_real else False
                     exec("""%s = symbols('%s', real=%s)""" % (_s, _s, _isReal))
-            #print("\n")
+            #logging.debug("\n")
         for _key, _value in derived_var.items():
             _isReal = True if _value.is_real else False
             exec("""%s = symbols('%s', real=%s)""" % (_key, _key, _isReal))
@@ -108,8 +108,8 @@ def checkEquation(input_str, input_var, derived_var, subs_derived=True):
                 for _key, _value in derived_var.items():
                     _eqn = eval("_eqn.subs(%s, %s)" % (_key, _value))
         list_out.append(_eqn)
-        # print(_eqn)
-        # print(_eqn.free_symbols)
+        # logging.debug(_eqn)
+        # logging.debug(_eqn.free_symbols)
 
     if len(list_out) == 1:
         return list_out[0]

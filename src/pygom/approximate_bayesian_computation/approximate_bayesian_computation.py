@@ -323,7 +323,7 @@ class ABC():
                         i += 1
             accept_rate = 100*self.N/total_counter
             self.acceptance_rate[g-rerun] = accept_rate
-            if progress: print("Generation %s \n tolerance = %.5f \n acceptance rate = %.2f%%\n" % (g+1-rerun,tolerance,accept_rate))
+            if progress: logging.debug("Generation %s \n tolerance = %.5f \n acceptance rate = %.2f%%\n" % (g+1-rerun,tolerance,accept_rate))
         self.final_tol = tolerance
         if q is not None:
             self.next_tol = np.quantile(self.dist,self.q)        
@@ -416,7 +416,7 @@ class ABC():
                 
             accept_rate = 100 * self.N / total_counter
             self.acceptance_rate[g-rerun] = accept_rate
-            if progress: print("Generation %s \n tolerance = %.5f \n acceptance rate = %.2f%%\n" % (g+1-rerun,tolerance,accept_rate))
+            if progress: logging.debug("Generation %s \n tolerance = %.5f \n acceptance rate = %.2f%%\n" % (g+1-rerun,tolerance,accept_rate))
         
         self.final_tol = tolerance
         if q is not None:

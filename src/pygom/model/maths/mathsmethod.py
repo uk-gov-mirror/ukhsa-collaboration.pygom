@@ -6,6 +6,7 @@ class MathsMethod:
     # Should be overloaded in child classes to the method name that the class 
     # attaches.
     method_name = None 
+    _cache_valid = False
     def __init__(self, parent_ode)->None:
         '''
         Init function
@@ -20,6 +21,12 @@ class MathsMethod:
 
         # Use the parent_ode's compiler class (don't want each MM having their own).
         self._SC = parent_ode._SC
+
+    def invalidate_cache(self):
+        '''
+        Marks the cached objects for recreation if called again
+        '''
+        self._cache_valid = False
 
     def __call__(self,):
         '''
@@ -38,7 +45,7 @@ class MathsMethod:
         A sympy object representing the symbolic form of this method
         '''
         raise NotImplemented('This is the base class, implement this in a child class!')
-class NumericalMethod(MathsMethod):
+class NumericMethod(MathsMethod):
     """
     A class designed to be attached to an ode object the primary purpose is to 
     produce a numerical evaluation. The symbolic version will be compiled and 
@@ -47,12 +54,11 @@ class NumericalMethod(MathsMethod):
     """
     # Will store the compiled function in child classes
     _compiled_obj = None 
-    # This is a compile canary. Should be tripped by the parent ode if the 
-    # system changes
-    needs_recompile = True 
+
     # The type of output (matrix or vector) that the compiled expression 
     # produces, if None this will be determined automatically
     outType = None 
+
     def __call__(self, state, time):
         '''
         Dunder function so that when added to the ODE system object it acts 
@@ -64,7 +70,7 @@ class NumericalMethod(MathsMethod):
         time: The timepoint to evaluate for
         '''
         # Check to see if we need to compile
-        if self.needs_recompile or self._compiled_obj is None:
+        if not self._cache_valid or self._compiled_obj is None:
             self.compile_function()
 
         # perform the numerical calculation
@@ -88,7 +94,7 @@ class NumericalMethod(MathsMethod):
                                                          self.get_equation(),
                                                          modules='mpmath', 
                                                          outType=self.outType)
-        self.needs_recompile = False
+        self._cache_valid = True
 
     def _getEvalParam(self, state, time):
         if state is None or time is None:
@@ -119,10 +125,12 @@ class SymbolicMethod(MathsMethod):
         Returns the symbolic representation of the method
         '''
         # Check to see if we need to compile
-        if self.needs_recompile or self._symbolic_function is None:
+        if not self._cache_valid or self._symbolic_function is None:
             self._symbolic_function = self.get_equation()
+            
+            self._cache_valid = True
         
-        return self._symbolic_function()
+        return self._symbolic_function
 
 
 

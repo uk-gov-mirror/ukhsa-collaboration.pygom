@@ -19,6 +19,7 @@ from .transition import Event, Transition, TransitionType
 from ._model_errors import InputError, OutputError
 from ._model_verification import checkEquation
 from .ode_variable import ODEVariable
+from .maths import EventRateVector, PureOdeVector
 from . import ode_utils
 
 re_math = re.compile(r'[-+*\\]')
@@ -53,7 +54,8 @@ class BaseOdeModel(object):
 
     """
     _maths_methods = [
-
+        EventRateVector,
+        PureOdeVector
     ]
 
     def __init__(self,
@@ -149,21 +151,40 @@ class BaseOdeModel(object):
             self.ode_list = ode
 
         #self._computeEventRateVector()
+        # Add the maths methods to the class
+        self._init_maths_methods()
         self._invalidate_caches()
 
-    ###########################################################################
-    #
-    # Getters and setters
-    #
-    ###########################################################################
     def _invalidate_caches(self)->None:
         """
         Tell objects that have cached components to reset their caches as
         the underlying system has changed
         """
-        # This method should be overloaded in child classes to invlidate caches
-        self._vMat = None
-
+        for mathsmethod in self._maths_methods:
+            try:
+                method_instance = getattr(self, mathsmethod.method_name)
+                method_instance.invalidate_cache()
+            except AttributeError:
+                pass # We may not yet have all the objects
+    
+    def _init_maths_methods(self)->None:
+        """
+        Add all the maths method classes as methods to this class
+        """
+        # Add the maths methods
+        for fn_class in self._maths_methods:
+            # Create an instance of the maths class with this class as the 
+            # associated ode system
+            maths_class_instance = fn_class(parent_ode=self)
+            setattr(self, 
+                    maths_class_instance.method_name, 
+                    maths_class_instance)
+            
+    ###########################################################################
+    #
+    # Getters and setters
+    #
+    ###########################################################################
     @property
     def parameters(self):
         """
@@ -523,7 +544,7 @@ class BaseOdeModel(object):
         """
 
         # TODO: This warning can be really annoying, I want it to just appear once.
-        # print("Update: In the latest version, between state transitions should be passed to SimulateODE"+
+        # logging.debug("Update: In the latest version, between state transitions should be passed to SimulateODE"+
         #       " via the Event objects.")
 
         if isinstance(transition_list, (list, tuple)):
@@ -594,7 +615,7 @@ class BaseOdeModel(object):
         """
 
         # TODO: This warning can be really annoying, I want it to just appear once.
-        # print("Update: In the latest version, birth/death transitions should be passed to SimulateODE"+
+        # logging.debug("Update: In the latest version, birth/death transitions should be passed to SimulateODE"+
         #       " via the Event objects.")
         
         if isinstance(birth_death_list, (list, tuple)):
@@ -1158,18 +1179,18 @@ class BaseOdeModel(object):
 
     #     return None
 
-    def get_EventRateVector(self):
-        """
-        Get all the transitions into a vector, arranged by state to
-        state transition then the birth death processes
-        """
+    # def get_EventRateVector(self):
+    #     """
+    #     Get all the transitions into a vector, arranged by state to
+    #     state transition then the birth death processes
+    #     """
 
-        self._eventRateVector = sympy.zeros(self.num_events, 1)
-        # Extract all info from events
-        for i, event in enumerate(self.event_list):
-            self._eventRateVector[i]=checkEquation(event.rate, *self._getListOfVariablesDict())
+    #     self._eventRateVector = sympy.zeros(self.num_events, 1)
+    #     # Extract all info from events
+    #     for i, event in enumerate(self.event_list):
+    #         self._eventRateVector[i]=checkEquation(event.rate, *self._getListOfVariablesDict())
 
-        return self._eventRateVector
+    #     return self._eventRateVector
 
     # def get_StateChangeMatrix(self):
     #     """
@@ -1203,20 +1224,20 @@ class BaseOdeModel(object):
             
     #     return self._vMat
 
-    def get_pureOdeVector(self):
-        '''
-        non transition terms
-        '''
+    # def get_pureOdeVector(self):
+    #     '''
+    #     non transition terms
+    #     '''
 
-        pure_ode = sympy.zeros(self.num_state, 1)
-        # Now extract any ODE contributions from ODE type transitions
-        for ode in self.ode_list:
-            origin_index=self.state_list.index(ode.origin)
-            pure_ode[origin_index] += checkEquation(ode.equation, *self._getListOfVariablesDict())
+    #     pure_ode = sympy.zeros(self.num_state, 1)
+    #     # Now extract any ODE contributions from ODE type transitions
+    #     for ode in self.ode_list:
+    #         origin_index=self.state_list.index(ode.origin)
+    #         pure_ode[origin_index] += checkEquation(ode.equation, *self._getListOfVariablesDict())
 
-        self._pureOdeVector=pure_ode
+    #     self._pureOdeVector=pure_ode
 
-        return self._pureOdeVector
+    #     return self._pureOdeVector
 
     def get_ReactantMatrix(self):
         """

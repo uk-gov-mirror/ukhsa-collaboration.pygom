@@ -108,7 +108,7 @@ class BaseLoss(object):
                 self._ode.initial_values = (x0, t0)
                 solution = self._ode.integrate2(t)
             except Exception as e:
-                # print(e)
+                # logging.debug(e)
                 if t0 == t[1]:
                     raise InputError("First time point t[1] is equal to t0")
                 else:
@@ -982,8 +982,8 @@ class BaseLoss(object):
             solution = self._getSolution(theta)
             return self._lossObj.diff_loss(solution,apply_weighting = apply_weighting)
         except Exception as e:
-            # print(e)
-            # print("parameters = " +str(theta))
+            # logging.debug(e)
+            # logging.debug("parameters = " +str(theta))
             return np.nan_to_num((np.ones(self._y.shape)*np.inf))
 
     def residual(self, theta=None, apply_weighting = True):
@@ -1019,7 +1019,7 @@ class BaseLoss(object):
             solution = self._getSolution(theta)
             return self._lossObj.residual(solution, apply_weighting = apply_weighting)
         except Exception as e:
-            # print(e)
+            # logging.debug(e)
             return np.nan_to_num((np.ones(self._y.shape)*np.inf))
 
     ############################################################
@@ -1091,8 +1091,8 @@ class BaseLoss(object):
             solution = self._getSolution()
             return self._lossObj.diff_loss(solution, apply_weighting = apply_weighting)
         except Exception as e:
-            # print(e)
-            # print("parameters = " + str(theta))
+            # logging.debug(e)
+            # logging.debug("parameters = " + str(theta))
             return np.nan_to_num((np.ones(self._y.shape)*np.inf))
 
     def residualIV(self, theta=None, apply_weighting = True):
@@ -1131,7 +1131,7 @@ class BaseLoss(object):
             solution = self._getSolution()
             return self._lossObj.residual(solution, apply_weighting = apply_weighting)
         except Exception as e:
-            # print(e)
+            # logging.debug(e)
             return np.nan_to_num((np.ones(self._y.shape)*np.inf))
 
     ############################################################
@@ -1675,7 +1675,7 @@ class BaseLoss(object):
         """
         Print x, the parameters
         """
-        print(x)
+        logging.debug(x)
 
     def thetaCallBack2(self, x, f):
         """
@@ -1689,4 +1689,4 @@ class BaseLoss(object):
         f:
             f(x)
         """
-        print("f(x) = " + str(f) + " ; x = " + str(x))
+        logging.debug("f(x) = " + str(f) + " ; x = " + str(x))

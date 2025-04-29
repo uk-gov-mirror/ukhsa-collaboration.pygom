@@ -1,18 +1,18 @@
 import logging
 import sympy
 
-from .mathsmethod import NumericalMethod
+from .mathsmethod import NumericMethod
 from .._model_verification import simplifyEquation, checkEquation
 from ..transition import TransitionType
 
-class ODESystem(NumericalMethod):
+class ODESystem(NumericMethod):
     method_name = 'ode'
     def get_equation(self):
         '''
         Build the algebraic system of ODE's given the transitions and events.
         '''
         # Check if we need to recreate the system
-        if not self.needs_recompile:
+        if self._cache_valid:
             return self._ode
         
         logging.debug('ODE system needs rebuilding')

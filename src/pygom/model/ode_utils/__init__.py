@@ -518,7 +518,7 @@ class compileCode(object):
                     # stuff in a parallel setting where we create objects in
                     # pure computation nodes with no compile mechanism
                     self._backend = 'lambda'
-            print("done: ", self._backend)
+            logging.debug("done: ", self._backend)
         else:
             self._backend = backend
 

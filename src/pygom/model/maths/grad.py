@@ -3,10 +3,10 @@ import copy
 import sympy
 from sympy.core.function import diff
 
-from .mathsmethod import NumericalMethod
+from .mathsmethod import NumericMethod
 from .._model_verification import simplifyEquation
 
-class Grad(NumericalMethod):
+class Grad(NumericMethod):
     method_name = 'grad'
     def get_equation(self):
         '''

@@ -2,11 +2,12 @@ import copy
 
 import sympy
 from sympy.core.function import diff
+from ..transition import TransitionType
 
-from .mathsmethod import SymbolicMethod
-from .._model_verification import simplifyEquation
+from .mathsmethod import NumericMethod
+from .._model_verification import simplifyEquation, checkEquation
 
-class StateChangeMatrix(SymbolicMethod):
+class StateChangeMatrix(NumericMethod):
     method_name = 'state_change_matrix'
     def get_equation(self):
         """
@@ -17,11 +18,13 @@ class StateChangeMatrix(SymbolicMethod):
         """
        
         # container for output
-        vMat = sympy.zeros(self.num_state, self.num_events)
+        vMat = sympy.zeros(self._parent_ode.num_state, 
+                           self._parent_ode.num_events)
 
-        for event_index, event in enumerate(self.event_list):
+        for event_index, event in enumerate(self._parent_ode.event_list):
             for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
+                magnitude=checkEquation(transition._magnitude, 
+                                        *self._parent_ode._getListOfVariablesDict())
                 if transition.transition_type==TransitionType.B:
                     destination_index=self.state_list.index(transition.destination)
                     vMat[destination_index, event_index] += magnitude
@@ -29,8 +32,8 @@ class StateChangeMatrix(SymbolicMethod):
                     origin_index=self.state_list.index(transition.origin)
                     vMat[origin_index, event_index] -= magnitude
                 elif transition.transition_type==TransitionType.T:
-                    origin_index=self.state_list.index(transition.origin)
-                    destination_index=self.state_list.index(transition.destination)
+                    origin_index=self._parent_ode.state_list.index(transition.origin)
+                    destination_index=self._parent_ode.state_list.index(transition.destination)
                     vMat[origin_index, event_index] -= magnitude
                     vMat[destination_index, event_index] += magnitude
             

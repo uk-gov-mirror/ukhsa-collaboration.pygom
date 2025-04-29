@@ -3,10 +3,10 @@ import copy
 import sympy
 from sympy.core.function import diff
 
-from .mathsmethod import NumericalMethod
+from .mathsmethod import NumericMethod
 from .._model_verification import simplifyEquation
 
-class DiffJacobian(NumericalMethod):
+class DiffJacobian(NumericMethod):
     method_name = 'diff_jacobian'
     def get_equation(self):
         '''

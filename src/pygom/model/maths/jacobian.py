@@ -1,6 +1,6 @@
-from .mathsmethod import NumericalMethod
+from .mathsmethod import NumericMethod
 
-class Jacobian(NumericalMethod):
+class Jacobian(NumericMethod):
     method_name = 'jacobian'
     def get_equation(self):
         '''
