@@ -81,7 +81,7 @@ class DeterministicOde(BaseOdeModel):
                  birth_death=None,
                  ode=None,
                  # Technical arguments
-                 backend=None
+                 backend='lambda'
                  ):
         '''
         Constructor that is built on top of a BaseOdeModel
