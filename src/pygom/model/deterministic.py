@@ -114,9 +114,9 @@ class DeterministicOde(BaseOdeModel):
         # sp = state + t + param
         # the latter is required to compile the symbolic code
         # to the numeric setting
-        self.set_sp()
+        # self.set_sp()
 
-        self.verbose=False
+#        self.verbose=False
 
         # information regarding the integration.  We want an internal
         # storage so we can invoke the plot method within the same class
@@ -147,29 +147,6 @@ class DeterministicOde(BaseOdeModel):
     def __repr__(self):
         return "DeterministicOde" + self._get_model_str()
     
-    ## Funcitons  to allow pickling and unpickling
-    def __getstate__(self):
-        '''
-        Grab the class's dict and remove the compiled objects
-        '''
-        compiled_methods = {x.method_name for x in self._maths_methods}
-        state = self.__dict__.copy()
-        
-        # Remove those compiled methods that have been added
-        for method in (compiled_methods & {x for x in state.keys()}):
-            del state[method]
-        
-        return state
-    
-    def __setstate__(self, state):
-        '''
-        Restore the classes state with reset of compile status
-        '''
-        self.__dict__.update(state)
-        
-        # Add back the compiled methods
-        self._init_maths_methods()
-
     ########################################################################
     #
     # Methods to add compiled functions

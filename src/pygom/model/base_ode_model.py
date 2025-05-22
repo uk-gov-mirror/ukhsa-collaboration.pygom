@@ -129,6 +129,9 @@ class BaseOdeModel(object):
 
         self._add_list_attr_with_limits(state, "state_list")
         self._add_list_attr(param, "param_list")
+        #self.state_list =
+        #self.param_list = self.split_string_list(param)
+        #self.dumb_test = ['Hi!'] * 10000
 
         # this has to go after adding the parameters
         # because it is suppose to be based on the current
@@ -155,17 +158,38 @@ class BaseOdeModel(object):
         self._init_maths_methods()
         self._invalidate_caches()
 
+    def split_string_list(self, in_list:str)->list:
+        """
+        Given an list of variables in the form of a string with comma
+        or space separated values, create a new list 
+        which is a true list of those separated values.
+        e.g. "a,b,c d ef" returns ['a', 'b', 'c', 'd', 'ef']
+        """
+        if in_list is not None:
+            if isinstance(in_list, str):
+                in_list = re_split_string.split(in_list)
+                in_list = filter(lambda x: not len(x.strip()) == 0, in_list)
+            # print(f'...\n{attr_list_name}...\n...{in_list}...')
+            # self.__setattr__(attr_list_name, list(in_list))
+        else:
+            raise InputError(f"Function was given None!")
+        return in_list
+
     def _invalidate_caches(self)->None:
         """
         Tell objects that have cached components to reset their caches as
         the underlying system has changed
         """
+        # The maths methods
         for mathsmethod in self._maths_methods:
             try:
                 method_instance = getattr(self, mathsmethod.method_name)
                 method_instance.invalidate_cache()
             except AttributeError:
                 pass # We may not yet have all the objects
+        
+        # The states_and_parameters list (none === not set)
+        self._sp = None
     
     def _init_maths_methods(self)->None:
         """
@@ -339,7 +363,7 @@ class BaseOdeModel(object):
             index = self.get_param_index(key)
             self._paramValue[index] = val
 
-        self.set_sp()
+        #self.set_sp()
 
     @property
     def state(self):
@@ -383,7 +407,7 @@ class BaseOdeModel(object):
             else:
                 raise InputError(err_str)
             
-            self.set_sp()
+            #self.set_sp()
         else:
             raise InputError(err_str)
 
@@ -782,6 +806,7 @@ class BaseOdeModel(object):
             if isinstance(attr, str):
                 attr = re_split_string.split(attr)
                 attr = filter(lambda x: not len(x.strip()) == 0, attr)
+            #print(f'...\n{attr_list_name}...\n...{attr}...')
             self.__setattr__(attr_list_name, list(attr))
         else:
             raise InputError("No attribute passed to function")
@@ -838,29 +863,42 @@ class BaseOdeModel(object):
         else:
             raise InputError("No attribute passed to function")
 
-    def set_sp(self):
-        '''
-        Set sp attribute, which is collection of all states and vars
-        TODO: testing this out still
-        '''
-        self._s = self._stateList + [self._t]
-        self._sp = self._s + self._paramList
+    # def set_sp(self):
+    #     '''
+    #     Set sp attribute, which is collection of all states and vars
+    #     TODO: testing this out still
+    #     '''
+    #     self._s = self._stateList + [self._t]
+    #     self._sp = self._s + self._paramList
 
-        # Calls to the autowrap method can't take ODEVariable class objects
-        # Better to convert the objects in self._sp back to sympy objects
-        # This code will convert any ODEVariable object in either the stateDict
-        # or paramDict dictonary
-        for i, item in enumerate(self._sp):
-            try:
-                 self._sp[i] = self._stateDict[item.ID]
-            except Exception:
-                 pass
-            try:
-                 self._sp[i] = self._paramDict[item.ID]
-            except Exception:
-                 pass
+    #     # Calls to the autowrap method can't take ODEVariable class objects
+    #     # Better to convert the objects in self._sp back to sympy objects
+    #     # This code will convert any ODEVariable object in either the stateDict
+    #     # or paramDict dictonary
+    #     for i, item in enumerate(self._sp):
+    #         try:
+    #              self._sp[i] = self._stateDict[item.ID]
+    #         except Exception:
+    #              pass
+    #         try:
+    #              self._sp[i] = self._paramDict[item.ID]
+    #         except Exception:
+    #              pass
             
-        return None
+    #     return None
+    
+    @property
+    def states_and_parameters(self)->list:
+        '''
+        An attribute collecting together all the states and variables in sympy
+        form. This is used for the autowrap method
+        '''
+        if self._sp is None:
+            self._sp = self._stateList + [self._t] + self._paramList
+
+        return self._sp
+
+
 
     def get_state_index(self, input_str):
         """
@@ -934,10 +972,16 @@ class BaseOdeModel(object):
             raise InputError("Unexpected input type for symbol")
 
         assert input_str != 'lambda', "lambda is a reserved keyword"
-        tempSym = eval("symbols('%s', real=%s)" % (input_str, is_real))
+        #tempSym = eval("symbols('%s', real=%s)" % (input_str, is_real))
+        # Replacing with a straight creation of a symbol as all the check code 
+        # above I think means that that we only get one at a time. This is also
+        # _much_ faster.
+        tempSym = sympy.Symbol(input_str, real=is_real)
 
         if isinstance(tempSym, sympy.Symbol):
+            self._vectorStateDict[input_str] = tempSym
             return tempSym
+        # TODO: I think all the below to end of method is now redundant.
         elif isinstance(tempSym, tuple):
             assert len(tempSym) != 0, "Input symbol is not valid"
             # extract the name of the symbol
@@ -969,10 +1013,14 @@ class BaseOdeModel(object):
             var_obj = ODEVariable(input_str, input_str)
         elif isinstance(input_str, ODEVariable):
             var_obj = input_str
+        else:
+            raise InputError(f'You may not add an object of type '
+                             f'{type(input_str)} as a parameter.')
 
         symbol_name = self._addSymbol(var_obj.ID)
 
         if isinstance(symbol_name, sympy.Symbol):
+            # TODO: this lookup is slow why isn't this a set?
             if str(symbol_name) not in self._paramList:
                 self._addVariable(symbol_name, var_obj, self._paramList, self._paramDict)
         else:
