@@ -88,7 +88,8 @@ class SimulateOde(DeterministicOde):
                                           transition,
                                           event,
                                           birth_death,
-                                          ode)
+                                          ode,
+                                          backend)
 
         self.pre_tau=None       # If tau is set, then this overrides the adaptive tau leap.
         self._epsilon=0.03      # Default parameter recommended by Cao et al.
