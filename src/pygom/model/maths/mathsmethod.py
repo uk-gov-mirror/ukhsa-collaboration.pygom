@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 
 from .._model_errors import InputError
 
@@ -7,6 +8,7 @@ class MathsMethod:
     # attaches.
     method_name = None 
     _cache_valid = False
+    _pickleable_compile = False
     def __init__(self, parent_ode)->None:
         '''
         Init function
@@ -54,6 +56,7 @@ class NumericMethod(MathsMethod):
     """
     # Will store the compiled function in child classes
     _compiled_obj = None 
+    _raw_fn = None
 
     # The type of output (matrix or vector) that the compiled expression 
     # produces, if None this will be determined automatically
@@ -85,15 +88,48 @@ class NumericMethod(MathsMethod):
         '''
         return self.__call__(state, t)
 
-    def compile_function(self):
+    def compile_function(self) -> None:
         '''
-        Compile the symbolic form so that rapid numerical evaluation may occur
+        Compile the symbolic form so that rapid numerical evaluation may occur.
+        Transforms the output appropriately into numpy
         '''
         logging.debug(f'Compiling sympy object {self.method_name}.')
-        self._compiled_obj=self._SC.compileExprAndFormat(self._parent_ode._sp,
-                                                         self.get_equation(),
-                                                         modules='mpmath', 
-                                                         outType=self.outType)
+
+        inputExpr = self.get_equation()
+
+        self._raw_fn, compileType = self._SC.compileExpr(self._parent_ode.states_and_parameters,
+                                                         inputExpr,
+                                                         backend=None, # set at ODE level
+                                                         compileType=True) # get additional info      
+        
+        numRow = inputExpr.rows
+        numCol = inputExpr.cols
+
+        outType = self.outType
+
+        # define the different types of compile
+        if self.outType is None:
+            if numRow == 1 or numCol == 1:
+                outType = "vec"
+            else:
+                outType = "mat"
+
+        if outType.lower() == "vec":
+            if compileType == 'np':
+                self._compiled_obj = lambda x: self._raw_fn(*x).ravel()
+            else:
+                self._compiled_obj = lambda x: np.array(self._raw_fn(*x).tolist(),
+                                                        float).ravel()
+        elif outType.lower() == "mat":
+            if compileType == 'np':
+                self._compiled_obj = lambda x: self._raw_fn(*x)
+            else:
+                self._compiled_obj = lambda x: np.array(self._raw_fn(*x).tolist(), float)
+        else:
+            raise RuntimeError("Specified type of output not recognized")
+        
+        # Update the state
+        self._pickleable_compile = True if self._SC._backend == 'lambda' else False
         self._cache_valid = True
 
     def _getEvalParam(self, state, time):
@@ -112,6 +148,30 @@ class NumericMethod(MathsMethod):
             eval_param = [state] + [time]
 
         return eval_param + self._parent_ode._paramValue
+    
+    ## Funcitons  to allow pickling and unpickling
+    def __getstate__(self):
+        '''
+        Grab the class's dict and remove the compiled objects if needed
+        '''
+        state = self.__dict__.copy()
+        
+        # Remove those compiled methods that have been added
+        if not self._pickleable_compile:
+            state['_compiled_obj'] = None 
+            state['_raw_fn'] = None
+            state['_cache_valid'] = False
+
+        return state
+
+# Keep as if we are going to allow pickling Cython we we need this method.    
+    # def __setstate__(self, state):
+    #     '''
+    #     Restore the classes state with reset of compile status
+    #     '''
+    #     self.__dict__.update(state)
+        
+
 
 class SymbolicMethod(MathsMethod):
     """

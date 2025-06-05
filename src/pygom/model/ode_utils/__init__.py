@@ -603,51 +603,5 @@ class compileCode(object):
         else:
             return compiledFunc
 
-    def compileExprAndFormat(self, inputSymb, inputExpr,
-                             backend=None, modules=None, outType=None):
-        '''
-        Compiles the expression given the symbols and determine which
-        type of output is it.  Transforms the output appropriately into
-        numpy
 
-        Parameters
-        ----------
-        inputSymb: list
-            the set of symbols for the input expression
-        inputExpr: expr
-            expression in sympy
-        backend: optional
-            the backend we want to use to compile
-        modules: optional
-            in the event that f2py and Cython fails, which modules
-            do we want to try and compile against
-
-        Returns
-        -------
-        Function determined from the input using closures.
-        '''
-
-        a, compileType = self.compileExpr(inputSymb, inputExpr, backend, True)
-        numRow = inputExpr.rows
-        numCol = inputExpr.cols
-
-        # define the different types of output
-        if outType is None:
-            if numRow == 1 or numCol == 1:
-                outType = "vec"
-            else:
-                outType = "mat"
-
-        if outType.lower() == "vec":
-            if compileType == 'np':
-                return lambda x: a(*x).ravel()
-            else:
-                return lambda x: np.array(a(*x).tolist(), float).ravel()
-        elif outType.lower() == "mat":
-            if compileType == 'np':
-                return lambda x: a(*x)
-            else:
-                return lambda x: np.array(a(*x).tolist(), float)
-        else:
-            raise RuntimeError("Specified type of output not recognized")
 
