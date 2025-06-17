@@ -34,7 +34,7 @@ class ODEVariable(object):
         self.real = real
 
     def __str__(self):
-        return self.name
+        return self.ID
 
     def __repr__(self):
         return 'ODEVariable(%s, %s, %s, %s)' % (

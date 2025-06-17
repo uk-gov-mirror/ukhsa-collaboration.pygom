@@ -976,12 +976,11 @@ class BaseOdeModel(object):
         # Replacing with a straight creation of a symbol as all the check code 
         # above I think means that that we only get one at a time. This is also
         # _much_ faster.
-        tempSym = sympy.Symbol(input_str, real=is_real)
+        tempSym = sympy.symbols(input_str, real=is_real)
 
         if isinstance(tempSym, sympy.Symbol):
             self._vectorStateDict[input_str] = tempSym
             return tempSym
-        # TODO: I think all the below to end of method is now redundant.
         elif isinstance(tempSym, tuple):
             assert len(tempSym) != 0, "Input symbol is not valid"
             # extract the name of the symbol
