@@ -1000,7 +1000,7 @@ class BaseOdeModel(object):
         symbol_name = self._addSymbol(var_obj.ID)
 
         if isinstance(symbol_name, sympy.Symbol):
-            if str(symbol_name) not in self._paramList:
+            if str(symbol_name) not in self._paramDict:
                 self._addVariable(symbol_name, var_obj, self._stateList, self._stateDict)
         else:
             for sym in symbol_name:
@@ -1020,7 +1020,7 @@ class BaseOdeModel(object):
 
         if isinstance(symbol_name, sympy.Symbol):
             # TODO: this lookup is slow why isn't this a set?
-            if str(symbol_name) not in self._paramList:
+            if str(symbol_name) not in self._paramDict:
                 self._addVariable(symbol_name, var_obj, self._paramList, self._paramDict)
         else:
             for sym in symbol_name:
