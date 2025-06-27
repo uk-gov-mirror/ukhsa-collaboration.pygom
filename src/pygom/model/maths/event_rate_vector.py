@@ -15,6 +15,6 @@ class EventRateVector(NumericMethod):
         # Extract all info from events
         for i, event in enumerate(self._parent_ode.event_list):
             event_rate_vector[i]=checkEquation(event.rate, 
-                                               *self._parent_ode._getListOfVariablesDict())
+                                               self._parent_ode)
 
         return event_rate_vector

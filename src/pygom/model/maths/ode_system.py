@@ -23,9 +23,9 @@ class ODESystem(NumericMethod):
 
         # Extract all info from events
         for event in self._parent_ode.event_list:
-            rate=checkEquation(event.rate, *self._parent_ode._getListOfVariablesDict())
+            rate=checkEquation(event.rate, self._parent_ode)
             for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._parent_ode._getListOfVariablesDict())
+                magnitude=checkEquation(transition._magnitude, self._parent_ode)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.B:
                     destination_index=self._parent_ode.state_list.index(transition.destination)
@@ -42,7 +42,7 @@ class ODESystem(NumericMethod):
         # Now extract any ODE contributions from ODE type transitions
         for ode in self._parent_ode.ode_list:
             origin_index=self._parent_ode.state_list.index(ode.origin)
-            pure_ode[origin_index] += checkEquation(ode.equation, *self._parent_ode._getListOfVariablesDict())
+            pure_ode[origin_index] += checkEquation(ode.equation, self._parent_ode)
 
         # Collect together contributions and make attributes
         self._ode = between_state_ode + birth_death_ode + pure_ode

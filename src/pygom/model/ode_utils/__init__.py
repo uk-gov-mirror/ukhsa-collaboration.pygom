@@ -155,9 +155,8 @@ def integrate(ode, x0, t, full_output=False):
     '''
 
     # INTEGRATE!!! (shout it out loud, in Dalek voice)
-    # determine the number of output we want
-    print(f'{ode.ode}\n{x0}\n{x0.dtype}\n{t}\n{t.dtype}\n{ode.jacobian}')
 
+    # determine the number of output we want
     solution, output = scipy.integrate.odeint(ode.ode,
                                               x0, t,
                                               Dfun=ode.jacobian,

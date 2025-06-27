@@ -819,7 +819,7 @@ class SimulateOde(DeterministicOde):
             if not ode_utils.none_or_empty_list(self._odeList):
                 eqn_list = [t.equation for t in self._odeList]
                 A = sympy.Matrix(checkEquation(eqn_list,
-                                               *self._getListOfVariablesDict(),
+                                               self,
                                                subs_derived=False))
                 return A
             else:

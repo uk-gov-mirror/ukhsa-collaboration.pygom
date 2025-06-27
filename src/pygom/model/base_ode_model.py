@@ -1028,7 +1028,7 @@ class BaseOdeModel(object):
 
     def _addDerivedParam(self, name, eqn):
         var_obj = ODEVariable(name, name)
-        fixed_eqn = checkEquation(eqn, *self._getListOfVariablesDict())
+        fixed_eqn = checkEquation(eqn, self)
         self._addVariable(fixed_eqn, var_obj, self._derivedParamList, self._derivedParamDict)
 
         self._invalidate_caches()
@@ -1173,9 +1173,9 @@ class BaseOdeModel(object):
 
         # Loop through event transitions and only consider pure ones between 2 states
         for event in self.event_list:
-            rate=checkEquation(event.rate, *self._getListOfVariablesDict())
+            rate=checkEquation(event.rate, self)
             for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
+                magnitude=checkEquation(transition._magnitude, self)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.T:
                     origin_index=self.state_list.index(transition.origin)
@@ -1189,9 +1189,9 @@ class BaseOdeModel(object):
         self._birthDeathVector = sympy.zeros(self.num_state, 1)
         # Extract all info from events
         for event in self.event_list:
-            rate=checkEquation(event.rate, *self._getListOfVariablesDict())
+            rate=checkEquation(event.rate, self)
             for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
+                magnitude=checkEquation(transition._magnitude, self)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.B:
                     destination_index=self.state_list.index(transition.destination)
@@ -1235,7 +1235,7 @@ class BaseOdeModel(object):
     #     self._eventRateVector = sympy.zeros(self.num_events, 1)
     #     # Extract all info from events
     #     for i, event in enumerate(self.event_list):
-    #         self._eventRateVector[i]=checkEquation(event.rate, *self._getListOfVariablesDict())
+    #         self._eventRateVector[i]=checkEquation(event.rate, self)
 
     #     return self._eventRateVector
 
@@ -1256,7 +1256,7 @@ class BaseOdeModel(object):
 
     #     for event_index, event in enumerate(self.event_list):
     #         for transition in event.transition_list:
-    #             magnitude=checkEquation(transition._magnitude, *self._getListOfVariablesDict())
+    #             magnitude=checkEquation(transition._magnitude, self)
     #             if transition.transition_type==TransitionType.B:
     #                 destination_index=self.state_list.index(transition.destination)
     #                 self._vMat[destination_index, event_index] += magnitude
@@ -1280,7 +1280,7 @@ class BaseOdeModel(object):
     #     # Now extract any ODE contributions from ODE type transitions
     #     for ode in self.ode_list:
     #         origin_index=self.state_list.index(ode.origin)
-    #         pure_ode[origin_index] += checkEquation(ode.equation, *self._getListOfVariablesDict())
+    #         pure_ode[origin_index] += checkEquation(ode.equation, self)
 
     #     self._pureOdeVector=pure_ode
 
@@ -1419,7 +1419,7 @@ class BaseOdeModel(object):
         """
         from_index = self._extractStateIndex(transition_obj.origin)
         to_index = self._extractStateIndex(transition_obj.destination)
-        eqn = checkEquation(transition_obj.equation, *self._getListOfVariablesDict())
+        eqn = checkEquation(transition_obj.equation, self)
 
         
         # Try returning as dict (should improve modularity over tuple output)
@@ -1482,10 +1482,6 @@ class BaseOdeModel(object):
         """
         for p in self._paramList:
             yield self._paramDict[p.ID]
-
-    def _getListOfVariablesDict(self):
-        param_dict = [self._paramDict, self._stateDict, self._vectorStateDict]
-        return param_dict, self._derivedParamDict
 
     ########################################################################
     #

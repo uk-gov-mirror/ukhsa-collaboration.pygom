@@ -24,7 +24,7 @@ class StateChangeMatrix(NumericMethod):
         for event_index, event in enumerate(self._parent_ode.event_list):
             for transition in event.transition_list:
                 magnitude=checkEquation(transition._magnitude, 
-                                        *self._parent_ode._getListOfVariablesDict())
+                                        self._parent_ode)
                 if transition.transition_type==TransitionType.B:
                     destination_index=self.state_list.index(transition.destination)
                     vMat[destination_index, event_index] += magnitude
