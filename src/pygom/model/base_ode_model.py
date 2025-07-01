@@ -12,7 +12,7 @@ from numbers import Number
 
 import sympy
 import numpy as np
-from sympy import symbols
+#from sympy import symbols
 from scipy.stats._distn_infrastructure import rv_frozen
 
 from .transition import Event, Transition, TransitionType
@@ -65,10 +65,21 @@ class BaseOdeModel(object):
                  transition=None,
                  event=None,
                  birth_death=None,
-                 ode=None):
+                 ode=None,
+                 # Technical arguments
+                 backend='lambda'
+                 ):
         """
         Constructor
         # """
+
+        # Setup the maths methods compiler
+        # Note that we need the class because we
+        # compile both the formatted and unformatted version.
+        # Need a manual override of backend because it is possible that we
+        # want to perform simulation in a parallel/distributed manner
+        # and there are issues with pickling fortran objects
+        self._SC = ode_utils.compileCode(backend=backend)
 
         # TODO: This is probably cluttered with definitions that are unnecessary.
         #       Need to comb through.
@@ -80,7 +91,7 @@ class BaseOdeModel(object):
         # self._state_lims=None
 
         # # we always need time to be a symbol and it should be denoted as t
-        self._t = symbols('t')
+        self._t = sympy.symbols('t', real=True)
 
         self._isDifficult = False
 
@@ -128,10 +139,7 @@ class BaseOdeModel(object):
         # self.tstep=False
 
         self._add_list_attr_with_limits(state, "state_list")
-        self._add_list_attr(param, "param_list")
-        #self.state_list =
-        #self.param_list = self.split_string_list(param)
-        #self.dumb_test = ['Hi!'] * 10000
+        self._add_list_attr(param, 'param_list')
 
         # this has to go after adding the parameters
         # because it is suppose to be based on the current
@@ -157,6 +165,9 @@ class BaseOdeModel(object):
         # Add the maths methods to the class
         self._init_maths_methods()
         self._invalidate_caches()
+
+    def __repr__(self):
+        return f'{self.__class__.__name__ } {self._get_model_str()}'
 
     def split_string_list(self, in_list:str)->list:
         """
@@ -224,6 +235,7 @@ class BaseOdeModel(object):
         return self._parameters
 
     @parameters.setter
+    @profile
     def parameters(self, parameters):
         """
         Set the values for the parameters already defined.  Note that unless
@@ -806,7 +818,7 @@ class BaseOdeModel(object):
             if isinstance(attr, str):
                 attr = re_split_string.split(attr)
                 attr = filter(lambda x: not len(x.strip()) == 0, attr)
-            #print(f'...\n{attr_list_name}...\n...{attr}...')
+            
             self.__setattr__(attr_list_name, list(attr))
         else:
             raise InputError("No attribute passed to function")
@@ -974,7 +986,7 @@ class BaseOdeModel(object):
         assert input_str != 'lambda', "lambda is a reserved keyword"
         #tempSym = eval("symbols('%s', real=%s)" % (input_str, is_real))
         # Replacing with a straight creation of a symbol as all the check code 
-        # above I think means that that we only get one at a time. This is also
+        # above means that that we only get one at a time. This is also
         # _much_ faster.
         tempSym = sympy.symbols(input_str, real=is_real)
 

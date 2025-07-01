@@ -10,7 +10,6 @@ __all__ = ['DeterministicOde']
 import logging
 from functools import partial
 
-import copy
 import io
 from numbers import Number
 
@@ -28,7 +27,6 @@ from ._model_verification import simplifyEquation
 
 from . import ode_utils
 from . import _transition_graph
-from .ode_utils import compileCode
 
 from .maths import ODESystem, Jacobian, DiffJacobian, \
     Grad, GradJacobian, Hessian
@@ -80,19 +78,11 @@ class DeterministicOde(BaseOdeModel):
                  event=None,
                  birth_death=None,
                  ode=None,
-                 # Technical arguments
                  backend='lambda'
                  ):
         '''
         Constructor that is built on top of a BaseOdeModel
         '''
-        # Setup the maths methods compiler
-        # Note that we need the class because we
-        # compile both the formatted and unformatted version.
-        # Need a manual override of backend because it is possible that we
-        # want to perform simulation in a parallel/distributed manner
-        # and there are issues with pickling fortran objects
-        self._SC = compileCode(backend=backend)
 
         super(DeterministicOde, self).__init__(state,
                                                param,
@@ -100,7 +90,8 @@ class DeterministicOde(BaseOdeModel):
                                                transition,
                                                event,
                                                birth_death,
-                                               ode)
+                                               ode,
+                                               backend)
 
         # # First, set up system of odes upon instance being initialised
         # self.ode.get_equation()

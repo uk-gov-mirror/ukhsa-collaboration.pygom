@@ -14,7 +14,7 @@ from numbers import Number
 
 import numpy as np
 import sympy
-import sympy.matrices.matrices
+#import sympy.matrices.matrices
 import scipy.stats
 
 from . import ode_utils
@@ -60,13 +60,6 @@ class SimulateOde(DeterministicOde):
         TransitionVariance,
         TransitionJacobian
     ]
-        # 'vMat': 'get_StateChangeMatrix',
-        # 'eventRateVector': 'get_EventRateVector',
-        # 'transitionMean': 'get_TransitionMean',
-        # 'transitionVar': 'get_TransitionVar',
-        # 'pureOdeVector': 'get_pureOdeVector',
-        # 'transitionJacobian': 'get_TransitionJacobian'
-    
 
     def __init__(self,
                  state=None,
@@ -76,7 +69,7 @@ class SimulateOde(DeterministicOde):
                  event=None,
                  birth_death=None,
                  ode=None,
-                 backend=None
+                 backend='lambda'
                  ):
         '''
         Constructor that is built on top of DeterministicOde
@@ -103,9 +96,6 @@ class SimulateOde(DeterministicOde):
         #    (convention: starts with "get_", in previous versions have
         #     started with get_ or _compute)
 
-
-    def __repr__(self):
-        return "SimulateOde" + self._get_model_str()
 
     def exact(self, x0, t0, t1, output_time=False):
         '''
