@@ -136,9 +136,7 @@ class NumericMethod(MathsMethod):
         if state is None or time is None:
             raise InputError("Have to input both state and time")
 
-        elif (not hasattr(self._parent_ode, "_parameters") or 
-              self._parent_ode._parameters is None):
-            if self._parent_ode.num_param != 0:
+        elif not self._parent_ode._parameter_store.values_set:
                 raise InputError("Have not set the parameters yet")
 
         if hasattr(state, '__iter__'):
@@ -147,7 +145,7 @@ class NumericMethod(MathsMethod):
         else:
             eval_param = [state] + [time]
 
-        return eval_param + self._parent_ode._paramValue
+        return eval_param + self._parent_ode._parameter_store.values_list()
     
     ## Funcitons  to allow pickling and unpickling
     def __getstate__(self):

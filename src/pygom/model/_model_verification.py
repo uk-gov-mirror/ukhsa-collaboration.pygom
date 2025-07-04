@@ -77,7 +77,7 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
     A single sympy equation or list of sympy equations (depending on if 
     input_str is a single string or a list) made from the string(s)
     """
-    input_var = ode._paramDict | ode._stateDict | ode._vectorStateDict
+    input_var = ode._parameter_store.symbol_dict() | ode._stateDict | ode._vectorStateDict
         
     derived_var = ode._derivedParamDict
 

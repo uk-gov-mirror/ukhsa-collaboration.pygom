@@ -28,6 +28,36 @@ re_symbol_name = re.compile('[A-Za-z_]+')
 re_symbol_index = re.compile(r'.*\[([0-9]+)\]$')
 re_split_string = re.compile(r',|\s')
 
+### Utility functions ###
+def _split_and_clean_list(variable_names:str)->list[str]:
+    '''
+    Given variable_names which is a string of comma or space separated 
+    values, create a new list made of those separated, cleaned values.
+    '''
+    # TODO: Do we really want encourage the feeding of such bad lists of 
+    # values into the system? Think we should enforce being explicit.
+    variable_names = re_split_string.split(variable_names)
+    variable_names = filter(lambda x: not len(x.strip()) == 0, variable_names)
+        
+    return(list(variable_names))
+
+def _add_to_store(store:ode_utils.VariableStore, 
+                  variables:list[str|ODEVariable])->None:
+    '''
+    Add variables to a store
+    '''
+    #clean the list
+    if isinstance(variables, str):
+        variables = _split_and_clean_list(variables)
+
+    if isinstance(variables, (list, tuple)):
+        store.extend(variables)
+    elif isinstance(variables, (ODEVariable)):
+        store.append(variables)
+    else:
+        raise InputError("Expecting a list")
+
+### Main Classes ###
 class HasNewTransition(ode_utils.CompileCanary):
     states = []
 
@@ -125,7 +155,7 @@ class BaseOdeModel(object):
 #        self._paramDict = dict()
         # # although time is not defined as a parameter, we want to keep
         # # record of it existence
-        self._parameter_store['t'] = self._t
+        #self._parameter_store['t'] = self._t
 
         self._stateDict = dict()
         self._derivedParamDict = dict()
@@ -234,12 +264,13 @@ class BaseOdeModel(object):
             (:mod:`sympy.core.symbol`, numeric)
 
         """
-        if not hasattr(self, "_parameters"):
-            return None
-        return self._parameters
+        if self._parameter_store.values_set:
+            return [(symb, val) for symb, val in zip(self._parameter_store.symbol_list(),
+                                                     self._parameter_store.values_list())]
 
     @parameters.setter
-    def parameters(self, parameters:dict[str]):
+    def parameters(self, 
+                   parameters:dict[str: float]|list[tuple[str,float]]|list[float])->None:
         """
         Set the values for the parameters already defined.  Note that unless
         the parameters are entered via a dictionary or a two element list,tuple
@@ -247,17 +278,38 @@ class BaseOdeModel(object):
 
         Parameters
         ----------
-        parameters: list or equivalent
-            A list which contains two elements (string, numeric value) or
-            just a single array like object
-
+        parameters: dict of {parameter_ID: parameter_value} (prefered) _or_
+            a list which contains elements made of 2 element tuples 
+            (string, numeric value) _or_ a single array like object with
+            length equal to the number of parameters, in the same order as they
+            were created.
         """
-        # Either set as a list or as a dict
+        # Either a list or a dict
         if isinstance(parameters, (list, tuple, np.ndarray)):
-            self._parameter_store.set_value_list(parameters)
+            # Looks like a list but is it a dict in disguise (list of tuples)?
+            if len(parameters) > 0:
+                if isinstance(parameters[0], tuple) and len(parameters[0]) == 2:
+                    # do we have at least one tuple of length 2?
+                    try:
+                        parameters = {key: value for key, value in parameters}
+                    except ValueError as e:
+                        raise ValueError('The parameter list supplied looked'
+                                         ' like a list of tuples, ('
+                                         'PARAMETER_NAME, PARAMETER_VALUE) and'
+                                         ' PyGOM tried to evaluate it on that'
+                                         ' basis but these entries '
+                                        f'{[value for value in parameters 
+                                            if len(value)!=2]}',
+                                        ' were not of length 2,'
+                                        ' please check these.') from e
+                    # recurse and try again with the new dict
+                    self.parameters = parameters
+                else:
+                    # Not a dict in disguise, set as a list
+                    self._parameter_store.set_value_list(parameters)
         elif isinstance(parameters, dict):
-            for parameter, value in parameters:
-                self._parameter_store.set_value(parameter, value)
+            # This is the way, a eplicit dict of [ID: value]
+            self._parameter_store.set_value_dict(parameters)
         else:
             raise InputError(f'Expecting a dict, or iterable '
                              f'input not {type(parameters)}')
@@ -510,30 +562,44 @@ class BaseOdeModel(object):
             with elements as :mod:`sympy.core.symbol`
 
         """
-        return [parameter.symbol for parameter in self._parameter_store]
+        return [parameter for parameter in self._parameter_store.index]
+    
+   
+    def append_parameters(self, parameter_list:list[str|ODEVariable])->None:
+        """
+        Append additional parameters to the ode system
 
-    def set_parameters(self, parameter_list):
+        Parameters
+        ----------
+        parameter_list: list
+            list of strings or ode variables where each is a parameter to be 
+            added
+        """
+        # create a new store (if we don't already have one)
+        if self._parameter_store is None:
+            new_parameter_store = ode_utils.VariableStore(storage_type='parameters')
+        else:
+            new_parameter_store = self._parameter_store
+
+        _add_to_store(new_parameter_store, parameter_list)
+        
+        self._parameter_store = new_parameter_store
+        self._invalidate_caches()
+
+    def set_parameters(self, parameter_list:list[str|ODEVariable])->None:
         """
         Set the parameters for the ode system
 
         Parameters
         ----------
         parameter_list: list
-            list of string, each string is the name of the parameter
+            list of strings or ode variables where each is a parameter of the 
+            system
         """
         # create a new store to replace the existing (if creations succeds)
         new_parameter_store = ode_utils.VariableStore(storage_type='parameters')
 
-        #clean the list
-        if isinstance(parameter_list, (str)):
-            parameter_list = self._split_and_clean_list(parameter_list)
-
-        if isinstance(parameter_list, (list, tuple)):
-            new_parameter_store.extend(parameter_list)
-        elif isinstance(parameter_list, (ODEVariable)):
-            new_parameter_store.append(parameter_list)
-        else:
-            raise InputError("Expecting a list")
+        _add_to_store(new_parameter_store, parameter_list)
         
         self._parameter_store = new_parameter_store
         self._invalidate_caches()
@@ -839,20 +905,6 @@ class BaseOdeModel(object):
             self.__setattr__(attr_list_name, list(attr))
         else:
             raise InputError("No attribute passed to function")
-        
-    def _split_and_clean_list(self, variable_names):
-        '''
-        Given variable_names which is a string of comma or space separated 
-        values, create a new list made of those separated, cleaned values.
-        '''
-        # TODO: Do we really want encourage the feeding of such bad lists of 
-        # values into the system? Think we should enforce being explicit.
-        variable_names = re_split_string.split(variable_names)
-        variable_names = filter(lambda x: not len(x.strip()) == 0, variable_names)
-            
-        return(list(variable_names))
-
-
 
     def _add_list_attr_with_limits(self, attr, attr_list_name):
         """
@@ -937,7 +989,7 @@ class BaseOdeModel(object):
         form. This is used for the autowrap method
         '''
         if self._sp is None:
-            self._sp = self._stateList + self._parameter_store.symbol_list()
+            self._sp = self._stateList + [self._t] + self._parameter_store.symbol_list()
 
         return self._sp
 
@@ -1516,8 +1568,8 @@ class BaseOdeModel(object):
         """
         Iterator through the parameters in symbolic form
         """
-        for p in self._paramList:
-            yield self._paramDict[p.ID]
+        for p in self._parameter_store.symbol_list():
+            yield p
 
     ########################################################################
     #
@@ -1525,23 +1577,23 @@ class BaseOdeModel(object):
     #
     ########################################################################
 
-    def _extractParamIndex(self, input_str):
-        if input_str in self._paramDict:
-            return self._paramList.index(self._paramDict[input_str])
-        else:
-            raise InputError("Input parameter: %s does not exist" % input_str)
+    # def _extractParamIndex(self, input_str):
+    #     if input_str in self._paramDict:
+    #         return self._paramList.index(self._paramDict[input_str])
+    #     else:
+    #         raise InputError("Input parameter: %s does not exist" % input_str)
 
-    def _extractParamSymbol(self, input_str):
-        """
-        Given a parameter name, input_str
-        """
-        if isinstance(input_str, ODEVariable):
-            input_str = input_str.ID
+    # def _extractParamSymbol(self, input_str):
+    #     """
+    #     Given a parameter name, input_str
+    #     """
+    #     if isinstance(input_str, ODEVariable):
+    #         input_str = input_str.ID
 
-        if input_str in self._paramDict:
-            return self._paramDict[input_str]
-        else:
-            raise InputError("Input parameter: %s does not exist" % input_str)
+    #     if input_str in self._paramDict:
+    #         return self._paramDict[input_str]
+    #     else:
+    #         raise InputError("Input parameter: %s does not exist" % input_str)
 
     # TODO: figure out why this is so awkward
     def _extractStateIndex(self, input_str):

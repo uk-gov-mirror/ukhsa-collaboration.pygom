@@ -40,6 +40,8 @@ class VariableStore(object):
         self.index = IndexShim(parent=self)
         #self.sibling_lists = []
 
+        self._all_values_set = True
+
     def __getitem__(self, item:str):
         '''
         Getter when referencing the variable by name
@@ -65,6 +67,10 @@ class VariableStore(object):
 
         # Store the new / updated variable
         self._variables[key] = var_obj
+
+        # If it doesn't have a value then we haven all the values
+        if var_obj.value is None:
+            self._all_values_set = False
 
     def __len__(self)->int:
         '''
@@ -123,12 +129,12 @@ class VariableStore(object):
     
     def extend(self, variables:list) -> None:
         '''
-        Add a variable to the store
+        Add a list of variables to the store
 
         Parameters
         ----------
-        variables: A list of variables to add, either as a list of strings . These will be appended at the end
-          of the list of variables
+        variables: A list of variables to add, either as a list of strings or
+        ODEVariables. These will be appended at the end of the list of variables
 
         '''
         for variable in variables:
@@ -173,6 +179,7 @@ class VariableStore(object):
         value: The value that the variable should take (numeric).
 
         '''
+
         self[variable].value = value
     
     def set_value_list(self, variables:list) -> None:
@@ -189,8 +196,51 @@ class VariableStore(object):
                              f'match the number of {self.storage_type}. '
                              f'Expected {len(self)}, got {len(variables)}.')
         
-        for key, variable in zip(self._variables.keys(), variables):
+        self.set_value_dict(dict(zip(self._variables.keys(), variables)))
+        
+    def set_value_dict(self, variables:dict):
+        '''
+        Set the value of all the variables
+
+        This is explicit and so the prefered way to set the variable values.
+
+        Parameters
+        ----------
+        Variables: A list, the same length as the number of variables, 
+          containing the values
+        ''' 
+        if len(variables) != len(self):
+            can_set_all = False
+        else:
+            can_set_all = True
+
+        for key, variable in variables.items():
+            if variable is None:
+                can_set_all = False
             self[key].value = variable
+
+        self._all_values_set = can_set_all
+
+    @property
+    def values_set(self)->bool:
+        '''
+        Have all the values been set
+
+        Note this will be quick if the values have been set by a list
+        '''
+        if not self._all_values_set:
+            # double check in case the values have been set in some other way
+            self._all_values_set = True
+            for variable in self._variables.values():
+                print(f'{variable.ID}: {variable.value}')
+                self._all_values_set = self._all_values_set & (variable.value is not None)
+        return self._all_values_set
+
+    def values_list(self)->list[float]:
+        '''
+        Get a list of all the values stored
+        '''
+        return [variable.value for variable in self._variables.values()]
 
     def symbol_list(self)->list[Symbol]:
         '''
