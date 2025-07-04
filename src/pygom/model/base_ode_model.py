@@ -101,9 +101,12 @@ class BaseOdeModel(object):
         # self._explicitOde = False
 
         # # book keeping parameters/states and etc
-        self._paramList = list()
+        self._parameter_store = None
+        # Create the real parameter store by setting the parameters
+        self.set_parameters(param)
+
         # # holder for the values of the parameters
-        self._paramValue = None
+#        self._paramValue = None
 
         self._stateList = list()
         self._derivedParamList = list()
@@ -119,10 +122,11 @@ class BaseOdeModel(object):
         #self._hasNewTransition = HasNewTransition()
 
         # # dictionary for mapping
-        self._paramDict = dict()
+#        self._paramDict = dict()
         # # although time is not defined as a parameter, we want to keep
         # # record of it existence
-        self._paramDict['t'] = self._t
+        self._parameter_store['t'] = self._t
+
         self._stateDict = dict()
         self._derivedParamDict = dict()
 
@@ -139,7 +143,7 @@ class BaseOdeModel(object):
         # self.tstep=False
 
         self._add_list_attr_with_limits(state, "state_list")
-        self._add_list_attr(param, 'param_list')
+        #self._add_list_attr(param, 'param_list')
 
         # this has to go after adding the parameters
         # because it is suppose to be based on the current
@@ -235,8 +239,7 @@ class BaseOdeModel(object):
         return self._parameters
 
     @parameters.setter
-    @profile
-    def parameters(self, parameters):
+    def parameters(self, parameters:dict[str]):
         """
         Set the values for the parameters already defined.  Note that unless
         the parameters are entered via a dictionary or a two element list,tuple
@@ -249,133 +252,142 @@ class BaseOdeModel(object):
             just a single array like object
 
         """
-
-        err_string = "The number of input parameters is %s but %s expected"
-        # setting up a shorthand for the most used function within this method
-        f = self._extractParamSymbol
-        # A stupid and complicated type checking procedure.  Someone please
-        # kill me when you read this.
-        # TODO: Would be good to clean this up.
-        param_out = dict()
-        if parameters is not None:
-            # currently only accept 3 main types here, obviously apart
-            # from the dict type below
-            if isinstance(parameters, (list, tuple, np.ndarray)):
-                # length checking, we are assuming here that we always set
-                # the full set of parameters
-                # TODO: for model fitting, we might only want to set a subset of the known ones
-                if len(parameters) == self.num_param:
-                    if isinstance(parameters, np.ndarray):
-                        if parameters.size == self.num_param:
-                            parameters = parameters.ravel()
-                        else:
-                            raise InputError(err_string % \
-                                             (parameters.size, self.num_param))
-                else:
-                    raise InputError(err_string % \
-                                     (parameters.size, self.num_param))
-
-                # type checking, making sure that all the different types
-                # are accepted
-                if isinstance(parameters[0], tuple):
-                    if len(parameters) == self.num_param:
-                        for i in range(0, len(parameters)):
-                            index_temp = f(parameters[i][0])
-                            value_temp = parameters[i][1]
-                            param_out[index_temp] = value_temp
-                # we are happy... I guess
-                elif isinstance(parameters[0], Number):
-                    for i, pi in enumerate(parameters):
-                        if isinstance(self._paramList[i], ODEVariable):
-                            param_out[str(self._paramList[i])] = pi
-                        else:
-                            param_out[self._paramList[i]] = pi
-                else:
-                    raise InputError("Input type should either be a list of " +
-                                     "tuple with elements (str,numeric) or " +
-                                     "a list of numeric value")
-            elif isinstance(parameters, dict):
-                # we assume that the key of the dictionary is a string and
-                # the value can be a single value or a distribution
-                if len(parameters) > self.num_param:
-                    raise Exception("Too many input parameters")
-
-                # holder
-                # TODO: change this properly so that there are two different
-                # types of parameter input.  One is when we initialize and
-                # another when we set new ones
-                if hasattr(self, "_parameters"):
-                    param_out = self._parameters
-
-                # extra the key from the parameters dictionary
-                for inParam in parameters:
-                    value = parameters[inParam]
-                    if isinstance(value, Number):
-                        # get index
-                        if isinstance(inParam, sympy.Symbol):
-                            param_out[f(str(inParam))] = value
-                        else:
-                            param_out[f(inParam)] = value
-                        # and replace only that specific one
-                    elif isinstance(value, rv_frozen):
-                        # we always assume that we have a frozen distribution
-                        param_out[f(inParam)] = value.rvs(1)[0]
-                        # output of the rv from a frozen distribution is a
-                        # np.ndarray even when the number of sample is one
-                        ## Now we are going make damn sure to record it down!
-                        self._stochasticParam = parameters
-                    elif isinstance(value, tuple):
-                        if callable(value[0]):
-                            # using a temporary variable to shorten the line.
-                            if isinstance(value[1], dict):
-                                paramTemp = value[0](1, **value[1])
-                            else:
-                                paramTemp = value[0](1, *value[1])
-
-                            param_out[f(inParam)] = paramTemp
-                            self._stochasticParam = parameters
-                        else:
-                            raise InputError("First element should be a " +
-                                             "callable when using multi " +
-                                             "argument distribution " +
-                                             "definition.  Type of input " +
-                                             "was " + str(type(value)))
-                    else:
-                        raise InputError("No supported input type " +
-                                         str(type(value)) + " for " +
-                                         "dict() input yet.")
-            elif self.num_param == 1:
-                # a single parameter ode and you are not evaluating it
-                # analytically! fair enough! no further comments your honour.
-                # TODO: Can't single parameter ODE's still be complicated?
-                if isinstance(parameters, tuple):
-                    param_out[f(parameters[0])] = parameters[1]
-                elif isinstance(parameters, (int, float)):
-                    param_out[self.param_list[0]] = parameters
-                else:
-                    raise InputError("Input type should either be a tuple of " +
-                                     "(str,numeric) or a single numeric value")
-            else:
-                raise InputError("Expecting a dict, list or a tuple input " +
-                                 "because there are a total of " +
-                                 str(self.num_param)+ " parameters")
+        # Either set as a list or as a dict
+        if isinstance(parameters, (list, tuple, np.ndarray)):
+            self._parameter_store.set_value_list(parameters)
+        elif isinstance(parameters, dict):
+            for parameter, value in parameters:
+                self._parameter_store.set_value(parameter, value)
         else:
-            if self.num_param != 0:
-                raise Warning("Did not set the values of the parameters. " +
-                              "Input was None.")
+            raise InputError(f'Expecting a dict, or iterable '
+                             f'input not {type(parameters)}')
 
-        self._parameters = param_out
+        # err_string = "The number of input parameters is %s but %s expected"
+        # # setting up a shorthand for the most used function within this method
+        # f = self._extractParamSymbol
+        # # A stupid and complicated type checking procedure.  Someone please
+        # # kill me when you read this.
+        # # TODO: Would be good to clean this up.
+        # param_out = dict()
+        # if parameters is not None:
+        #     # currently only accept 3 main types here, obviously apart
+        #     # from the dict type below
+        #     if isinstance(parameters, (list, tuple, np.ndarray)):
+        #         # length checking, we are assuming here that we always set
+        #         # the full set of parameters
+        #         # TODO: for model fitting, we might only want to set a subset of the known ones
+        #         if len(parameters) == self.num_param:
+        #             if isinstance(parameters, np.ndarray):
+        #                 if parameters.size == self.num_param:
+        #                     parameters = parameters.ravel()
+        #                 else:
+        #                     raise InputError(err_string % \
+        #                                      (parameters.size, self.num_param))
+        #         else:
+        #             raise InputError(err_string % \
+        #                              (parameters.size, self.num_param))
 
-        # unroll the parameter values into the appropriate list
-        # if self._paramValue is None or isinstance(self._paramValue, list):
-        #     self._paramValue = dict()
-        self._paramValue = [0]*len(self._paramList)
+        #         # type checking, making sure that all the different types
+        #         # are accepted
+        #         if isinstance(parameters[0], tuple):
+        #             if len(parameters) == self.num_param:
+        #                 for i in range(0, len(parameters)):
+        #                     index_temp = f(parameters[i][0])
+        #                     value_temp = parameters[i][1]
+        #                     param_out[index_temp] = value_temp
+        #         # we are happy... I guess
+        #         elif isinstance(parameters[0], Number):
+        #             for i, pi in enumerate(parameters):
+        #                 if isinstance(self._paramList[i], ODEVariable):
+        #                     param_out[str(self._paramList[i])] = pi
+        #                 else:
+        #                     param_out[self._paramList[i]] = pi
+        #         else:
+        #             raise InputError("Input type should either be a list of " +
+        #                              "tuple with elements (str,numeric) or " +
+        #                              "a list of numeric value")
+        #     elif isinstance(parameters, dict):
+        #         # we assume that the key of the dictionary is a string and
+        #         # the value can be a single value or a distribution
+        #         if len(parameters) > self.num_param:
+        #             raise Exception("Too many input parameters")
 
-        for key, val in self._parameters.items():
-            index = self.get_param_index(key)
-            self._paramValue[index] = val
+        #         # holder
+        #         # TODO: change this properly so that there are two different
+        #         # types of parameter input.  One is when we initialize and
+        #         # another when we set new ones
+        #         if hasattr(self, "_parameters"):
+        #             param_out = self._parameters
 
-        #self.set_sp()
+        #         # extra the key from the parameters dictionary
+        #         for inParam in parameters:
+        #             value = parameters[inParam]
+        #             if isinstance(value, Number):
+        #                 # get index
+        #                 if isinstance(inParam, sympy.Symbol):
+        #                     param_out[f(str(inParam))] = value
+        #                 else:
+        #                     param_out[f(inParam)] = value
+        #                 # and replace only that specific one
+        #             elif isinstance(value, rv_frozen):
+        #                 # we always assume that we have a frozen distribution
+        #                 param_out[f(inParam)] = value.rvs(1)[0]
+        #                 # output of the rv from a frozen distribution is a
+        #                 # np.ndarray even when the number of sample is one
+        #                 ## Now we are going make damn sure to record it down!
+        #                 self._stochasticParam = parameters
+        #             elif isinstance(value, tuple):
+        #                 if callable(value[0]):
+        #                     # using a temporary variable to shorten the line.
+        #                     if isinstance(value[1], dict):
+        #                         paramTemp = value[0](1, **value[1])
+        #                     else:
+        #                         paramTemp = value[0](1, *value[1])
+
+        #                     param_out[f(inParam)] = paramTemp
+        #                     self._stochasticParam = parameters
+        #                 else:
+        #                     raise InputError("First element should be a " +
+        #                                      "callable when using multi " +
+        #                                      "argument distribution " +
+        #                                      "definition.  Type of input " +
+        #                                      "was " + str(type(value)))
+        #             else:
+        #                 raise InputError("No supported input type " +
+        #                                  str(type(value)) + " for " +
+        #                                  "dict() input yet.")
+        #     elif self.num_param == 1:
+        #         # a single parameter ode and you are not evaluating it
+        #         # analytically! fair enough! no further comments your honour.
+        #         # TODO: Can't single parameter ODE's still be complicated?
+        #         if isinstance(parameters, tuple):
+        #             param_out[f(parameters[0])] = parameters[1]
+        #         elif isinstance(parameters, (int, float)):
+        #             param_out[self.param_list[0]] = parameters
+        #         else:
+        #             raise InputError("Input type should either be a tuple of " +
+        #                              "(str,numeric) or a single numeric value")
+        #     else:
+        #         raise InputError("Expecting a dict, list or a tuple input " +
+        #                          "because there are a total of " +
+        #                          str(self.num_param)+ " parameters")
+        # else:
+        #     if self.num_param != 0:
+        #         raise Warning("Did not set the values of the parameters. " +
+        #                       "Input was None.")
+
+        # self._parameters = param_out
+
+        # # unroll the parameter values into the appropriate list
+        # # if self._paramValue is None or isinstance(self._paramValue, list):
+        # #     self._paramValue = dict()
+        # self._paramValue = [0]*len(self._paramList)
+
+        # for key, val in self._parameters.items():
+        #     index = self.get_param_index(key)
+        #     self._paramValue[index] = val
+
+        # #self.set_sp()
 
     @property
     def state(self):
@@ -498,28 +510,33 @@ class BaseOdeModel(object):
             with elements as :mod:`sympy.core.symbol`
 
         """
-        return self._paramList
+        return [parameter.symbol for parameter in self._parameter_store]
 
-    @param_list.setter
-    def param_list(self, param_list):
+    def set_parameters(self, parameter_list):
         """
-        Set the set of parameters for the ode system
+        Set the parameters for the ode system
 
         Parameters
         ----------
-        paramList: list
+        parameter_list: list
             list of string, each string is the name of the parameter
-
         """
-        if isinstance(param_list, (list, tuple)):
-            for p in param_list:
-                self._addParamSymbol(p)
-        elif isinstance(param_list, (str, ODEVariable)):
-            self._addParamSymbol(param_list)
+        # create a new store to replace the existing (if creations succeds)
+        new_parameter_store = ode_utils.VariableStore(storage_type='parameters')
+
+        #clean the list
+        if isinstance(parameter_list, (str)):
+            parameter_list = self._split_and_clean_list(parameter_list)
+
+        if isinstance(parameter_list, (list, tuple)):
+            new_parameter_store.extend(parameter_list)
+        elif isinstance(parameter_list, (ODEVariable)):
+            new_parameter_store.append(parameter_list)
         else:
             raise InputError("Expecting a list")
+        
+        self._parameter_store = new_parameter_store
         self._invalidate_caches()
-        #self._hasNewTransition.trip()
 
     @property
     def derived_param_list(self):
@@ -727,7 +744,7 @@ class BaseOdeModel(object):
             the number of parameters
 
         """
-        return len(self._paramList)
+        return len(self._parameter_store)
 
     @property
     def num_derived_param(self):
@@ -795,16 +812,16 @@ class BaseOdeModel(object):
     ###########################################################################
 
 
-    def _get_model_str(self):
+    def __str__(self):
         model_str = "(%s, %s, %s, %s, %s, %s)" % (self._stateList,
-                                                  self._paramList,
+                                                  str(self._parameter_store),
                                                   self._derivedParamEqn,
                                                   self._transitionList,
                                                   self._birthDeathList,
                                                   self._odeList)
-        if hasattr(self, "_parameters"):
-            model_str += ".setParameters(%s)" % \
-                        {str(k): v for k, v in self._parameters.items()}
+        # if hasattr(self, "_parameters"):
+        #     model_str += ".setParameters(%s)" % \
+        #                 {str(k): v for k, v in self._parameters.items()}
         return model_str
 
     def _add_list_attr(self, attr, attr_list_name):
@@ -822,6 +839,20 @@ class BaseOdeModel(object):
             self.__setattr__(attr_list_name, list(attr))
         else:
             raise InputError("No attribute passed to function")
+        
+    def _split_and_clean_list(self, variable_names):
+        '''
+        Given variable_names which is a string of comma or space separated 
+        values, create a new list made of those separated, cleaned values.
+        '''
+        # TODO: Do we really want encourage the feeding of such bad lists of 
+        # values into the system? Think we should enforce being explicit.
+        variable_names = re_split_string.split(variable_names)
+        variable_names = filter(lambda x: not len(x.strip()) == 0, variable_names)
+            
+        return(list(variable_names))
+
+
 
     def _add_list_attr_with_limits(self, attr, attr_list_name):
         """
@@ -906,7 +937,7 @@ class BaseOdeModel(object):
         form. This is used for the autowrap method
         '''
         if self._sp is None:
-            self._sp = self._stateList + [self._t] + self._paramList
+            self._sp = self._stateList + self._parameter_store.symbol_list()
 
         return self._sp
 
@@ -938,15 +969,7 @@ class BaseOdeModel(object):
         int
             the index of the desired parameter
         """
-        if isinstance(input_str, str):
-            return self._extractParamIndex(input_str)
-        elif isinstance(input_str, sympy.Symbol):
-            return self._extractParamIndex(str(input_str))
-        elif isinstance(input_str, ODEVariable):
-            return self._extractParamIndex(input_str.ID)
-        elif isinstance(input_str, (list, tuple)):
-            out_str = [self._extractParamIndex(p) for p in input_str]
-            return out_str
+        return self._parameter_store.get_index(input_str)
 
     ########################################################################
     #
@@ -1012,31 +1035,32 @@ class BaseOdeModel(object):
         symbol_name = self._addSymbol(var_obj.ID)
 
         if isinstance(symbol_name, sympy.Symbol):
-            if str(symbol_name) not in self._paramDict:
+            if str(symbol_name) not in self._parameter_store:
                 self._addVariable(symbol_name, var_obj, self._stateList, self._stateDict)
+            
         else:
             for sym in symbol_name:
                 self._addStateSymbol(str(sym))
 
-    def _addParamSymbol(self, input_str):
-        # turn input_str into a ODEVarialbe if required
-        if isinstance(input_str, str):
-            var_obj = ODEVariable(input_str, input_str)
-        elif isinstance(input_str, ODEVariable):
-            var_obj = input_str
-        else:
-            raise InputError(f'You may not add an object of type '
-                             f'{type(input_str)} as a parameter.')
+    # def _addParamSymbol(self, input_str):
+    #     # turn input_str into a ODEVarialbe if required
+    #     if isinstance(input_str, str):
+    #         var_obj = ODEVariable(input_str, input_str)
+    #     elif isinstance(input_str, ODEVariable):
+    #         var_obj = input_str
+    #     else:
+    #         raise InputError(f'You may not add an object of type '
+    #                          f'{type(input_str)} as a parameter.')
 
-        symbol_name = self._addSymbol(var_obj.ID)
+    #     symbol_name = self._addSymbol(var_obj.ID)
 
-        if isinstance(symbol_name, sympy.Symbol):
-            # TODO: this lookup is slow why isn't this a set?
-            if str(symbol_name) not in self._paramDict:
-                self._addVariable(symbol_name, var_obj, self._paramList, self._paramDict)
-        else:
-            for sym in symbol_name:
-                self._addParamSymbol(str(sym))
+    #     if isinstance(symbol_name, sympy.Symbol):
+    #         # TODO: this lookup is slow why isn't this a set?
+    #         if str(symbol_name) not in self._paramDict:
+    #             self._addVariable(symbol_name, var_obj, self._paramList, self._paramDict)
+    #     else:
+    #         for sym in symbol_name:
+    #             self._addParamSymbol(str(sym))
 
     def _addDerivedParam(self, name, eqn):
         var_obj = ODEVariable(name, name)

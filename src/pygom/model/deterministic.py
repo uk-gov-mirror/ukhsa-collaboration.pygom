@@ -118,7 +118,7 @@ class DeterministicOde(BaseOdeModel):
         self._odeSolution = None
         self._odeTime = None
         self._intName = None
-        self._paramValue = [0]*len(self._paramList)
+        #self._paramValue = [0]*len(self._paramList)
 
         # the class for shape re-adjustment. We would always like to
         # operate in the matrix form if possible as it takes up less

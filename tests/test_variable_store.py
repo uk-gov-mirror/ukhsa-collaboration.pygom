@@ -49,7 +49,7 @@ class TestVariableStore(TestCase):
         # Test updating a variable
         vs['b'] = c
         self.assertEqual(vs.index[2].symbol, vs['b'].symbol)
-        self.assertEqual(vs.getIndex('b'), 1)
+        self.assertEqual(vs.get_index('b'), 1)
 
     def test_adding_list(self):
         # create the store
