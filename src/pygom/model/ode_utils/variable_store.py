@@ -10,16 +10,18 @@ This object is designed to:
 * Provide the index of a named parameter
 
 '''
-#from collections.abc import MutableMapping
-
-#from collections import OrderedDict
+from types import NoneType
 from indexed import IndexedOrderedDict
 
 from sympy import Symbol
+import numpy as np
 
 from ..ode_variable import ODEVariable
+from .._model_errors import InputError
 
-__all__ = ['VariableStore']
+from scipy.stats._distn_infrastructure import rv_frozen
+
+__all__ = ['VariableStore','ParameterStore']
 
 class IndexShim(object):
     def __init__(self, parent):
@@ -27,10 +29,10 @@ class IndexShim(object):
     
     def __getitem__(self, item:int):
         return self.parent._variables.values()[item]
-        
-
 class VariableStore(object):
-    def __init__(self, storage_type:str='variable'):
+    def __init__(self, 
+                 storage_type:str='variable', 
+                 acceptable_value_types:list=[float, int]):
         '''
         The init method
         '''
@@ -38,9 +40,15 @@ class VariableStore(object):
         self._variable_pos = dict()
         self.storage_type = storage_type
         self.index = IndexShim(parent=self)
-        #self.sibling_lists = []
 
-        self._all_values_set = True
+        # Type checking for the values assigned to a parameter
+        acceptable_value_types.append(NoneType) # None is always ok
+        self.acceptable_value_types = {avt: avt.__name__ for avt in 
+                                       acceptable_value_types}
+        self._values_by_type = {key: dict() for key in 
+                                self.acceptable_value_types.values()}
+
+        #self.sibling_lists = []
 
     def __getitem__(self, item:str):
         '''
@@ -68,9 +76,14 @@ class VariableStore(object):
         # Store the new / updated variable
         self._variables[key] = var_obj
 
-        # If it doesn't have a value then we haven all the values
-        if var_obj.value is None:
-            self._all_values_set = False
+        # re-record the value
+        value = var_obj.value
+
+        # deal with the bootstrapping problem (everything goes in None to start)
+        self._values_by_type[NoneType.__name__] [key]=self._variables[key]
+
+        # Properly log the real value (maintains book-keeping)
+        self.set_value(key, value)
 
     def __len__(self)->int:
         '''
@@ -169,78 +182,137 @@ class VariableStore(object):
 
 
 
-    def set_value(self, variable:str, value:float) -> None:
+    def set_value(self, variable:str, value) -> None:
         '''
         Set the value of a variable
 
         Parameters
         ----------
         variable: The name of the variable as a string
-        value: The value that the variable should take (numeric).
+        value: The value that the variable should take.
 
         '''
+        # Book-keeping for the by-type dicts
+        current_type = ''
+        for at, atn in self.acceptable_value_types.items():
+            if isinstance(self[variable].value, at):
+                current_type = atn
 
+        new_type = ''
+        for at, atn in self.acceptable_value_types.items():
+            if isinstance(value, at):
+                new_type = atn
+        
+
+        if new_type != current_type:
+            self._values_by_type[current_type].pop(variable, None)
+           
+            if new_type == '':
+                raise InputError(f'You may not add an object of type {type(value).__name__}'
+                                 f' as a value for a {self.storage_type}.'
+                                 f' Only {list(self.acceptable_value_types.keys())} are '
+                                 'permitted (or sub-classes).')
+            
+            # Set a pointer to the new location
+            self._values_by_type[new_type] [variable]=self._variables[variable]
+
+        # Set the value   
         self[variable].value = value
     
-    def set_value_list(self, variables:list) -> None:
+    def set_value_list(self, values:list) -> None:
         '''
         Set the value of all the variables
 
         Parameters
         ----------
-        Variables: A list, the same length as the number of variables, 
+        Values: A list, the same length as the number of variables, 
           containing the values 
         '''
-        if len(variables) != len(self):
+        if len(values) != len(self):
             raise ValueError(F'The length of the supplied list of values must '
                              f'match the number of {self.storage_type}. '
-                             f'Expected {len(self)}, got {len(variables)}.')
+                             f'Expected {len(self)}, got {len(values)}.')
         
-        self.set_value_dict(dict(zip(self._variables.keys(), variables)))
+        for key, value in zip(self._variables.keys(), values):
+            self.set_value(key, value)
         
-    def set_value_dict(self, variables:dict):
+    def set_value_dict(self, values:dict):
         '''
-        Set the value of all the variables
+        Set the value of the variables
 
         This is explicit and so the prefered way to set the variable values.
 
         Parameters
         ----------
-        Variables: A list, the same length as the number of variables, 
-          containing the values
+        Values: A dict keyed on the variable name with value equal to the value.
         ''' 
-        if len(variables) != len(self):
-            can_set_all = False
-        else:
-            can_set_all = True
+        for key, value in values.items():
+            self.set_value(key, value)
 
-        for key, variable in variables.items():
-            if variable is None:
-                can_set_all = False
-            self[key].value = variable
-
-        self._all_values_set = can_set_all
 
     @property
-    def values_set(self)->bool:
+    def all_values_set(self)->bool:
         '''
-        Have all the values been set
-
-        Note this will be quick if the values have been set by a list
+        Have all the values been set?
         '''
-        if not self._all_values_set:
-            # double check in case the values have been set in some other way
-            self._all_values_set = True
-            for variable in self._variables.values():
-                print(f'{variable.ID}: {variable.value}')
-                self._all_values_set = self._all_values_set & (variable.value is not None)
-        return self._all_values_set
+        return len(self._values_by_type[NoneType.__name__]) == 0
+    
+    @property
+    def variables(self)->list[str]:
+        return [variable.ID for variable in self._variables.values()]
 
-    def values_list(self)->list[float]:
+    @property
+    def values(self)->list[float]:
         '''
         Get a list of all the values stored
         '''
         return [variable.value for variable in self._variables.values()]
+    
+    @values.setter
+    def values(self,
+               values:dict[str: float]|list[tuple[str,float]]|list[float])->None:
+        """
+        Set the values for the parameters already defined.  Note that unless
+        the parameters are entered via a dictionary or a two element list,tuple
+        we assume that it is in the order of :meth:`.getParamList`
+
+        Parameters
+        ----------
+        parameters: dict of {parameter_ID: parameter_value} (prefered) _or_
+            a list which contains elements made of 2 element tuples 
+            (string, numeric value) _or_ a single array like object with
+            length equal to the number of parameters, in the same order as they
+            were created.
+        """
+        # Either a list or a dict
+        if isinstance(values, (list, tuple, np.ndarray)):
+            # Looks like a list but is it a dict in disguise (list of tuples)?
+            if len(values) > 0:
+                if isinstance(values[0], tuple) and len(values[0]) == 2:
+                    # do we have at least one tuple of length 2?
+                    try:
+                        values = {key: value for key, value in values}
+                    except ValueError as e:
+                        raise ValueError(f'The {self.storage_type} list' 
+                                         ' supplied looked like a list of'
+                                         ' tuples, (NAME, VALUE) and'
+                                         ' PyGOM tried to evaluate it on that'
+                                         ' basis but these entries '
+                                        f'{[value for value in values 
+                                            if len(value)!=2]}',
+                                        ' were not of length 2,'
+                                        ' please check these.') from e
+                    # Set as dict
+                    self.set_value_dict(values)
+                else:
+                    # Not a dict in disguise, set as a list
+                    self.set_value_list(values)
+        elif isinstance(values, dict):
+            # This is the way, a eplicit dict of [ID: value]
+            self.set_value_dict(values)
+        else:
+            raise InputError(f'Expecting a dict, or iterable '
+                             f'input not {type(values)}')
 
     def symbol_list(self)->list[Symbol]:
         '''
@@ -253,3 +325,12 @@ class VariableStore(object):
         Get a dict of all the symbols stored
         '''
         return {variable.ID: variable.symbol for variable in self._variables.values()}
+
+class ParameterStore(VariableStore):
+    def __init__(self)->None:
+        super().__init__(storage_type='parameter',
+                         acceptable_value_types=[int,
+                                                 float, 
+                                                 rv_frozen
+                                                 ]
+                         )

@@ -13,7 +13,7 @@ from numbers import Number
 import sympy
 import numpy as np
 #from sympy import symbols
-from scipy.stats._distn_infrastructure import rv_frozen
+#from scipy.stats._distn_infrastructure import rv_frozen
 
 from .transition import Event, Transition, TransitionType
 from ._model_errors import InputError, OutputError
@@ -264,9 +264,9 @@ class BaseOdeModel(object):
             (:mod:`sympy.core.symbol`, numeric)
 
         """
-        if self._parameter_store.values_set:
+        if self._parameter_store.all_values_set:
             return [(symb, val) for symb, val in zip(self._parameter_store.symbol_list(),
-                                                     self._parameter_store.values_list())]
+                                                     self._parameter_store.values)]
 
     @parameters.setter
     def parameters(self, 
@@ -284,35 +284,7 @@ class BaseOdeModel(object):
             length equal to the number of parameters, in the same order as they
             were created.
         """
-        # Either a list or a dict
-        if isinstance(parameters, (list, tuple, np.ndarray)):
-            # Looks like a list but is it a dict in disguise (list of tuples)?
-            if len(parameters) > 0:
-                if isinstance(parameters[0], tuple) and len(parameters[0]) == 2:
-                    # do we have at least one tuple of length 2?
-                    try:
-                        parameters = {key: value for key, value in parameters}
-                    except ValueError as e:
-                        raise ValueError('The parameter list supplied looked'
-                                         ' like a list of tuples, ('
-                                         'PARAMETER_NAME, PARAMETER_VALUE) and'
-                                         ' PyGOM tried to evaluate it on that'
-                                         ' basis but these entries '
-                                        f'{[value for value in parameters 
-                                            if len(value)!=2]}',
-                                        ' were not of length 2,'
-                                        ' please check these.') from e
-                    # recurse and try again with the new dict
-                    self.parameters = parameters
-                else:
-                    # Not a dict in disguise, set as a list
-                    self._parameter_store.set_value_list(parameters)
-        elif isinstance(parameters, dict):
-            # This is the way, a eplicit dict of [ID: value]
-            self._parameter_store.set_value_dict(parameters)
-        else:
-            raise InputError(f'Expecting a dict, or iterable '
-                             f'input not {type(parameters)}')
+        self._parameter_store.values = parameters
 
         # err_string = "The number of input parameters is %s but %s expected"
         # # setting up a shorthand for the most used function within this method
@@ -577,7 +549,7 @@ class BaseOdeModel(object):
         """
         # create a new store (if we don't already have one)
         if self._parameter_store is None:
-            new_parameter_store = ode_utils.VariableStore(storage_type='parameters')
+            new_parameter_store = ode_utils.ParameterStore()
         else:
             new_parameter_store = self._parameter_store
 
@@ -597,7 +569,7 @@ class BaseOdeModel(object):
             system
         """
         # create a new store to replace the existing (if creations succeds)
-        new_parameter_store = ode_utils.VariableStore(storage_type='parameters')
+        new_parameter_store = ode_utils.ParameterStore()
 
         _add_to_store(new_parameter_store, parameter_list)
         

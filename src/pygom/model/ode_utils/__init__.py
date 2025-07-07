@@ -18,7 +18,7 @@ from pygom.model._model_errors import (ArrayError,
                                        InputError,
                                        IntegrationError
                                        )
-from .variable_store import VariableStore
+from .variable_store import VariableStore, ParameterStore
 from .compile_canary import CompileCanary
 from .plot_det import plot_det
 from .plot_stoc import plot_stoc
@@ -36,6 +36,7 @@ __all__ = [
     'compileCode',
     'CompileCanary',
     'VariableStore',
+    'ParameterStore',
     #plots
     'plot_det',
     'plot_stoc',

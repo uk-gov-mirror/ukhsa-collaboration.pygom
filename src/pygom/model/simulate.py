@@ -779,7 +779,7 @@ class SimulateOde(DeterministicOde):
 
         return SimulateOde(
                            [str(s) for s in self._stateList],
-                           [str(p) for p in self._paramList],
+                           self._parameter_store.variables,
                            derived_param=self._derivedParamEqn,
                            transition=transition,
                            birth_death=bdList
