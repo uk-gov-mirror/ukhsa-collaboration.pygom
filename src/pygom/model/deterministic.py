@@ -10,7 +10,6 @@ __all__ = ['DeterministicOde']
 import logging
 from functools import partial
 
-import copy
 import io
 from numbers import Number
 
@@ -28,7 +27,6 @@ from ._model_verification import simplifyEquation
 
 from . import ode_utils
 from . import _transition_graph
-from .ode_utils import compileCode
 
 from .maths import ODESystem, Jacobian, DiffJacobian, \
     Grad, GradJacobian, Hessian
@@ -80,19 +78,11 @@ class DeterministicOde(BaseOdeModel):
                  event=None,
                  birth_death=None,
                  ode=None,
-                 # Technical arguments
-                 backend=None
+                 backend='lambda'
                  ):
         '''
         Constructor that is built on top of a BaseOdeModel
         '''
-        # Setup the maths methods compiler
-        # Note that we need the class because we
-        # compile both the formatted and unformatted version.
-        # Need a manual override of backend because it is possible that we
-        # want to perform simulation in a parallel/distributed manner
-        # and there are issues with pickling fortran objects
-        self._SC = compileCode(backend=backend)
 
         super(DeterministicOde, self).__init__(state,
                                                param,
@@ -100,7 +90,8 @@ class DeterministicOde(BaseOdeModel):
                                                transition,
                                                event,
                                                birth_death,
-                                               ode)
+                                               ode,
+                                               backend)
 
         # # First, set up system of odes upon instance being initialised
         # self.ode.get_equation()
@@ -114,9 +105,9 @@ class DeterministicOde(BaseOdeModel):
         # sp = state + t + param
         # the latter is required to compile the symbolic code
         # to the numeric setting
-        self.set_sp()
+        # self.set_sp()
 
-        self.verbose=False
+#        self.verbose=False
 
         # information regarding the integration.  We want an internal
         # storage so we can invoke the plot method within the same class
@@ -127,7 +118,7 @@ class DeterministicOde(BaseOdeModel):
         self._odeSolution = None
         self._odeTime = None
         self._intName = None
-        self._paramValue = [0]*len(self._paramList)
+        #self._paramValue = [0]*len(self._paramList)
 
         # the class for shape re-adjustment. We would always like to
         # operate in the matrix form if possible as it takes up less
@@ -147,29 +138,6 @@ class DeterministicOde(BaseOdeModel):
     def __repr__(self):
         return "DeterministicOde" + self._get_model_str()
     
-    ## Funcitons  to allow pickling and unpickling
-    def __getstate__(self):
-        '''
-        Grab the class's dict and remove the compiled objects
-        '''
-        compiled_methods = {x.method_name for x in self._maths_methods}
-        state = self.__dict__.copy()
-        
-        # Remove those compiled methods that have been added
-        for method in (compiled_methods & {x for x in state.keys()}):
-            del state[method]
-        
-        return state
-    
-    def __setstate__(self, state):
-        '''
-        Restore the classes state with reset of compile status
-        '''
-        self.__dict__.update(state)
-        
-        # Add back the compiled methods
-        self._init_maths_methods()
-
     ########################################################################
     #
     # Methods to add compiled functions

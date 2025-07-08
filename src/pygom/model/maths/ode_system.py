@@ -23,9 +23,9 @@ class ODESystem(NumericMethod):
 
         # Extract all info from events
         for event in self._parent_ode.event_list:
-            rate=checkEquation(event.rate, *self._parent_ode._getListOfVariablesDict())
+            rate=checkEquation(event.rate, self._parent_ode)
             for transition in event.transition_list:
-                magnitude=checkEquation(transition._magnitude, *self._parent_ode._getListOfVariablesDict())
+                magnitude=checkEquation(transition._magnitude, self._parent_ode)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.B:
                     destination_index=self._parent_ode.state_list.index(transition.destination)
@@ -42,28 +42,22 @@ class ODESystem(NumericMethod):
         # Now extract any ODE contributions from ODE type transitions
         for ode in self._parent_ode.ode_list:
             origin_index=self._parent_ode.state_list.index(ode.origin)
-            pure_ode[origin_index] += checkEquation(ode.equation, *self._parent_ode._getListOfVariablesDict())
+            pure_ode[origin_index] += checkEquation(ode.equation, self._parent_ode)
 
         # Collect together contributions and make attributes
         self._ode = between_state_ode + birth_death_ode + pure_ode
         self._birthDeathVector = birth_death_ode
 
-        # # Set list of states and params
-        # # TODO: should this be handled externally? i.e. how does it know here if params change?
-        # # TODO: why iter lists here?
-        # self._s = [s for s in self._iterStateList()] + [self._t]
-        # self._sp = self._s + [p for p in self._iterParamList()]
-
         # tests to see whether we have an autonomous system.  Need to
         # convert a non-autonmous system into an autonomous.  Note that
         # we will not do the conversion internally and require the
         # user to do this.  May consider this a feature in the future.
-        # TODO: I think autonomous systems are allowed? Maybe not deterministically?
+#        # TODO: I think autonomous systems are allowed? Maybe not deterministically?
         for i, eqn in enumerate(self._ode):
-            if self._parent_ode._t in eqn.atoms():      # TODO: maybe this check doesn't work anyway, for namespace reasons?
-                raise Exception("Input is a non-autonomous system. " +
-                                "We can only deal with an autonomous " +
-                                "system at this moment in time")
+#            if self._parent_ode._t in eqn.atoms():      # TODO: maybe this check doesn't work anyway, for namespace reasons?
+#                raise Exception("Input is a non-autonomous system. " +
+#                                "We can only deal with an autonomous " +
+#                                "system at this moment in time")
             self._ode[i], isDifficult = simplifyEquation(eqn)
             # TODO: Do we really need to set this on the parent_ode?
             self._parent_ode._isDifficult = self._parent_ode._isDifficult or isDifficult

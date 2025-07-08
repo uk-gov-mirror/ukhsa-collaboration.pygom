@@ -14,7 +14,7 @@ class PureOdeVector(NumericMethod):
         # Now extract any ODE contributions from ODE type transitions
         for ode in self._parent_ode.ode_list:
             origin_index=self._parent_ode.state_list.index(ode.origin)
-            pure_ode[origin_index] += checkEquation(ode.equation, *self._getListOfVariablesDict())
+            pure_ode[origin_index] += checkEquation(ode.equation, self._parent_ode)
 
         self._pureOdeVector=pure_ode
 

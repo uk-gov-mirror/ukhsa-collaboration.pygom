@@ -13,6 +13,7 @@
 import copy
 import functools
 from numbers import Number
+import logging
 
 import numpy as np
 import scipy.sparse

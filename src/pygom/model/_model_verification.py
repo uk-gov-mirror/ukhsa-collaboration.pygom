@@ -61,14 +61,25 @@ def simplifyEquation(input_str):
         return input_str, False
 
 
-def checkEquation(input_str, input_var, derived_var, subs_derived=True):
+def checkEquation(input_str, ode, subs_derived=True)->list:
     """
-    Convert a string into an equation and checks its validity.  Everything
-    here is prepended with an underscore to ensure that it does not pollute
-    the local environment which is essential for the symbolic equations.
-    An symbol starting with an underscore is not allowed, and should be
-    checked prior to using this function
+    Convert a string into an equation using the symbols from the system and 
+    checks its validity. 
+
+    Parameters
+    ----------
+    input_str: a str or list of str giving the equation
+    ode: the parent ode
+    subs_derived: should the derived parameters be substututed in?
+
+    Returns
+    -------
+    A single sympy equation or list of sympy equations (depending on if 
+    input_str is a single string or a list) made from the string(s)
     """
+    input_var = ode._parameter_store.symbol_dict() | ode._stateDict | ode._vectorStateDict
+        
+    derived_var = ode._derivedParamDict
 
     if isinstance(input_str, str):
         input_str = [input_str]
@@ -77,37 +88,38 @@ def checkEquation(input_str, input_var, derived_var, subs_derived=True):
     list_out = list()
     for _inputStr in input_str:
         assert isinstance(_inputStr, str), "Equation should be in string format"
-        # create the symbols in the local environment
-        for _d in input_var:
-            #logging.debug(_d)
-            for _s in _d.keys():
-                #logging.debug(_s)
-                if isinstance(_d[_s], tuple):
-                    # only the first element, as we made this as a vector
-                    _isReal = True if _d[_s][0].is_real else False
-                    _sString = [str(_sym) for _sym in _d[_s]]
-                    _sConcat = ','
-                    exec("""%s = symbols('%s',  real=%s)""" % (_s, _sConcat.join(_sString), _isReal))
-                else:
-                    _isReal = True if _d[_s].is_real else False
-                    exec("""%s = symbols('%s', real=%s)""" % (_s, _s, _isReal))
-            #logging.debug("\n")
-        for _key, _value in derived_var.items():
-            _isReal = True if _value.is_real else False
-            exec("""%s = symbols('%s', real=%s)""" % (_key, _key, _isReal))
-        # if the evaluation fails then there is a problem with the
-        # variables (either state or parameters), success means that
-        # it returns a symbolic expression 
-        # _eqn = eval(_inputStr)
-        _eqn = parse_expr(_inputStr, locals())
+        # # create the symbols in the local environment
+        # for _d in input_var:
+        #     #logging.debug(_d)
+        #     for _s in _d.keys():
+        #         #logging.debug(_s)
+        #         if isinstance(_d[_s], tuple):
+        #             # only the first element, as we made this as a vector
+        #             _isReal = True if _d[_s][0].is_real else False
+        #             _sString = [str(_sym) for _sym in _d[_s]]
+        #             _sConcat = ','
+        #             exec("""%s = symbols('%s',  real=%s)""" % (_s, _sConcat.join(_sString), _isReal))
+        #         else:
+        #             _isReal = True if _d[_s].is_real else False
+        #             exec("""%s = symbols('%s', real=%s)""" % (_s, _s, _isReal))
+        #     #logging.debug("\n")
+        # for _key, _value in derived_var.items():
+        #     _isReal = True if _value.is_real else False
+        #     exec("""%s = symbols('%s', real=%s)""" % (_key, _key, _isReal))
+        # # if the evaluation fails then there is a problem with the
+        # # variables (either state or parameters), success means that
+        # # it returns a symbolic expression 
+        # # _eqn = eval(_inputStr)
+        # _eqn = parse_expr(_inputStr, locals())
+        eqn = parse_expr(_inputStr, input_var | derived_var)
         # print _inputStr, type(_eqn), isinstance(_eqn, Expr)
         if subs_derived:
             # because these are the derived parameters, we need to substitute
             # them back in the formula
-            if isinstance(_eqn, Expr):
-                for _key, _value in derived_var.items():
-                    _eqn = eval("_eqn.subs(%s, %s)" % (_key, _value))
-        list_out.append(_eqn)
+            if isinstance(eqn, Expr):
+                for key, value in derived_var.items():
+                    eqn = eqn.subs(key, value)
+        list_out.append(eqn)
         # logging.debug(_eqn)
         # logging.debug(_eqn.free_symbols)
 
