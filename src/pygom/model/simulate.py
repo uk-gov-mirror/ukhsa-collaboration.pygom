@@ -8,6 +8,7 @@
 
 __all__ = ['SimulateOde']
 import logging
+import warnings
 
 import copy
 from numbers import Number
@@ -164,7 +165,7 @@ class SimulateOde(DeterministicOde):
                       self.transition_variance,
                       output_time=output_time))
 
-    def simulate_param(self, t, iteration, parallel=False, full_output=False):
+    def solve_determ(self, t, iteration, parallel=False, full_output=False):
         '''
         Simulate the ode by generating new realization of the stochastic
         parameters and integrate the system deterministically.
@@ -205,26 +206,28 @@ class SimulateOde(DeterministicOde):
         # try to compute the simulation in parallel
         if parallel:
             try:
-                for i in self._stochasticParam:
-                    if isinstance(i, scipy.stats._distn_infrastructure.rv_frozen):
-                        raise Exception("Cannot perform parallel simulation "
-                                        +"using a serialized object as distribution")
-                # check the type of parameter we have as input
+                # for i in self._stochasticParam:
+                #     if isinstance(i, scipy.stats._distn_infrastructure.rv_frozen):
+                #         raise Exception("Cannot perform parallel simulation "
+                #                         +"using a serialized object as distribution")
+                # # check the type of parameter we have as input
+
+                warnings.warn('Parallel computation not fully tested. Please '
+                'check a subset before relying on these answers.'
+                )
+
                 import dask.bag
                 y = list()
+                # Generate a list of parameter values (thetas) to calculate 
                 for i in range(iteration):
-                    y_i = list()
-                    for key, rv in self._stochasticParam.items():
-                        y_i += [{key:rv.rvs(1)[0]}]
-                    y += [y_i]
+                    self._parameter_store.new_realisation()
+                    y.append(self._parameter_store.values)
 
                 def sim(x):
                     self.parameters = x
-                    return self.integrate(t)
+                    self._setIntegrateTime(t)
+                    return self._integrate(self._odeTime, full_output=False)
 
-                # def sim(t1): return(self.integrate(t1))
-
-                # xtmp = dask.bag.from_sequence([t]*iteration)
                 xtmp = dask.bag.from_sequence(y)
                 solutionList = xtmp.map(sim).compute()
             except Exception: # as e:
@@ -242,88 +245,7 @@ class SimulateOde(DeterministicOde):
             return Y, solutionList
         else:
             return Y
-        
-    def solve_determ(self, t, iteration=None, parallel=False, full_output=False):
-            '''
-            Simulate the ode by generating new realization of the stochastic
-            parameters and integrate the system deterministically.
 
-            Parameters
-            ----------
-            t: array like
-                the range of time points which we want to see the result of
-            iteration: int
-                number of iterations you wish to simulate
-            parallel: bool, optional
-                Defaults to True
-            full_output: bool, optional
-                if we want additional information, Y_all in the return,
-                defaults to false
-
-            Returns
-            -------
-            Y: :class:`numpy.ndarray`
-                of shape (len(t), len(state)), mean of all the simulation
-            Y_all: :class:`np.ndarray`
-                of shape (iteration, len(t), len(state))
-            '''
-            if t is None:
-                raise InputError("Need to specify the time we wish to observe")
-            
-            # If parameters are not random then return one integration
-            if self._stochasticParam is None:
-                solution = self.integrate(t)
-                return solution
-            
-            # Otherwise, proceed for random parameters and verify expected extra parameters are present.
-            if iteration is None:
-                raise InputError("Need to specify the number of iterations")
-
-            self._odeSolution = self.integrate(t)
-
-            # try to compute the simulation in parallel
-            if parallel:
-                try:
-                    for i in self._stochasticParam:
-                        if isinstance(i, scipy.stats._distn_infrastructure.rv_frozen):
-                            raise Exception("Cannot perform parallel simulation "
-                                            +"using a serialized object as distribution")
-                    # check the type of parameter we have as input
-                    import dask.bag
-                    y = list()
-                    for i in range(iteration):
-                        y_i = list()
-                        for key, rv in self._stochasticParam.items():
-                            y_i += [{key:rv.rvs(1)[0]}]
-                        y += [y_i]
-                    # y = [rv.rvs(iteration) for rv in self._stochasticParam.values()]
-                    # y = np.array(list(zip(*y)))
-                    def sim(x):
-                        self.parameters = x
-                        return self.integrate(t)
-
-                    # def sim(t1): return(self.integrate(t1))
-
-                    # xtmp = dask.bag.from_sequence([t]*iteration)
-                    xtmp = dask.bag.from_sequence(y)
-                    solutionList = xtmp.map(sim).compute()
-                except Exception: # as e:
-                    # logging.debug(e)
-                    # logging.debug("Serial")
-                    solutionList = [self.integrate(t) for i in range(iteration)]
-            else:
-                solutionList = [self.integrate(t) for i in range(iteration)]
-
-            # now make our 3D array
-            # the first dimension is the number of iteration
-            Y = np.dstack(solutionList).mean(axis=2)
-
-            if full_output:
-                return Y, solutionList
-            else:
-                return Y
-
-    # Same as function below, just trying out new naming convention
     def solve_stochast(self, t, iteration, parallel=False,
                        exact=False, full_output=False):
         '''
@@ -456,10 +378,6 @@ class SimulateOde(DeterministicOde):
         '''
         Jumps from the initial time self._t0 to the input time finalT
         '''
-
-        if isinstance(self._stochasticParam, dict):
-            self.parameters = self._stochasticParam
-
         # initial time
         assert self._t0 is not None, "No initial time"
         assert self._x0 is not None, "No initial state"
