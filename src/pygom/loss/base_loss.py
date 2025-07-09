@@ -99,11 +99,10 @@ class BaseLoss(object):
         # computing the full vector before extracting the relevant elements.
         # Basically, it will require a lot of work to make things sync and
         # that is too much effort and time which I do not have
-        if self._ode.parameters is None:
-            if self._ode.num_param != 0:
-                # note that this is necessary because we want to make sure that
-                # it is possible to only estimate part of the full parameter set
-                raise RuntimeError("Set the parameters of the ode first")
+        if not self._ode._parameter_store.all_values_set:
+            # note that this is necessary because we want to make sure that
+            # it is possible to only estimate part of the full parameter set
+            raise RuntimeError("Set the initial parameters of the ode first")
         else:
             try:
                 self._ode.initial_values = (x0, t0)
@@ -111,14 +110,15 @@ class BaseLoss(object):
             except Exception as e:
                 # logging.debug(e)
                 if t0 == t[1]:
-                    raise InputError("First time point t[1] is equal to t0")
+                    raise InputError("First time point t[1] is equal to "
+                                     "t0") from e
                 else:
                     raise InputError("ode not initialized properly or " +
                                      "unable to integrate using the initial " +
-                                     "values provided")
+                                     "values provided") from e
 
         # Information
-        self._num_param = self._ode.num_param
+        self._num_param = len(self._ode._parameter_store)
         self._num_state = self._ode.num_state
 
         ### We wish to know whether we are dealing with a multiobjective problem

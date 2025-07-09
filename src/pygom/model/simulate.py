@@ -87,7 +87,7 @@ class SimulateOde(DeterministicOde):
         self.pre_tau=None       # If tau is set, then this overrides the adaptive tau leap.
         self._epsilon=0.03      # Default parameter recommended by Cao et al.
 
-        self._stochasticParam=None
+        #self._stochasticParam=None
 
 
         # Add templates of compiled sympy functions with:
@@ -193,8 +193,8 @@ class SimulateOde(DeterministicOde):
         # throw a warning because trying to  randomly draw parameters
         # when they are set to be constant is just plain stupid
 
-        if self._stochasticParam is None:
-            raise InputError("Deterministic parameters.")
+        if not self._parameter_store.has_stochastic_parameters:
+            raise InputError("System only has deterministic parameters.")
         if iteration is None:
             raise InputError("Need to specify the number of iterations")
         if t is None:
@@ -217,8 +217,7 @@ class SimulateOde(DeterministicOde):
                     for key, rv in self._stochasticParam.items():
                         y_i += [{key:rv.rvs(1)[0]}]
                     y += [y_i]
-                # y = [rv.rvs(iteration) for rv in self._stochasticParam.values()]
-                # y = np.array(list(zip(*y)))
+
                 def sim(x):
                     self.parameters = x
                     return self.integrate(t)

@@ -872,13 +872,18 @@ class DeterministicOde(BaseOdeModel):
         '''
         # type checking
         self._setIntegrateTime(t)
-        # if our parameters are stochastic, then we are going to generate
-        # another set of parameters to run
-        if self._stochasticParam is not None:
-            # this should always be true.  If not, then we have screwed up
-            # somewhere within this class.
-            if isinstance(self._stochasticParam, dict):
-                self.parameters = self._stochasticParam
+
+        # get a new draw of any stochastic parameters
+        self._parameter_store.new_realisation()
+
+        # # if our parameters are stochastic, then we are going to generate
+        # # another set of parameters to run
+        # if self._parameter_store.has_stochastic_parameters:
+        #     # this should always be true.  If not, then we have screwed up
+        #     # somewhere within this class.
+        #     raise Exception("stop! how do we deal with generated vs. fixed values?")
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
         return self._integrate(self._odeTime, full_output)
 
@@ -906,10 +911,12 @@ class DeterministicOde(BaseOdeModel):
         self._setIntegrateTime(t)
         # if our parameters are stochastic, then we are going to generate
         # another set of parameters to run
-        if self._stochasticParam is not None:
-            # this should always be true
-            if isinstance(self._stochasticParam, dict):
-                self.parameters = self._stochasticParam
+        self._parameter_store.new_realisation()
+        
+        # if self._stochasticParam is not None:
+        #     # this should always be true
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
         return self._integrate2(self._odeTime, full_output, method)
 

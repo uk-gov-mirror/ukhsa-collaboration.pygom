@@ -132,7 +132,7 @@ class NumericMethod(MathsMethod):
         self._pickleable_compile = True if self._SC._backend == 'lambda' else False
         self._cache_valid = True
 
-    def _getEvalParam(self, state, time):
+    def _getEvalParam(self, state:list[float], time:float)->list[float]:
         if state is None or time is None:
             raise InputError("Have to input both state and time")
 

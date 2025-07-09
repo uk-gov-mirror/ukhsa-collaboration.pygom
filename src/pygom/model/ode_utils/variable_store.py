@@ -326,11 +326,131 @@ class VariableStore(object):
         '''
         return {variable.ID: variable.symbol for variable in self._variables.values()}
 
+class CallableParameter(object):
+    '''A class to wrap a parameter supplied as a callable '''
+    def __init__(self, value:tuple):
+        '''
+        parameters
+        ----------
+        value: tuple in either (callable, (paramerters....)) or 
+          (callable, {parameters})
+        '''
+        
+        if not callable(value[0]):
+            raise InputError('First element should be a callable when using '
+                             'multi argument distribution definition.  Type of '
+                             f'input was {type(value[0])}.')
+        self._callable = value[0] 
+
+        # Now deal with the parameters
+        if isinstance(value[1], dict):
+            self.kwargs = value[1]
+            self.args = []
+        elif isinstance(value[1], tuple):
+            self.kwargs = {}
+            self.args = value[1]
+        else:
+            raise InputError('Second element should be either a tuple or a '
+                             'dict when using multi-argument distribution '
+                             f'definition. Type of input was {type(value[1])}.')
+    def __call__(self, n=1):
+        return self._callable(n, *self.args, **self.kwargs,)
+
 class ParameterStore(VariableStore):
     def __init__(self)->None:
         super().__init__(storage_type='parameter',
                          acceptable_value_types=[int,
                                                  float, 
-                                                 rv_frozen
+                                                 rv_frozen,
+                                                 CallableParameter
                                                  ]
                          )
+        self._realisation_vals = None
+
+    def set_value(self, variable, value):
+        '''
+        Sets the value of a variable
+        '''
+        # convert callables nested in tuples into callables class
+        if isinstance(value, tuple):
+            value = CallableParameter(value)
+
+        return super().set_value(variable, value)
+        
+    @property
+    def has_stochastic_parameters(self)->bool:
+        '''
+        Simple check to see if there are any stochastic parameters in the store
+        '''
+        return (len(self._values_by_type.get(rv_frozen.__name__, {}))  + 
+                len(self._values_by_type.get(CallableParameter.__name__, {}))) != 0
+        
+    @property
+    def stochastic_parameters(self)->dict[str: rv_frozen]:
+        '''
+        Provides a dict of stochastic parameters (i.e. ones where the variable)
+        has been defined as an instance of rv_frozen.
+
+        Returns
+        -------
+        Dict keyed on parameter name with value = the distribution
+        '''
+        result = self._values_by_type[rv_frozen.__name__].copy()
+        result.update(self._values_by_type[CallableParameter.__name__])
+        return result
+    
+    def new_realisation(self)->None:
+        '''
+        Generate a new realiasation of the parameters
+        '''
+        # Just wipe the cache
+        self._realisation_vals = None
+
+    @property
+    def values(self)->list[float]:
+        '''
+        Provides the values for the parameters
+        
+        If there are stochastic parameters then a draw will be made and stored
+        and returned on subsequent calls to this method.
+
+        To generate a new realisation call new_realisation.
+
+        Returns
+        -------
+        A list of numeric values.
+
+        For each element in the list if a parameter isstochastic then a new 
+        value is drawn, if it is deterministic then the value is simply added. 
+        '''
+        # Check the cache for an existing set (and return that )
+        if self._realisation_vals is not None:
+            return self._realisation_vals
+        
+        # Build a new parameter set
+        result = list()
+
+        # handle the different ways in which a stochastic parameter can get a 
+        # new realisation
+        for parameter in self._variables.values():
+            if isinstance(parameter.value, rv_frozen):
+                result.append(parameter.value.rvs(1)[0])
+            elif isinstance(parameter.value, CallableParameter):
+                result.append(parameter.value())
+            else:
+                # The deterministic case
+                result.append(parameter.value)
+        
+        #cache the result
+        self._realisation_vals = result
+        
+        return result
+    
+    @values.setter
+    def values(self,
+               values:dict[str: float]|list[tuple[str,float]]|list[float])->None:
+        # set the values via the parent property
+        VariableStore.values.fset(self, values)
+
+        # Reset the cache
+        self._realisation_vals = None
