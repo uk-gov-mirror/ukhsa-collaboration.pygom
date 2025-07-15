@@ -285,7 +285,7 @@ class DeterministicOde(BaseOdeModel):
         # a really stupid way to determining whether it is linear.
         # have not figured out a better way yet...
         a = J.atoms()
-        for s in self._stateDict.values():
+        for s in self._state_store.symbol_list:
             if s in a:
                 is_linear = False
 #         for i in range(0, self._numState):
@@ -325,7 +325,7 @@ class DeterministicOde(BaseOdeModel):
         A = self.ode.get_equation()
         B = sympy.zeros(A.rows,2)
         for i in range(A.shape[0]):
-            B[i,0] = sympy.symbols('d' + str(self._stateList[i]) + '/dt=')
+            B[i,0] = sympy.symbols('d' + str(self.state_list[i]) + '/dt=')
             B[i,1] = A[i]
 
         if latex_output:
@@ -992,11 +992,11 @@ class DeterministicOde(BaseOdeModel):
         if self._odeSolution is None:
             try:
                 self._integrate(self._odeTime)
-                ode_utils.plot_det(self._odeSolution, self._odeTime, self._stateList)
+                ode_utils.plot_det(self._odeSolution, self._odeTime, self.state_list)
             except:
                 raise IntegrationError("Have not performed the integration yet")
         else:
-            ode_utils.plot_det(self._odeSolution, self._odeTime, self._stateList)
+            ode_utils.plot_det(self._odeSolution, self._odeTime, self.state_list)
 
     ########################################################################
     # Unrolling of the information from vector to sympy

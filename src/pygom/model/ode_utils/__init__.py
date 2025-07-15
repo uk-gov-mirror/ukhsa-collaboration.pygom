@@ -18,7 +18,7 @@ from pygom.model._model_errors import (ArrayError,
                                        InputError,
                                        IntegrationError
                                        )
-from .variable_store import VariableStore, ParameterStore
+from .variable_store import VariableStore, ParameterStore, StateStore
 from .compile_canary import CompileCanary
 from .plot_det import plot_det
 from .plot_stoc import plot_stoc
@@ -35,12 +35,14 @@ __all__ = [
     'integrateFuncJac',
     'compileCode',
     'CompileCanary',
+    # data structures
     'VariableStore',
     'ParameterStore',
-    #plots
+    'StateStore',
+    # plots
     'plot_det',
     'plot_stoc',
-    #checks and conversions
+    # checks and conversions
     'check_array_type',
     'check_dimension',
     'is_list_like',

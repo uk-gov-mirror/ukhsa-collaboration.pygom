@@ -28,20 +28,20 @@ class ODESystem(NumericMethod):
                 magnitude=checkEquation(transition._magnitude, self._parent_ode)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.B:
-                    destination_index=self._parent_ode.state_list.index(transition.destination)
+                    destination_index=self._parent_ode._state_store.get_index(transition.destination)
                     birth_death_ode[destination_index] += rate_of_change
                 elif transition.transition_type==TransitionType.D:
-                    origin_index=self._parent_ode.state_list.index(transition.origin)
+                    origin_index=self._parent_ode._state_store.get_index(transition.origin)
                     birth_death_ode[origin_index] -= rate_of_change
                 elif transition.transition_type==TransitionType.T:
-                    origin_index=self._parent_ode.state_list.index(transition.origin)
-                    destination_index=self._parent_ode.state_list.index(transition.destination)
+                    origin_index=self._parent_ode._state_store.get_index(transition.origin)
+                    destination_index=self._parent_ode._state_store.get_index(transition.destination)
                     between_state_ode[origin_index] -= rate_of_change
                     between_state_ode[destination_index] += rate_of_change
 
         # Now extract any ODE contributions from ODE type transitions
         for ode in self._parent_ode.ode_list:
-            origin_index=self._parent_ode.state_list.index(ode.origin)
+            origin_index=self._parent_ode._state_store.get_index(ode.origin)
             pure_ode[origin_index] += checkEquation(ode.equation, self._parent_ode)
 
         # Collect together contributions and make attributes

@@ -396,6 +396,8 @@ class SimulateOde(DeterministicOde):
         #       (2) self._lambdaMat might not be useful anyway though...
         self.get_ReactantMatrix()
 
+        x_limits = [value.limits for value in self._state_store.values_full]
+
         # keep jumping, Whoop Whoop (put your hands up!)
         while t < finalT:
             # Take a timetep
@@ -403,7 +405,7 @@ class SimulateOde(DeterministicOde):
                 if exact:
                     # Use Gillespie algorithm for entire simulation
                     t, jump_time, x, jumps, success = firstReaction(x,
-                                                                    self._state_lims,
+                                                                    x_limits,
                                                                     t,
                                                                     self.state_change_matrix,
                                                                     self.eventRateVector,
@@ -417,7 +419,7 @@ class SimulateOde(DeterministicOde):
                     #       to use Gillespie. We also have a safety procedure to stop variables going
                     #       outside their bounds anyway, so not sure what this achieves.
                     t_new, jump_time, x_new, jumps, success = tauLeap(x,
-                                                                      self._state_lims,
+                                                                      x_limits,
                                                                       t,
                                                                       self.state_change_matrix,
                                                                       self._lambdaMat,
@@ -435,7 +437,7 @@ class SimulateOde(DeterministicOde):
                     else:
                         # Retry with first reaction method.
                         t, jump_time, x, jumps, success = firstReaction(x,
-                                                                        self._state_lims,
+                                                                        x_limits,
                                                                         t,
                                                                         self.state_change_matrix,
                                                                         self.event_rate_vector,
@@ -695,7 +697,7 @@ class SimulateOde(DeterministicOde):
         bdList = self.get_bd_from_ode()
 
         return SimulateOde(
-                           [str(s) for s in self._stateList],
+                           [str(s) for s in self.state_list],
                            self._parameter_store.variables,
                            derived_param=self._derivedParamEqn,
                            transition=transition,
@@ -710,8 +712,8 @@ class SimulateOde(DeterministicOde):
         M = self._generateTransitionMatrix()
 
         transition = list()
-        for i, s1 in enumerate(self._stateList):
-            for j, s2 in enumerate(self._stateList):
+        for i, s1 in enumerate(self.state_list):
+            for j, s2 in enumerate(self.state_list):
                 if M[i,j] != 0:
                     t = Transition(origin=str(s1),
                                    destination=str(s2),

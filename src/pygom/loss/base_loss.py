@@ -1226,7 +1226,7 @@ class BaseLoss(object):
         Plots the solution of all the states and the observed y values
         """
         solution = self._getSolution(all_solution=True)
-        ode_utils.plot_det(solution, self._observeT, self._ode._stateList,
+        ode_utils.plot_det(solution, self._observeT, self._ode.state_list,
                            self._y, self._stateName)
 
     def fit(self, x, lb=None, ub=None, A=None, b=None,

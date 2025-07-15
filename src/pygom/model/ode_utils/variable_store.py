@@ -11,17 +11,69 @@ This object is designed to:
 
 '''
 from types import NoneType
+from collections import OrderedDict
 from indexed import IndexedOrderedDict
+import re
+import warnings
 
-from sympy import Symbol
+from sympy import Symbol, symbols
 import numpy as np
+
+from scipy.stats._distn_infrastructure import rv_frozen
 
 from ..ode_variable import ODEVariable
 from .._model_errors import InputError
 
-from scipy.stats._distn_infrastructure import rv_frozen
+__all__ = ['VariableStore','ParameterStore', 'StateStore']
 
-__all__ = ['VariableStore','ParameterStore']
+re_math = re.compile(r'[-+*\\]')
+re_underscore = re.compile('^_')
+re_symbol_name = re.compile('[A-Za-z_]+')
+
+def _generate_symbol(input_str:str|tuple)->Symbol:
+    '''
+    Check the symbol name and turn it into a symbol 
+    '''
+    # What type of definition are we dealing with?
+    if isinstance(input_str, (list, tuple)):
+        if len(input_str) == 2:
+            if str(input_str[1]).lower() in ("complex", "false"):
+                is_real = 'False'
+                symbol_name = input_str[0]
+            elif str(input_str[1]).lower() in ("real", "true"):
+                is_real = 'True'
+                symbol_name = input_str[0]
+            else:
+                raise InputError("Unexpected second argument for symbol")
+        else:
+            raise InputError("Unexpected number of arguments for symbol")
+    elif isinstance(input_str, str):  # assume real unless stated otherwise
+        is_real = 'True'
+        symbol_name = input_str
+    else:
+        raise InputError("Unexpected input type for symbol")
+
+    #Some basic name checks
+    if re_math.search(symbol_name) is not None:
+        raise InputError('Mathematical operators not allowed in symbol '
+                         'definition')
+    if re_underscore.search(symbol_name) is not None:
+        raise InputError('A symbol cannot have underscore as first character.')
+
+    if symbol_name == 'lambda':
+        raise InputError('lambda is a reserved keyword')
+
+    tempSym = symbols(symbol_name, real=is_real)
+
+    if isinstance(tempSym, Symbol):
+        return tempSym
+    elif isinstance(tempSym, tuple):
+        if len(tempSym) == 0:
+            raise InputError("Input symbol is not valid")
+        return list(tempSym)
+    else:
+        raise InputError("Unexpected result using the input string:"
+                             + str(tempSym))
 
 class IndexShim(object):
     def __init__(self, parent):
@@ -66,24 +118,27 @@ class VariableStore(object):
                             f'{type(key)}.')
         
         # convert the value to an ODEVariable
-        var_obj:ODEVariable = self._check_variable(variable=value)
+        var_list:list[ODEVariable] = self._check_variable(variable=value)
 
-        # check to see if we need to record the position of this key
-        # and record it if we do
-        if key not in self._variables:
-            self._variable_pos[key] = len(self._variables) 
+        for var_obj in var_list:
+            #TODO: Check that this new variable is not in the sibling lists
 
-        # Store the new / updated variable
-        self._variables[key] = var_obj
+            # check to see if we need to record the position of this key
+            # and record it if we do
+            if key not in self._variables:
+                self._variable_pos[key] = len(self._variables) 
 
-        # re-record the value
-        value = var_obj.value
+            # Store the new / updated variable
+            self._variables[key] = var_obj
 
-        # deal with the bootstrapping problem (everything goes in None to start)
-        self._values_by_type[NoneType.__name__] [key]=self._variables[key]
+            # re-record the value
+            value = var_obj.value
 
-        # Properly log the real value (maintains book-keeping)
-        self.set_value(key, value)
+            # deal with the bootstrapping problem (everything goes in None to start)
+            self._values_by_type[NoneType.__name__] [key]=self._variables[key]
+
+            # Properly log the real value (maintains book-keeping)
+            self.set_value(key, value)
 
     def __len__(self)->int:
         '''
@@ -124,21 +179,18 @@ class VariableStore(object):
           of the list of variables
 
         '''
-        var_obj:ODEVariable = self._check_variable(variable=variable,
-                                                   symbol=symbol,
-                                                   real=real
-                                                   )
+        var_list:list[ODEVariable] = self._check_variable(variable=variable,
+                                                          symbol=symbol,
+                                                          real=real
+                                                          )
 
-        #TODO: Check that this new variable is not in the sibling lists
-
-        if var_obj.ID in self._variables:
-            raise AttributeError(f'You may not add a {self.storage_type} more '
-                                 f'than once. {var_obj.ID} already exists.'
-                                 )
-        # Store the new variable
-        self._variables[var_obj.ID] = var_obj
-        # And the position into which we put it
-        self._variable_pos[var_obj.ID] = len(self._variables) - 1
+        for var_obj in var_list:
+            if var_obj.ID in self._variables:
+                raise InputError(f'You may not add a {self.storage_type} more '
+                                    f'than once. {var_obj.ID} already exists.'
+                                    )
+            # Store the new variable
+            self[var_obj.ID] = var_obj
     
     def extend(self, variables:list) -> None:
         '''
@@ -152,31 +204,57 @@ class VariableStore(object):
         '''
         for variable in variables:
             # Quick / safe way to generate the ID although we will "check" twice
-            var_obj:ODEVariable = self._check_variable(variable=variable)
-            self[var_obj.ID] = var_obj
+            var_list:list[ODEVariable] = self._check_variable(variable=variable)
+            for var_obj in var_list:
+                self[var_obj.ID] = var_obj
     
     def _check_variable(self, 
                         variable:str|Symbol|ODEVariable,
                         symbol:Symbol|None=None, 
                         real:bool=True
-                        )->ODEVariable:
-            # Turn variable into a ODEVariable if required
+                        )->list[ODEVariable]:
+        '''
+        Turn variable into a list of ODEVariables
+
+        This will often retun a list of length 1 but because of the way the 
+        string conversion works it may be longer. E.g. a string 'y1:4' will
+        result in a list of ODEVariables representing [y1, y2, y3, y4].
+        '''
+            
         # TODO: Surface the units part of ODEVariable
         if isinstance(variable, str):
-            var_obj = ODEVariable(ID=variable, 
-                                  symbol=symbol,
-                                  real=real
-                                  )
+            # Check what ID / symbol we are going to use
+            if symbol is not None:
+                warnings.warn(f'Variable was a string and symbol was set. Will '
+                              f' using ID given {variable} with symbol '
+                              f'{symbol}')
+                symbols = symbol
+            else:
+                symbols=_generate_symbol(variable)
+
+            # did the conversion result in one or more symbols?
+            if isinstance(symbols, list):
+                var_obj = [ODEVariable(ID=str(symbol),
+                                       symbol=symbol,
+                                       real=real
+                                       )
+                           for symbol in symbols]
+            else:
+                var_obj = [ODEVariable(ID=variable, 
+                                       symbol=symbol,
+                                       real=real
+                                       )]
+                
         elif isinstance(variable, Symbol):
-            var_obj = ODEVariable(ID=str(variable),
-                                  symbol=variable,
-                                  real=real
-                                  )
+            var_obj = [ODEVariable(ID=str(variable),
+                                   symbol=variable,
+                                   real=real
+                                   )]
         elif isinstance(variable, ODEVariable):
-            var_obj = variable
+            var_obj = [variable]
         else:
             raise InputError(f'You may not add an object of type '
-                             f'{type(variable)} as a parameter.')
+                             f'{type(variable)} as a {self.storage_type}.')
         
         return var_obj
 
@@ -259,6 +337,9 @@ class VariableStore(object):
     
     @property
     def variables(self)->list[str]:
+        '''
+        Get a list of strings of the names for all the variables 
+        '''
         return [variable.ID for variable in self._variables.values()]
 
     @property
@@ -268,10 +349,17 @@ class VariableStore(object):
         '''
         return [variable.value for variable in self._variables.values()]
     
+    @property
+    def values_full(self)->list[float]:
+        '''
+        Get a list of all the values stored as ODEVariable objects
+        '''
+        return [variable for variable in self._variables.values()]
+    
     @values.setter
     def values(self,
                values:dict[str: float]|list[tuple[str,float]]|list[float])->None:
-        """
+        '''
         Set the values for the parameters already defined.  Note that unless
         the parameters are entered via a dictionary or a two element list,tuple
         we assume that it is in the order of :meth:`.getParamList`
@@ -283,7 +371,7 @@ class VariableStore(object):
             (string, numeric value) _or_ a single array like object with
             length equal to the number of parameters, in the same order as they
             were created.
-        """
+        '''
         # Either a list or a dict
         if isinstance(values, (list, tuple, np.ndarray)):
             # Looks like a list but is it a dict in disguise (list of tuples)?
@@ -313,18 +401,24 @@ class VariableStore(object):
         else:
             raise InputError(f'Expecting a dict, or iterable '
                              f'input not {type(values)}')
-
+    @property
     def symbol_list(self)->list[Symbol]:
         '''
-        Get a list of all the symbols stored
+        Get a list of all the symbols stored in the order they were added
         '''
         return [variable.symbol for variable in self._variables.values()]
     
+    @property
     def symbol_dict(self)->dict[str: Symbol]:
         '''
-        Get a dict of all the symbols stored
+        Get a OrderedDict of all the symbols stored, keyed on the str 
+        representation and value equal to the symbol
         '''
-        return {variable.ID: variable.symbol for variable in self._variables.values()}
+        result = OrderedDict()
+
+        for variable in self._variables.values():
+            result[variable.ID] = variable.symbol
+        return result
 
 class CallableParameter(object):
     '''A class to wrap a parameter supplied as a callable '''
@@ -357,6 +451,12 @@ class CallableParameter(object):
         return self._callable(n, *self.args, **self.kwargs,)
 
 class ParameterStore(VariableStore):
+    '''
+    A class to store parameters of an ODE system
+
+    This is a specialised version of VariableStore which is able to handle
+    values of a parameter that are draws from a stochatic distribution.
+    '''
     def __init__(self)->None:
         super().__init__(storage_type='parameter',
                          acceptable_value_types=[int,
@@ -454,3 +554,52 @@ class ParameterStore(VariableStore):
 
         # Reset the cache
         self._realisation_vals = None
+
+class StateStore(VariableStore):
+    '''
+    A class to store parameters of an ODE system
+    '''
+    def __init__(self)->None:
+        super().__init__(storage_type='state',
+                         acceptable_value_types=[int,
+                                                 float, 
+                                                 ]
+                         )
+        self._realisation_vals = None
+
+    def _check_variable(self, 
+                        variable:str|Symbol|ODEVariable,
+                        symbol:Symbol|None=None, 
+                        real:bool=True
+                        )->ODEVariable:
+        limits = (None, None)
+
+        # we expect a state defining tuple to be in the form:
+        # ('NAME', (MIN, MAX)). Test this then create a suitable symbol
+        if isinstance(variable, tuple):
+            if len(variable) != 2:
+                raise InputError("Variable must be tuple of length 2")
+            else:
+                if not isinstance(variable[0], str):
+                    raise InputError("Variable must be of type string")
+                elif len(variable[0].strip()) == 0:
+                    raise InputError("Variable has no name")
+                elif not isinstance(variable[1], tuple):
+                    raise InputError("Limits must be type tuple")
+                elif len(variable[1])!=2:
+                    raise InputError("Limit tuple must be length 2")
+                else:
+                    limits = variable[1]
+                    variable = variable[0]
+        
+        results = super()._check_variable(variable=variable,
+                                          symbol=symbol,
+                                          real=real,
+                                         )
+        
+        # apply the limits to this variable
+        for result in results:
+            result.limits = limits
+        return results
+        
+    

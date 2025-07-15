@@ -578,7 +578,7 @@ class ABC():
         # getting the indices of the states we want to plot the solution for
         if plot_states is not None:
             assert all(s in self.obj._ode.state_list for s in plot_states), "It is only possible to plot the solution for states already in the model"
-            state_indices = [self.obj._ode.state_list.index(s) for s in plot_states]
+            state_indices = [self.obj._ode._state_store.get_index(s) for s in plot_states]
         else:
             state_indices = [i for i in range(self.obj._num_state)]       
         

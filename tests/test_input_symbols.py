@@ -1,6 +1,7 @@
 from unittest import main, TestCase
 
 from pygom.model.transition import Transition
+from pygom.model._model_errors import InputError
 from pygom import SimulateOde
 
 class TestInputSymbols(TestCase):
@@ -15,7 +16,7 @@ class TestInputSymbols(TestCase):
 
         total_fail = 0
         for state in state_list:
-            self.assertRaises(AssertionError, SimulateOde,
+            self.assertRaises(InputError, SimulateOde,
                               state, param_list)
         # Happy! :)
 
