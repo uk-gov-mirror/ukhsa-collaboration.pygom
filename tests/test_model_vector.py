@@ -66,9 +66,9 @@ class TestModelVector(unittest.TestCase):
 
     def test_Vector_State3(self):
         # state is a vector
-        state_list = [ODEVariable('y1', 'y1'),
-                      ODEVariable('y2', 's'),
-                      ODEVariable('y3', 'x')]
+        state_list = [ODEVariable('y1'),
+                      ODEVariable('y2'),
+                      ODEVariable('y3')]
         param_list = []
         # transitions are explicit names
         transition_list = [

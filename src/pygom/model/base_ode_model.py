@@ -22,9 +22,6 @@ from .ode_variable import ODEVariable
 from .maths import EventRateVector, PureOdeVector
 from . import ode_utils
 
-re_math = re.compile(r'[-+*\\]')
-re_underscore = re.compile('^_')
-re_symbol_name = re.compile('[A-Za-z_]+')
 re_symbol_index = re.compile(r'.*\[([0-9]+)\]$')
 re_split_string = re.compile(r',|\s')
 
@@ -114,11 +111,26 @@ class BaseOdeModel(object):
         # TODO: This is probably cluttered with definitions that are unnecessary.
         #       Need to comb through.
 
-        # # the 3 required inputs when doing evaluation
+        ##  The 3 required inputs when doing evaluation ###
         # self._state = None
         # self._param = None
         # self._time = None
         # self._state_lims=None
+        # book keeping parameters/states and etc
+
+        ## Parameters ##
+
+        self._parameter_store = None
+        # Create the real parameter store by setting the parameters
+        self.set_parameters(param)
+
+        ## States ##
+        #self._stateList = list()
+        #self._stateDict = dict()
+        #self._add_list_attr_with_limits(state, "state_list")
+        self._state_store = None
+        self.set_states(state)
+
 
         # # we always need time to be a symbol and it should be denoted as t
         self._t = sympy.symbols('t', real=True)
@@ -128,36 +140,18 @@ class BaseOdeModel(object):
         # # allows the system to be defined directly
         # self._ode = None
         self._odeList = list()
-        # self._explicitOde = False
 
-        # # book keeping parameters/states and etc
-        self._parameter_store = None
-        # Create the real parameter store by setting the parameters
-        self.set_parameters(param)
-
-        # # holder for the values of the parameters
-#        self._paramValue = None
-
-        self._stateList = list()
         self._derivedParamList = list()
         self._derivedParamEqn = list()
 
         # # Derived states:
         # # these differ from params since we know the d/dt but not algebraic forms
 
-        # # this three is not actually that useful
-        # # but lets leave it here for now
-        #self._parameters = None
-        self._stochasticParam = None
-        #self._hasNewTransition = HasNewTransition()
-
         # # dictionary for mapping
-#        self._paramDict = dict()
         # # although time is not defined as a parameter, we want to keep
         # # record of it existence
-        #self._parameter_store['t'] = self._t
 
-        self._stateDict = dict()
+        
         self._derivedParamDict = dict()
 
         # # dictionary to store vector symbols
@@ -172,7 +166,7 @@ class BaseOdeModel(object):
 
         # self.tstep=False
 
-        self._add_list_attr_with_limits(state, "state_list")
+        
         #self._add_list_attr(param, 'param_list')
 
         # this has to go after adding the parameters
@@ -265,7 +259,7 @@ class BaseOdeModel(object):
 
         """
         if self._parameter_store.all_values_set:
-            return [(symb, val) for symb, val in zip(self._parameter_store.symbol_list(),
+            return [(symb, val) for symb, val in zip(self._parameter_store.symbol_list,
                                                      self._parameter_store.values)]
 
     @parameters.setter
@@ -423,7 +417,8 @@ class BaseOdeModel(object):
             (:mod:`sympy.core.symbol`,numeric)
 
         """
-        return self._state
+        return [(symb, val) for symb, val in zip(self._state_store.symbol_list,
+                                                self._state_store.values)]
 
     @state.setter
     def state(self, state):
@@ -438,6 +433,7 @@ class BaseOdeModel(object):
             tuple of two elements, (string, numeric)
 
         """
+        raise NotImplementedError('Not clear where this is used')
         err_str = "Input state is of an unexpected type - " + type(state)
 
         if state is not None:
@@ -499,7 +495,7 @@ class BaseOdeModel(object):
             with elements as :mod:`sympy.core.symbol`
 
         """
-        return self._stateList
+        return self._state_store.symbol_list
 
     @state_list.setter
     def state_list(self, state_list):
@@ -574,6 +570,24 @@ class BaseOdeModel(object):
         _add_to_store(new_parameter_store, parameter_list)
         
         self._parameter_store = new_parameter_store
+        self._invalidate_caches()
+
+    def set_states(self, state_list:list[str|ODEVariable])->None:
+        """
+        Set the states for the ode system
+
+        Parameters
+        ----------
+        state_list: list
+            list of strings or ode variables where each is a parameter of the 
+            system
+        """
+        # create a new store to replace the existing (if creations succeds)
+        new_state_store = ode_utils.StateStore()
+
+        _add_to_store(new_state_store, state_list)
+        
+        self._state_store = new_state_store
         self._invalidate_caches()
 
     @property
@@ -769,7 +783,7 @@ class BaseOdeModel(object):
             the number of states
 
         """
-        return len(self._stateList)
+        return len(self._state_store)
 
     @property
     def num_param(self):
@@ -851,7 +865,7 @@ class BaseOdeModel(object):
 
 
     def __str__(self):
-        model_str = "(%s, %s, %s, %s, %s, %s)" % (self._stateList,
+        model_str = "(%s, %s, %s, %s, %s, %s)" % (str(self._state_store),
                                                   str(self._parameter_store),
                                                   self._derivedParamEqn,
                                                   self._transitionList,
@@ -878,57 +892,57 @@ class BaseOdeModel(object):
         else:
             raise InputError("No attribute passed to function")
 
-    def _add_list_attr_with_limits(self, attr, attr_list_name):
-        """
-        Given an attribute (name attr), which is a list 
-        , create a new attribute (name attr_list_name)
-        which is a list of those separated values.
-        e.g. "a,b,c d ef" returns [a, b, c, d, ef]
-        """
-        if attr is not None:
-            if isinstance(attr, str):
-                attr = re_split_string.split(attr)
-                attr = filter(lambda x: not len(x.strip()) == 0, attr)
-                attr_list=list(attr)
-                lim_list=[(0, None)]*len(attr_list)
-            elif isinstance(attr, list):
-                attr_list=[]
-                lim_list=[]
-                for att in attr:
-                    if isinstance(att, tuple):
-                        if len(att)!=2:
-                            raise InputError("Variable must be tuple of length 2")
-                        else:
-                            if not isinstance(att[0], str):
-                                raise InputError("Variable must be of type string")
-                            elif len(att[0].strip()) == 0:
-                                raise InputError("Variable has no name")
-                            elif not isinstance(att[1], tuple):
-                                raise InputError("Limits must be type tuple")
-                            elif len(att[1])!=2:
-                                raise InputError("Limit tuple must be length 2")
-                            else:
-                                attr_list.append(att[0])
-                                lim_list.append(att[1])
-                    elif isinstance(att, str):
-                        if len(att.strip()) == 0:
-                            raise InputError("Variable has no name")
-                        else:
-                            attr_list.append(att)
-                            lim_list.append( (0, None) )   # We assume that the minimum value of each variable is zero
-                    elif isinstance(att, ODEVariable):
-                        attr_list.append(att)
-                        lim_list.append( (0, None) )
-                    else:
-                        raise InputError("List elements should be tuple, string or ODEVariable")
-            # else:
-            #     raise InputError("Input type should either be a string or list")
+    # def _add_list_attr_with_limits(self, attr, attr_list_name):
+    #     """
+    #     Given an attribute (name attr), which is a list 
+    #     , create a new attribute (name attr_list_name)
+    #     which is a list of those separated values.
+    #     e.g. "a,b,c d ef" returns [a, b, c, d, ef]
+    #     """
+    #     if attr is not None:
+    #         if isinstance(attr, str):
+    #             attr = re_split_string.split(attr)
+    #             attr = filter(lambda x: not len(x.strip()) == 0, attr)
+    #             attr_list=list(attr)
+    #             lim_list=[(0, None)]*len(attr_list)
+    #         elif isinstance(attr, list):
+    #             attr_list=[]
+    #             lim_list=[]
+    #             for att in attr:
+    #                 if isinstance(att, tuple):
+    #                     if len(att)!=2:
+    #                         raise InputError("Variable must be tuple of length 2")
+    #                     else:
+    #                         if not isinstance(att[0], str):
+    #                             raise InputError("Variable must be of type string")
+    #                         elif len(att[0].strip()) == 0:
+    #                             raise InputError("Variable has no name")
+    #                         elif not isinstance(att[1], tuple):
+    #                             raise InputError("Limits must be type tuple")
+    #                         elif len(att[1])!=2:
+    #                             raise InputError("Limit tuple must be length 2")
+    #                         else:
+    #                             attr_list.append(att[0])
+    #                             lim_list.append(att[1])
+    #                 elif isinstance(att, str):
+    #                     if len(att.strip()) == 0:
+    #                         raise InputError("Variable has no name")
+    #                     else:
+    #                         attr_list.append(att)
+    #                         lim_list.append( (0, None) )   # We assume that the minimum value of each variable is zero
+    #                 elif isinstance(att, ODEVariable):
+    #                     attr_list.append(att)
+    #                     lim_list.append( (0, None) )
+    #                 else:
+    #                     raise InputError("List elements should be tuple, string or ODEVariable")
+    #         # else:
+    #         #     raise InputError("Input type should either be a string or list")
 
-            self._state_lims=lim_list                           # TODO: maybe assigning limits via a dict is tidier/safer
-            self.__setattr__(attr_list_name, list(attr_list))
+    #         self._state_lims=lim_list                           # TODO: maybe assigning limits via a dict is tidier/safer
+    #         self.__setattr__(attr_list_name, list(attr_list))
 
-        else:
-            raise InputError("No attribute passed to function")
+    #     else:
+    #         raise InputError("No attribute passed to function")
 
     # def set_sp(self):
     #     '''
@@ -961,13 +975,15 @@ class BaseOdeModel(object):
         form. This is used for the autowrap method
         '''
         if self._sp is None:
-            self._sp = self._stateList + [self._t] + self._parameter_store.symbol_list()
+            self._sp = (self._state_store.symbol_list + 
+                        [self._t] + 
+                        self._parameter_store.symbol_list)
 
         return self._sp
 
 
 
-    def get_state_index(self, input_str):
+    def get_state_index(self, input_str:str)->int:
         """
         Finds the index of the state
 
@@ -977,14 +993,18 @@ class BaseOdeModel(object):
             the index of the desired state
 
         """
-        if isinstance(input_str, sympy.Symbol):
-            return self._extractStateIndex(str(input_str))
-        elif isinstance(input_str, ODEVariable):
-            return self._extractStateIndex(input_str.ID)
-        else:
-            return self._extractStateIndex(input_str)
+        if isinstance(input_str, str):
+            return self._state_store.get_index(input_str)
+        elif isinstance(input_str, (tuple, list)):
+            return [self._state_store.get_index(x) for x in input_str]
+        #if isinstance(input_str, sympy.Symbol):
+        #     return self._extractStateIndex(str(input_str))
+        # elif isinstance(input_str, ODEVariable):
+        #     return self._extractStateIndex(input_str.ID)
+        # else:
+        #     return self._extractStateIndex(input_str)
 
-    def get_param_index(self, input_str):
+    def get_param_index(self, input_str:str)->int:
         """
         Finds the index of the parameter
 
@@ -1009,62 +1029,59 @@ class BaseOdeModel(object):
     #
     ####
 
-    def _addSymbol(self, input_str):
-        assert re_math.search(input_str) is None, \
-            "Mathematical operators not allowed in symbol definition"
-        assert re_underscore.search(input_str) is None, \
-            "A symbol cannot have underscore as first character"
+    # def _addSymbol(self, input_str):
+    #     assert re_math.search(input_str) is None, \
+    #         "Mathematical operators not allowed in symbol definition"
+    #     assert re_underscore.search(input_str) is None, \
+    #         "A symbol cannot have underscore as first character"
 
-        if isinstance(input_str, (list, tuple)):
-            if len(input_str) == 2:
-                if str(input_str[1]).lower() in ("complex", "false"):
-                    is_real = 'False'
-                elif str(input_str[1]).lower() in ("real", "true"):
-                    is_real = 'True'
-                else:
-                    raise InputError("Unexpected second argument for symbol")
-            else:
-                raise InputError("Unexpected number of argument for symbol")
-        elif isinstance(input_str, str):  # assume real unless stated otherwise
-            is_real = 'True'
-        else:
-            raise InputError("Unexpected input type for symbol")
+    #     if isinstance(input_str, (list, tuple)):
+    #         if len(input_str) == 2:
+    #             if str(input_str[1]).lower() in ("complex", "false"):
+    #                 is_real = 'False'
+    #             elif str(input_str[1]).lower() in ("real", "true"):
+    #                 is_real = 'True'
+    #             else:
+    #                 raise InputError("Unexpected second argument for symbol")
+    #         else:
+    #             raise InputError("Unexpected number of argument for symbol")
+    #     elif isinstance(input_str, str):  # assume real unless stated otherwise
+    #         is_real = 'True'
+    #     else:
+    #         raise InputError("Unexpected input type for symbol")
 
-        assert input_str != 'lambda', "lambda is a reserved keyword"
-        #tempSym = eval("symbols('%s', real=%s)" % (input_str, is_real))
-        # Replacing with a straight creation of a symbol as all the check code 
-        # above means that that we only get one at a time. This is also
-        # _much_ faster.
-        tempSym = sympy.symbols(input_str, real=is_real)
+    #     assert input_str != 'lambda', "lambda is a reserved keyword"
 
-        if isinstance(tempSym, sympy.Symbol):
-            self._vectorStateDict[input_str] = tempSym
-            return tempSym
-        elif isinstance(tempSym, tuple):
-            assert len(tempSym) != 0, "Input symbol is not valid"
-            # extract the name of the symbol
-            symbolStr = re_symbol_name.search(input_str).group()
-            self._vectorStateDict[symbolStr] = tempSym
-            return list(tempSym)
-        else:
-            raise InputError("Unexpected result using the input string:"
-                             + str(tempSym))
+    #     tempSym = sympy.symbols(input_str, real=is_real)
 
-    def _addStateSymbol(self, input_str):
-        if isinstance(input_str, str):
-            var_obj = ODEVariable(input_str, input_str)
-        elif isinstance(input_str, ODEVariable):
-            var_obj = input_str
+    #     if isinstance(tempSym, sympy.Symbol):
+    #         self._vectorStateDict[input_str] = tempSym
+    #         return tempSym
+    #     elif isinstance(tempSym, tuple):
+    #         assert len(tempSym) != 0, "Input symbol is not valid"
+    #         # extract the name of the symbol
+    #         symbolStr = re_symbol_name.search(input_str).group()
+    #         self._vectorStateDict[symbolStr] = tempSym
+    #         return list(tempSym)
+    #     else:
+    #         raise InputError("Unexpected result using the input string:"
+    #                          + str(tempSym))
 
-        symbol_name = self._addSymbol(var_obj.ID)
+    # def _addStateSymbol(self, input_str):
+    #     if isinstance(input_str, str):
+    #         var_obj = ODEVariable(input_str, input_str)
+    #     elif isinstance(input_str, ODEVariable):
+    #         var_obj = input_str
 
-        if isinstance(symbol_name, sympy.Symbol):
-            if str(symbol_name) not in self._parameter_store:
-                self._addVariable(symbol_name, var_obj, self._stateList, self._stateDict)
+    #     symbol_name = self._addSymbol(var_obj.ID)
+
+    #     if isinstance(symbol_name, sympy.Symbol):
+    #         if str(symbol_name) not in self._parameter_store:
+    #             self._addVariable(symbol_name, var_obj, self._stateList, self._stateDict)
             
-        else:
-            for sym in symbol_name:
-                self._addStateSymbol(str(sym))
+    #     else:
+    #         for sym in symbol_name:
+    #             self._addStateSymbol(str(sym))
 
     # def _addParamSymbol(self, input_str):
     #     # turn input_str into a ODEVarialbe if required
@@ -1087,7 +1104,7 @@ class BaseOdeModel(object):
     #             self._addParamSymbol(str(sym))
 
     def _addDerivedParam(self, name, eqn):
-        var_obj = ODEVariable(name, name)
+        var_obj = ODEVariable(ID=name)
         fixed_eqn = checkEquation(eqn, self)
         self._addVariable(fixed_eqn, var_obj, self._derivedParamList, self._derivedParamDict)
 
@@ -1238,8 +1255,8 @@ class BaseOdeModel(object):
                 magnitude=checkEquation(transition._magnitude, self)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.T:
-                    origin_index=self.state_list.index(transition.origin)
-                    destination_index=self.state_list.index(transition.destination)
+                    origin_index=self.get_state_index(transition.origin)
+                    destination_index=self.get_state_index(transition.destination)
                     self._transitionMatrix[origin_index, destination_index] += rate_of_change
 
         return self._transitionMatrix
@@ -1254,10 +1271,10 @@ class BaseOdeModel(object):
                 magnitude=checkEquation(transition._magnitude, self)
                 rate_of_change=magnitude*rate
                 if transition.transition_type==TransitionType.B:
-                    destination_index=self.state_list.index(transition.destination)
+                    destination_index=self.get_state_index(transition.destination)
                     self._birthDeathVector[destination_index] += rate_of_change
                 elif transition.transition_type==TransitionType.D:
-                    origin_index=self.state_list.index(transition.origin)
+                    origin_index=self.get_state_index(transition.origin)
                     self._birthDeathVector[origin_index] -= rate_of_change
 
         return self._birthDeathVector
@@ -1360,14 +1377,14 @@ class BaseOdeModel(object):
         for event_index, event in enumerate(self.event_list):
             for transition in event.transition_list:
                 if transition.transition_type==TransitionType.B:
-                    destination_index=self.state_list.index(transition.destination)
+                    destination_index=self.get_state_index(transition.destination)
                     self._lambdaMat[destination_index, event_index] = 1
                 elif transition.transition_type==TransitionType.D:
-                    origin_index=self.state_list.index(transition.origin)
+                    origin_index=self.get_state_index(transition.origin)
                     self._lambdaMat[origin_index, event_index] = 1
                 elif transition.transition_type==TransitionType.T:
-                    origin_index=self.state_list.index(transition.origin)
-                    destination_index=self.state_list.index(transition.destination)
+                    origin_index=self.get_state_index(transition.origin)
+                    destination_index=self.get_state_index(transition.destination)
                     self._lambdaMat[origin_index, event_index] = 1
                     self._lambdaMat[destination_index, event_index] = 1
 
@@ -1460,12 +1477,12 @@ class BaseOdeModel(object):
         state_out = list()
         if self.num_state == 1:
             if isinstance(state, Number):
-                state_out.append((self._stateList[0], state))
+                state_out.append((self._state_store.symbol_list[0], state))
             else:
                 raise InputError("Number of input state not as expected")
         else:
             if len(state) == self.num_state:
-                for i, si in enumerate(self._stateList):
+                for i, si in enumerate(self._state_store.symbol_list):
                     state_out.append((si, state[i]))
             else:
                 raise InputError("Number of input state not as expected")
@@ -1533,14 +1550,14 @@ class BaseOdeModel(object):
         """
         Iterator through the states in symbolic form
         """
-        for s in self._stateList:
-            yield self._stateDict[s.ID]
+        for s in self._state_store.symbol_list:
+            yield s
 
     def _iterParamList(self):
         """
         Iterator through the parameters in symbolic form
         """
-        for p in self._parameter_store.symbol_list():
+        for p in self._parameter_store.symbol_list:
             yield p
 
     ########################################################################
@@ -1568,56 +1585,56 @@ class BaseOdeModel(object):
     #         raise InputError("Input parameter: %s does not exist" % input_str)
 
     # TODO: figure out why this is so awkward
-    def _extractStateIndex(self, input_str):
-        '''
-        Find the index of the string or sympy.Symbol 'input_str'
-        '''
-        if input_str is None:
-            return list()
-        else:
-            if isinstance(input_str, (str, sympy.Symbol)):
-                input_str = [input_str] # make this an iterable TODO: why?
+    # def _extractStateIndex(self, input_str):
+    #     '''
+    #     Find the index of the string or sympy.Symbol 'input_str'
+    #     '''
+    #     if input_str is None:
+    #         return list()
+    #     else:
+    #         if isinstance(input_str, (str, sympy.Symbol)):
+    #             input_str = [input_str] # make this an iterable TODO: why?
 
-            if hasattr(input_str, '__iter__'):
-                return [self._extractStateIndexSingle(i) for i in input_str]
-            else:
-                raise Exception("Input must be a string or an iterable " +
-                                "object of string")
+    #         if hasattr(input_str, '__iter__'):
+    #             return [self._extractStateIndexSingle(i) for i in input_str]
+    #         else:
+    #             raise Exception("Input must be a string or an iterable " +
+    #                             "object of string")
 
-    def _extractStateIndexSingle(self, input_str):
-        '''
-        Find the index of the string or sympy.Symbol 'input_str'
-        '''
-        if isinstance(input_str, ODEVariable):
-            return self._stateList.index(input_str)
-        else:
-            sym_name = self._extractStateSymbol(input_str)
-            return self._stateList.index(sym_name)
+    # def _extractStateIndexSingle(self, input_str):
+    #     '''
+    #     Find the index of the string or sympy.Symbol 'input_str'
+    #     '''
+    #     if isinstance(input_str, ODEVariable):
+    #         return self._stateList.index(input_str)
+    #     else:
+    #         sym_name = self._extractStateSymbol(input_str)
+    #         return self._stateList.index(sym_name)
 
-    def _extractStateSymbol(self, input_str):
-        if isinstance(input_str, ODEVariable):
-            input_str = input_str.ID
+    # def _extractStateSymbol(self, input_str):
+    #     if isinstance(input_str, ODEVariable):
+    #         input_str = input_str.ID
 
-        if input_str in self._stateDict:
-            return self._stateDict[input_str]
-        else:
-            sym_name = re_symbol_name.search(input_str)
-            if sym_name is not None:
-                if sym_name.group() in self._vectorStateDict:
-                    index = re_symbol_index.findall(input_str)
-                    if index is not None and len(index) == 1:
-                        _i = int(index[0])
-                        return self._vectorStateDict[sym_name.group()][_i]
-                    else:
-                        raise InputError("Cannot find input state, input {} " 
-                                         "appears to be a vector that was " 
-                                         "not initialized".format(sym_name))
-                else:
-                    raise InputError("Cannot find input state, input {} " 
-                                     "likely to be a vector".format(sym_name))
-            else:
-                raise InputError("Input state: {} does not exist"
-                                 "".format(input_str))
+    #     if input_str in self._stateDict:
+    #         return self._stateDict[input_str]
+    #     else:
+    #         sym_name = re_symbol_name.search(input_str)
+    #         if sym_name is not None:
+    #             if sym_name.group() in self._vectorStateDict:
+    #                 index = re_symbol_index.findall(input_str)
+    #                 if index is not None and len(index) == 1:
+    #                     _i = int(index[0])
+    #                     return self._vectorStateDict[sym_name.group()][_i]
+    #                 else:
+    #                     raise InputError("Cannot find input state, input {} " 
+    #                                      "appears to be a vector that was " 
+    #                                      "not initialized".format(sym_name))
+    #             else:
+    #                 raise InputError("Cannot find input state, input {} " 
+    #                                  "likely to be a vector".format(sym_name))
+    #         else:
+    #             raise InputError("Input state: {} does not exist"
+    #                              "".format(input_str))
 
     def _extractUpperTriangle(self, A, nrow=None, ncol=None):
         """

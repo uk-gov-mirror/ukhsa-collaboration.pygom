@@ -285,7 +285,7 @@ class DeterministicOde(BaseOdeModel):
         # a really stupid way to determining whether it is linear.
         # have not figured out a better way yet...
         a = J.atoms()
-        for s in self._stateDict.values():
+        for s in self._state_store.symbol_list:
             if s in a:
                 is_linear = False
 #         for i in range(0, self._numState):
@@ -325,7 +325,7 @@ class DeterministicOde(BaseOdeModel):
         A = self.ode.get_equation()
         B = sympy.zeros(A.rows,2)
         for i in range(A.shape[0]):
-            B[i,0] = sympy.symbols('d' + str(self._stateList[i]) + '/dt=')
+            B[i,0] = sympy.symbols('d' + str(self.state_list[i]) + '/dt=')
             B[i,1] = A[i]
 
         if latex_output:
@@ -872,13 +872,18 @@ class DeterministicOde(BaseOdeModel):
         '''
         # type checking
         self._setIntegrateTime(t)
-        # if our parameters are stochastic, then we are going to generate
-        # another set of parameters to run
-        if self._stochasticParam is not None:
-            # this should always be true.  If not, then we have screwed up
-            # somewhere within this class.
-            if isinstance(self._stochasticParam, dict):
-                self.parameters = self._stochasticParam
+
+        # get a new draw of any stochastic parameters
+        self._parameter_store.new_realisation()
+
+        # # if our parameters are stochastic, then we are going to generate
+        # # another set of parameters to run
+        # if self._parameter_store.has_stochastic_parameters:
+        #     # this should always be true.  If not, then we have screwed up
+        #     # somewhere within this class.
+        #     raise Exception("stop! how do we deal with generated vs. fixed values?")
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
         return self._integrate(self._odeTime, full_output)
 
@@ -906,10 +911,12 @@ class DeterministicOde(BaseOdeModel):
         self._setIntegrateTime(t)
         # if our parameters are stochastic, then we are going to generate
         # another set of parameters to run
-        if self._stochasticParam is not None:
-            # this should always be true
-            if isinstance(self._stochasticParam, dict):
-                self.parameters = self._stochasticParam
+        self._parameter_store.new_realisation()
+        
+        # if self._stochasticParam is not None:
+        #     # this should always be true
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
         return self._integrate2(self._odeTime, full_output, method)
 
@@ -985,11 +992,11 @@ class DeterministicOde(BaseOdeModel):
         if self._odeSolution is None:
             try:
                 self._integrate(self._odeTime)
-                ode_utils.plot_det(self._odeSolution, self._odeTime, self._stateList)
+                ode_utils.plot_det(self._odeSolution, self._odeTime, self.state_list)
             except:
                 raise IntegrationError("Have not performed the integration yet")
         else:
-            ode_utils.plot_det(self._odeSolution, self._odeTime, self._stateList)
+            ode_utils.plot_det(self._odeSolution, self._odeTime, self.state_list)
 
     ########################################################################
     # Unrolling of the information from vector to sympy

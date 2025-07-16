@@ -13,7 +13,7 @@ class PureOdeVector(NumericMethod):
         pure_ode = sympy.zeros(self._parent_ode.num_state, 1)
         # Now extract any ODE contributions from ODE type transitions
         for ode in self._parent_ode.ode_list:
-            origin_index=self._parent_ode.state_list.index(ode.origin)
+            origin_index=self._parent_ode._state_store.get_index(ode.origin)
             pure_ode[origin_index] += checkEquation(ode.equation, self._parent_ode)
 
         self._pureOdeVector=pure_ode

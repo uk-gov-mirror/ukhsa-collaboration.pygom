@@ -77,8 +77,10 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
     A single sympy equation or list of sympy equations (depending on if 
     input_str is a single string or a list) made from the string(s)
     """
-    input_var = ode._parameter_store.symbol_dict() | ode._stateDict | ode._vectorStateDict
-        
+    input_var = (ode._parameter_store.symbol_dict | 
+                 ode._state_store.symbol_dict | 
+                 ode._vectorStateDict)
+     
     derived_var = ode._derivedParamDict
 
     if isinstance(input_str, str):
@@ -111,6 +113,8 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
         # # it returns a symbolic expression 
         # # _eqn = eval(_inputStr)
         # _eqn = parse_expr(_inputStr, locals())
+        print(_inputStr)
+        print(input_var|derived_var)
         eqn = parse_expr(_inputStr, input_var | derived_var)
         # print _inputStr, type(_eqn), isinstance(_eqn, Expr)
         if subs_derived:

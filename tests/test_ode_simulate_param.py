@@ -43,7 +43,7 @@ class TestSimulateParam(TestCase):
         self.solution = None
         self.odeS = None
 
-    def test_simulate_param_1(self):
+    def test_solve_determ_1(self):
         """
         Stochastic ode under the interpretation that the parameters follow
         some sort of distribution.  In this case, a scipy.distn object.
@@ -58,13 +58,13 @@ class TestSimulateParam(TestCase):
         self.odeS.initial_values = (self.x0, self.t0)
 
         # now we generate the solutions
-        sim = self.odeS.simulate_param(self.t[1::], self.n_sim, parallel=False)
+        sim = self.odeS.solve_determ(self.t[1::], self.n_sim, parallel=False)
         solution_diff = sim - self.solution
 
         # test :)
         self.assertTrue(np.any(abs(solution_diff) <= 0.2))
 
-    def test_simulate_param_2(self):
+    def test_solve_determ_2(self):
         """
         Stochastic ode under the interpretation that the parameters follow
         some sort of distribution.  In this case, a function handle which
@@ -81,13 +81,13 @@ class TestSimulateParam(TestCase):
         self.odeS.initial_values = (self.x0, self.t0)
 
         # now we generate the solutions
-        sim = self.odeS.simulate_param(self.t[1::], self.n_sim, parallel=False)
+        sim = self.odeS.solve_determ(self.t[1::], self.n_sim, parallel=False)
         solution_diff = sim - self.solution
 
         # test :)
         self.assertTrue(np.all(abs(solution_diff) <= 0.2))
 
-    def test_simulate_param_same_seed(self):
+    def test_solve_determ_same_seed(self):
         """
         Stochastic ode under the interpretation that the parameters follow
         some sort of distribution and simulating using the same seed
@@ -105,10 +105,10 @@ class TestSimulateParam(TestCase):
         # now we generate the solutions
         seed = np.random.randint(1000)
         np.random.seed(seed)
-        solution1, Yall1 = self.odeS.simulate_param(self.t[1::], self.n_sim,
+        solution1, Yall1 = self.odeS.solve_determ(self.t[1::], self.n_sim,
                                                     parallel=False, full_output=True)
         np.random.seed(seed)
-        solution2, Yall2 = self.odeS.simulate_param(self.t[1::], self.n_sim,
+        solution2, Yall2 = self.odeS.solve_determ(self.t[1::], self.n_sim,
                                                     parallel=False, full_output=True)
 
         self.assertTrue(np.allclose(solution1, solution2))
@@ -116,7 +116,7 @@ class TestSimulateParam(TestCase):
         for i, yi in enumerate(Yall1):
             self.assertTrue(np.allclose(Yall2[i], yi))
 
-    def test_simulate_param_different_seed(self):
+    def test_solve_determ_different_seed(self):
         """
         Stochastic ode under the interpretation that the parameters follow
         some sort of distribution and simulating using different seeds
@@ -133,10 +133,10 @@ class TestSimulateParam(TestCase):
 
         # now we generate the solutions
         np.random.seed(1)
-        solution1, Yall1 = self.odeS.simulate_param(self.t[1::], 1000,
+        solution1, Yall1 = self.odeS.solve_determ(self.t[1::], 1000,
                                                     parallel=False, full_output=True)
         np.random.seed(2)
-        solution2, Yall2 = self.odeS.simulate_param(self.t[1::], 1000,
+        solution2, Yall2 = self.odeS.solve_determ(self.t[1::], 1000,
                                                     parallel=False, full_output=True)
 
         self.assertFalse(np.allclose(solution1, solution2))

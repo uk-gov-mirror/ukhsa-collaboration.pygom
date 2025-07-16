@@ -7,6 +7,8 @@
 from sympy.physics.units.quantities import Quantity
 import sympy
 
+from ._model_errors import InputError
+
 
 class ODEVariable(object):
     """
@@ -26,18 +28,20 @@ class ODEVariable(object):
     """
     def __init__(self, 
                  ID:str, 
-                 symbol:None|sympy.Symbol,
+                 symbol:None|sympy.Symbol=None,
                  value:None|str=None,
                  units:None|Quantity=None,
-                 real:bool=False
+                 real:bool=False,
+                 limits=(None, None)
                  ):
         self.ID = ID
         if symbol is None:
             # Create a symbol if we need to
             symbol = sympy.symbols(ID, real=real)
-        self.symbol= symbol
+        self.symbol = symbol
         self.value = value
         self.units = units
+        self.limits = limits
 
     def __str__(self)->str:
         return self.ID
@@ -46,7 +50,8 @@ class ODEVariable(object):
         return (f'ODEVariable({repr(self.ID)}, '
                             f'{repr(self.symbol)}, '
                             f'{repr(self.value)}, '
-                            f'{repr(self.units)})')
+                            f'{repr(self.units)}, '
+                            f'{repr(self.limits)}')
                                                 
 
     def __eq__(self, other):
@@ -55,7 +60,9 @@ class ODEVariable(object):
         elif isinstance(other, ODEVariable):
             return self.ID == other.ID and \
                 self.symbol == other.symbol and \
-                self.units == other.units
+                self.units == other.units and \
+                self.limits == other.limits
+
         elif isinstance(other, sympy.Symbol):
             return self.ID == str(other)
         else:
@@ -75,3 +82,15 @@ class ODEVariable(object):
 
     def __ge__(self, other):
         raise NotImplementedError("Only equality comparison allowed")
+    
+    @property
+    def symbol(self):
+        return self._symbol
+    
+    @symbol.setter
+    def symbol(self, value:sympy.Symbol):
+        if not isinstance(value, sympy.Symbol):
+            raise InputError('The symbol attribute must be a sympy Symbol ' 
+                             'object.')
+        self._symbol = value
+
