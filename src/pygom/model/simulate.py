@@ -165,7 +165,7 @@ class SimulateOde(DeterministicOde):
                       self.transition_variance,
                       output_time=output_time))
 
-    def solve_determ(self, t, iteration, parallel=False, full_output=False):
+    def solve_determ(self, t, iteration=1, parallel=False, full_output=False):
         '''
         Simulate the ode by generating new realization of the stochastic
         parameters and integrate the system deterministically.
@@ -195,7 +195,9 @@ class SimulateOde(DeterministicOde):
         # when they are set to be constant is just plain stupid
 
         if not self._parameter_store.has_stochastic_parameters:
-            raise InputError("System only has deterministic parameters.")
+            warnings.warn("System only has deterministic parameters, maybe you"
+                          "just want to integrate the model using the "
+                          "integrate method?")
         if iteration is None:
             raise InputError("Need to specify the number of iterations")
         if t is None:
