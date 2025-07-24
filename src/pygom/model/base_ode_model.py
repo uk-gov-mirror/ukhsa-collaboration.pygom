@@ -973,7 +973,8 @@ class BaseOdeModel(object):
         '''
         self._sp = (self._state_store.symbol_dict | 
                     {'t': self._t} | 
-                    self._parameter_store.symbol_dict)
+                    self._parameter_store.symbol_dict |
+                    self._derivedParamDict)
 
     @property
     def states_and_parameters(self)->list[sympy.Symbol]:
@@ -996,8 +997,6 @@ class BaseOdeModel(object):
             self._generate_states_and_parameters()
 
         return self._sp
-
-
 
     def get_state_index(self, input_str:str)->int:
         """

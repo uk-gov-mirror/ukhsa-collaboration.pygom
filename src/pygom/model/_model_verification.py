@@ -81,7 +81,7 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
     #              ode._state_store.symbol_dict | 
     #              ode._vectorStateDict)
      
-    derived_var = ode._derivedParamDict
+    # derived_var = ode._derivedParamDict
 
     if isinstance(input_str, str):
         input_str = [input_str]
@@ -113,13 +113,14 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
         # # it returns a symbolic expression 
         # # _eqn = eval(_inputStr)
         # _eqn = parse_expr(_inputStr, locals())
-        eqn = parse_expr(_inputStr, ode.states_and_parameters_dict | derived_var)
+        # eqn = parse_expr(_inputStr, ode.states_and_parameters_dict | derived_var)
+        eqn = parse_expr(_inputStr, ode.states_and_parameters_dict)
         # print _inputStr, type(_eqn), isinstance(_eqn, Expr)
         if subs_derived:
             # because these are the derived parameters, we need to substitute
             # them back in the formula
             if isinstance(eqn, Expr):
-                for key, value in derived_var.items():
+                for key, value in ode._derivedParamDict.items():
                     eqn = eqn.subs(key, value)
         list_out.append(eqn)
         # logging.debug(_eqn)
