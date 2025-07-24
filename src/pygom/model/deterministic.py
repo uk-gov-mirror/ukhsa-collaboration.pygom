@@ -329,10 +329,13 @@ class DeterministicOde(BaseOdeModel):
             B[i,1] = A[i]
 
         if latex_output:
-            logging.debug(sympy.latex(B, mat_str="array", mat_delim=None,
-                              inv_trig_style='full'))
+            logging.debug(sympy.latex(B, 
+                                      mat_str="array", 
+                                      mat_delim=None,
+                                      inv_trig_style='full'))
         else:
-            sympy.pretty_logging.debug(B)
+            logging.debug(sympy.pretty(B, 
+                                       use_unicode=True))
 
     def get_transition_graph(self, file_name=None, show=True):
         '''

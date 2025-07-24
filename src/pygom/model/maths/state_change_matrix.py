@@ -26,10 +26,10 @@ class StateChangeMatrix(NumericMethod):
                 magnitude=checkEquation(transition._magnitude, 
                                         self._parent_ode)
                 if transition.transition_type==TransitionType.B:
-                    destination_index=self._state_store.get_index(transition.destination)
+                    destination_index=self._parent_ode._state_store.get_index(transition.destination)
                     vMat[destination_index, event_index] += magnitude
                 elif transition.transition_type==TransitionType.D:
-                    origin_index=self._state_store.get_index(transition.origin)
+                    origin_index=self._parent_ode._state_store.get_index(transition.origin)
                     vMat[origin_index, event_index] -= magnitude
                 elif transition.transition_type==TransitionType.T:
                     origin_index=self._parent_ode._state_store.get_index(transition.origin)

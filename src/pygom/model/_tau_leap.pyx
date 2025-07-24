@@ -1,5 +1,6 @@
-import numpy as np
 import logging
+
+import numpy as np
 cimport numpy as np
 
 cimport scipy.special.cython_special as csc

@@ -967,17 +967,33 @@ class BaseOdeModel(object):
     #              pass
             
     #     return None
-    
+    def _generate_states_and_parameters(self)->None:
+        '''
+        Creates the states and parameters cache
+        '''
+        self._sp = (self._state_store.symbol_dict | 
+                    {'t': self._t} | 
+                    self._parameter_store.symbol_dict)
+
     @property
-    def states_and_parameters(self)->list:
+    def states_and_parameters(self)->list[sympy.Symbol]:
         '''
         An attribute collecting together all the states and variables in sympy
         form. This is used for the autowrap method
         '''
         if self._sp is None:
-            self._sp = (self._state_store.symbol_list + 
-                        [self._t] + 
-                        self._parameter_store.symbol_list)
+            self._generate_states_and_parameters()
+
+        return list(self._sp.values())
+    
+    @property
+    def states_and_parameters_dict(self)->dict[str: sympy.Symbol]:
+        '''
+        An attribute collecting together all the states and variables in sympy
+        form. This is used for the check equation function.
+        '''
+        if self._sp is None:
+            self._generate_states_and_parameters()
 
         return self._sp
 

@@ -10,6 +10,7 @@ from .._model_verification import simplifyEquation
 
 class Hessian(NumericMethod):
     method_name = 'hessian'
+    _Hessian = None
     def get_equation(self):
         '''
         Return the Hessian of the ode in algebraic form
