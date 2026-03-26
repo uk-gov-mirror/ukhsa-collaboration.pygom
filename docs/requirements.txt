@@ -13,3 +13,4 @@ cython>=0.29
 nbsphinx
 jupyter-book>=0.15.0
 docutils==0.17.1
+requests>=2.33.0 # not directly required, pinned by Snyk to avoid a vulnerability
