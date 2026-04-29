@@ -52,7 +52,13 @@ class TestSimulateJump(TestCase):
         self.odeS.transition_mean(solution[self.index,:], self.t[self.index])
         self.odeS.transition_variance(solution[self.index,:], self.t[self.index])
 
-        _simX, _simJump, _simT = self.odeS.solve_stochast(250, self.n_sim, parallel=False, full_output=True)
+        result1 = self.odeS.solve_stochastic(
+            t=250.0,
+            method="fixed_tau",
+            tau=0.1,
+            iteration=self.n_sim,
+            parallel=False,
+            seed=0)
 
     def test_simulate_jump_same_seed(self):
         """
@@ -67,30 +73,54 @@ class TestSimulateJump(TestCase):
         # dask as the backend.  This does not use the seed.
         # But if we run it in serial then the seed will be used
         # and the output will be identical
-        np.random.seed(seed)
-        simX1, simJump1, simT1 = self.odeS.solve_stochast(self.t_seed[1::], self.n_sim,
-                                                          parallel=False, full_output=True)
-        np.random.seed(seed)
-        simX2, simJump2, simT2 = self.odeS.solve_stochast(self.t_seed[1::], self.n_sim,
-                                                          parallel=False, full_output=True)
 
-        for i, xi in enumerate(simX1):
-            self.assertTrue(np.allclose(simX2[i], xi))
+        # np.random.seed(seed)
+
+        result1 = self.odeS.solve_stochastic(
+            t=self.t_seed[1::],
+            method="fixed_tau",
+            tau=0.1,
+            iteration=self.n_sim,
+            parallel=False,
+            seed=seed)
+
+        result2 = self.odeS.solve_stochastic(
+            t=self.t_seed[1::],
+            method="fixed_tau",
+            tau=0.1,
+            iteration=self.n_sim,
+            parallel=False,
+            seed=seed)
+
+        for i in range(self.n_sim):
+            self.assertTrue(np.allclose(result1[i].result.x, result2[i].result.x))
 
     def test_simulate_jump_different_seed(self):
         """
         Testing that using a different seed produces different simulations
         under a CTMC interpretation regardless of the backend.
         """
-        np.random.seed(1)
-        simX1, simJump1, simT1 = self.odeS.solve_stochast(self.t_seed[1::], self.n_sim,
-                                                          parallel=False, full_output=True)
-        np.random.seed(2)
-        simX2, simJump2, simT2 = self.odeS.solve_stochast(self.t_seed[1::], self.n_sim,
-                                                          parallel=False, full_output=True)
 
-        for i, xi in enumerate(simX1):
-            self.assertFalse(np.allclose(simX2[i], xi))
+        result1 = self.odeS.solve_stochastic(
+            t=self.t_seed[1::],
+            method="fixed_tau",
+            tau=0.1,
+            iteration=self.n_sim,
+            parallel=False,
+            seed=1)
+
+        result2 = self.odeS.solve_stochastic(
+            t=self.t_seed[1::],
+            method="fixed_tau",
+            tau=0.1,
+            iteration=self.n_sim,
+            parallel=False,
+            seed=2)
+
+        for i in range(self.n_sim):
+            self.assertFalse(np.allclose(result1[i].result.x, result2[i].result.x))
+
+
 
 
 if __name__ == '__main__':

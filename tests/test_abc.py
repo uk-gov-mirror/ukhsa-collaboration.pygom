@@ -10,7 +10,9 @@ class TestABC(TestCase):
     
     def setUp(self):
         # define the model and parameters
-        self.ode = common_models.SIR_norm({'beta':0.5, 'gamma':1.0/3.0})
+        beta = 0.5
+        gamma = 1.0/3.0
+        self.ode = common_models.SIR_norm({'beta':beta, 'gamma':gamma})
         
         # the initial state, normalized to one
         i0=1.27e-6
@@ -19,10 +21,11 @@ class TestABC(TestCase):
         self.t = np.linspace(0, 150, 100)
         self.ode.initial_values = (self.x0, self.t[0])
         # find the solution
-        self.solution = self.ode.integrate(self.t[1::])
+        # self.solution = self.ode.integrate(self.t[1::])
+        self.solution = self.ode.solve_deterministic(self.t).result.x
         
         # what the posterior median estimates should be close to
-        self.target = np.array([0.5, 1.0/3.0])
+        self.target = np.array([beta, gamma])
         
         
     def test_SIR_abc_SquareLoss(self):
@@ -44,7 +47,11 @@ class TestABC(TestCase):
         # the estimate for beta must be between 0.485 and 0.515
         # the estimate for gamma must be between 0.32 and 0.3466        
         med_est = np.median(sir_abc.res, axis=0)
-        self.assertTrue(np.allclose(med_est, self.target, 1e-2, 1e-2))
+
+        self.assertTrue(
+            np.allclose(med_est, self.target, rtol=1e-2, atol=1e-2),
+            msg=f"Values differ:\nmed_est={med_est}\ntarget={self.target}\ndiff={med_est - self.target}"
+        )
         
         
     def test_SIR_abc_SquareLoss_MNN(self):
@@ -54,10 +61,16 @@ class TestABC(TestCase):
         sir_obj = pgabc.create_loss("SquareLoss", parameters, self.ode, self.x0, self.t[0],
                                   self.t[1::], y, ['I', 'R'])
         sir_abc = pgabc.ABC(sir_obj, parameters)
+
+        # getting the posterior sample
         sir_abc.get_posterior_sample(N=100, tol=np.inf, G=10, q=0.5, M=50)
         sir_abc.continue_posterior_sample(N=100, tol=sir_abc.next_tol, G=10, q=0.5, M=50)
         med_est = np.median(sir_abc.res, axis=0)
-        self.assertTrue(np.allclose(med_est, self.target, 1e-2, 1e-2))
+
+        self.assertTrue(
+            np.allclose(med_est, self.target, rtol=1e-2, atol=1e-2),
+            msg=f"Values differ:\nmed_est={med_est}\ntarget={self.target}\ndiff={med_est - self.target}"
+        )
         
         
     def test_SIR_abc_NormalLoss(self):
@@ -72,7 +85,11 @@ class TestABC(TestCase):
         sir_abc.get_posterior_sample(N=100, tol=np.inf, G=10, q=0.5)
         sir_abc.continue_posterior_sample(N=100, tol=sir_abc.next_tol, G=10, q=0.5)
         med_est = np.median(sir_abc.res, axis=0)
-        self.assertTrue(np.allclose(med_est, self.target, 1e-2, 1e-2))
+
+        self.assertTrue(
+            np.allclose(med_est, self.target, rtol=1e-2, atol=1e-2),
+            msg=f"Values differ:\nmed_est={med_est}\ntarget={self.target}\ndiff={med_est - self.target}"
+        )
         
         
     def tearDown(self):
