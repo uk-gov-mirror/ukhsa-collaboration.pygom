@@ -81,6 +81,7 @@ class IndexShim(object):
     
     def __getitem__(self, item:int):
         return self.parent._variables.values()[item]
+
 class VariableStore(object):
     def __init__(self, 
                  storage_type:str='variable', 
@@ -211,8 +212,8 @@ class VariableStore(object):
     def _check_variable(self, 
                         variable:str|Symbol|ODEVariable,
                         symbol:Symbol|None=None, 
-                        real:bool=True
-                        )->list[ODEVariable]:
+                        real:bool=True,
+                        limits:tuple|None=None)->list[ODEVariable]:
         '''
         Turn variable into a list of ODEVariables
 
@@ -233,23 +234,24 @@ class VariableStore(object):
                 symbols=_generate_symbol(variable)
 
             # did the conversion result in one or more symbols?
+            # TODO: if a list i don't think thiw will work
             if isinstance(symbols, list):
                 var_obj = [ODEVariable(ID=str(symbol),
                                        symbol=symbol,
-                                       real=real
-                                       )
+                                       real=real,
+                                       limits=limits)
                            for symbol in symbols]
             else:
                 var_obj = [ODEVariable(ID=variable, 
                                        symbol=symbol,
-                                       real=real
-                                       )]
+                                       real=real,
+                                       limits=limits)]
                 
         elif isinstance(variable, Symbol):
             var_obj = [ODEVariable(ID=str(variable),
                                    symbol=variable,
-                                   real=real
-                                   )]
+                                   real=real,
+                                   limits=limits)]
         elif isinstance(variable, ODEVariable):
             var_obj = [variable]
         else:
@@ -420,35 +422,71 @@ class VariableStore(object):
             result[variable.ID] = variable.symbol
         return result
 
-class CallableParameter(object):
-    '''A class to wrap a parameter supplied as a callable '''
-    def __init__(self, value:tuple):
-        '''
-        parameters
-        ----------
-        value: tuple in either (callable, (paramerters....)) or 
-          (callable, {parameters})
-        '''
+# class CallableParameter(object):
+#     '''A class to wrap a parameter supplied as a callable '''
+#     def __init__(self, value:tuple):
+#         '''
+#         parameters
+#         ----------
+#         value: tuple in either (callable, (paramerters....)) or 
+#           (callable, {parameters})
+#         '''
         
-        if not callable(value[0]):
-            raise InputError('First element should be a callable when using '
-                             'multi argument distribution definition.  Type of '
-                             f'input was {type(value[0])}.')
-        self._callable = value[0] 
+#         if not callable(value[0]):
+#             raise InputError('First element should be a callable when using '
+#                              'multi argument distribution definition.  Type of '
+#                              f'input was {type(value[0])}.')
+#         self._callable = value[0] 
 
-        # Now deal with the parameters
+#         # Now deal with the parameters
+#         if isinstance(value[1], dict):
+#             self.kwargs = value[1]
+#             self.args = []
+#         elif isinstance(value[1], tuple):
+#             self.kwargs = {}
+#             self.args = value[1]
+#         else:
+#             raise InputError('Second element should be either a tuple or a '
+#                              'dict when using multi-argument distribution '
+#                              f'definition. Type of input was {type(value[1])}.')
+#     def __call__(self, n=1):
+#         return self._callable(n, *self.args, **self.kwargs,)
+    
+class CallableParameter:
+    def __init__(self, value: tuple, rng=None):
+        if not callable(value[0]):
+            raise InputError("First element must be callable.")
+        self._callable = value[0]
+
+        # parse args/kwargs
         if isinstance(value[1], dict):
-            self.kwargs = value[1]
             self.args = []
+            self.kwargs = value[1]
         elif isinstance(value[1], tuple):
-            self.kwargs = {}
             self.args = value[1]
+            self.kwargs = {}
         else:
             raise InputError('Second element should be either a tuple or a '
                              'dict when using multi-argument distribution '
                              f'definition. Type of input was {type(value[1])}.')
+
+        # TODO: validate method to store rng
+        self.rng = rng
+
     def __call__(self, n=1):
-        return self._callable(n, *self.args, **self.kwargs,)
+        """
+        Call the underlying function.
+
+        If the function accepts an `rng` argument, pass it.
+        Otherwise fall back to the old behavior.
+        """
+
+        try:
+            # Try passing rng explicitly
+            return self._callable(n, *self.args, rng=self.rng, **self.kwargs)
+        except TypeError:
+            # Function did not accept rng → backwards compatible path
+            return self._callable(n, *self.args, **self.kwargs)
 
 class ParameterStore(VariableStore):
     '''
@@ -534,7 +572,7 @@ class ParameterStore(VariableStore):
         # new realisation
         for parameter in self._variables.values():
             if isinstance(parameter.value, rv_frozen):
-                result.append(parameter.value.rvs(1)[0])
+                result.append(parameter.value.rvs(1, random_state=self.rng)[0])
             elif isinstance(parameter.value, CallableParameter):
                 result.append(parameter.value())
             else:
@@ -570,9 +608,10 @@ class StateStore(VariableStore):
     def _check_variable(self, 
                         variable:str|Symbol|ODEVariable,
                         symbol:Symbol|None=None, 
-                        real:bool=True
-                        )->ODEVariable:
-        limits = (None, None)
+                        real:bool=True,
+                        limits:tuple|None=None)->ODEVariable:
+
+        limits = (0, np.inf)
 
         # we expect a state defining tuple to be in the form:
         # ('NAME', (MIN, MAX)). Test this then create a suitable symbol
@@ -591,15 +630,19 @@ class StateStore(VariableStore):
                 else:
                     limits = variable[1]
                     variable = variable[0]
-        
-        results = super()._check_variable(variable=variable,
-                                          symbol=symbol,
-                                          real=real,
-                                         )
-        
-        # apply the limits to this variable
-        for result in results:
-            result.limits = limits
+
+            low  = limits[0] if limits[0] is not None else 0
+            high = limits[1] if limits[1] is not None else np.inf
+
+            limits = (low, high)
+
+        results = super()._check_variable(
+            variable=variable,
+            symbol=symbol,
+            real=real,
+            limits=limits
+            )
+
         return results
         
     

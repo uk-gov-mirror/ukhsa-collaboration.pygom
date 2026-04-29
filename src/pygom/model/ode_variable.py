@@ -6,6 +6,7 @@
 """
 from sympy.physics.units.quantities import Quantity
 import sympy
+import numpy as np
 
 from ._model_errors import InputError
 
@@ -32,7 +33,7 @@ class ODEVariable(object):
                  value:None|str=None,
                  units:None|Quantity=None,
                  real:bool=False,
-                 limits=(None, None)
+                 limits:None|tuple=None      # default: assume compartments represent counts
                  ):
         self.ID = ID
         if symbol is None:
@@ -62,7 +63,6 @@ class ODEVariable(object):
                 self.symbol == other.symbol and \
                 self.units == other.units and \
                 self.limits == other.limits
-
         elif isinstance(other, sympy.Symbol):
             return self.ID == str(other)
         else:

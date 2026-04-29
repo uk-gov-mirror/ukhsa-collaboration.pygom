@@ -5,6 +5,7 @@
 
 """
 import functools
+import logging
 
 import numpy as np
 import scipy.stats as st
@@ -16,6 +17,8 @@ from .ode_utils import check_array_type
 
 # Code from the cython module
 from ._tau_leap import _cy_test_tau_leap_safety
+
+
 
 
 def exact(x0, t0, t1, state_change_mat, transition_func,

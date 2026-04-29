@@ -1,6 +1,6 @@
 # The compiled numeric methods
 from .ode_system import ODESystem
-from .jacobian import Jacobian
+from .jacobian import Jacobian, RatesJacobian
 from .diff_jacobian import DiffJacobian
 from .grad import Grad
 from .grad_jacobian import GradJacobian
@@ -25,7 +25,8 @@ __all__ = ['ODESystem',
            'TransitionVariance',
            'TransitionJacobian',
            'EventRateVector',
-           'PureOdeVector'
+           'PureOdeVector',
+           'RatesJacobian'
            ]
 
 

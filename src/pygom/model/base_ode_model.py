@@ -197,6 +197,7 @@ class BaseOdeModel(object):
     def __repr__(self):
         return f'{self.__class__.__name__ } {self._get_model_str()}'
 
+    # TODO: model construction
     def split_string_list(self, in_list:str)->list:
         """
         Given an list of variables in the form of a string with comma
@@ -214,6 +215,7 @@ class BaseOdeModel(object):
             raise InputError(f"Function was given None!")
         return in_list
 
+    # TODO: model construction
     def _invalidate_caches(self)->None:
         """
         Tell objects that have cached components to reset their caches as
@@ -229,7 +231,8 @@ class BaseOdeModel(object):
         
         # The states_and_parameters list (none === not set)
         self._sp = None
-    
+
+    # TODO: model construction    
     def _init_maths_methods(self)->None:
         """
         Add all the maths method classes as methods to this class
@@ -248,6 +251,7 @@ class BaseOdeModel(object):
     # Getters and setters
     #
     ###########################################################################
+    # TODO: parameters (check what has changed here)
     @property
     def parameters(self):
         """
@@ -262,6 +266,7 @@ class BaseOdeModel(object):
             return [(symb, val) for symb, val in zip(self._parameter_store.symbol_list,
                                                      self._parameter_store.values)]
 
+    # TODO: parameters (check what has changed here)
     @parameters.setter
     def parameters(self, 
                    parameters:dict[str: float]|list[tuple[str,float]]|list[float])->None:
@@ -407,6 +412,7 @@ class BaseOdeModel(object):
 
         # #self.set_sp()
 
+    # TODO: tidy up all this state stuff
     @property
     def state(self):
         """
@@ -455,6 +461,7 @@ class BaseOdeModel(object):
         else:
             raise InputError(err_str)
 
+    # TODO: is this used?
     @property
     def time(self):
         """
@@ -532,7 +539,7 @@ class BaseOdeModel(object):
         """
         return [parameter for parameter in self._parameter_store.index]
     
-   
+    # TODO: model/parameter
     def append_parameters(self, parameter_list:list[str|ODEVariable])->None:
         """
         Append additional parameters to the ode system
@@ -589,6 +596,11 @@ class BaseOdeModel(object):
         
         self._state_store = new_state_store
         self._invalidate_caches()
+
+        # store state limits in numpy array
+        limits = np.array([self._state_store[v].limits for v in self._state_store.variables], dtype=float)
+        self.x_min = limits[:, 0]
+        self.x_max = limits[:, 1]
 
     @property
     def derived_param_list(self):
