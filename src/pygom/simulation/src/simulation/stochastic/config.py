@@ -1,5 +1,5 @@
 """
-Stochastic solver configuration
+Data classes which are used configure stochastic solvers
 """
 
 from dataclasses import dataclass, field

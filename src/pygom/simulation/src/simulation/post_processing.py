@@ -1,22 +1,29 @@
 """
-Post processing of stochastic output
+Post processing of stochastic outputs.
+
+The time points required by the user, t_eval, might not match up to the output times.
+For TimeSeriesResult outputs (from tau leap) we use linear interpolation. For EventSeriesResult
+outputs (from exact simulation) we extract the system snapshot.
+
+NOTE: This may create non-integer values for the TimeSeriesResult, in later versions
+we should ensure that the algorithm hits t_eval values during solving phase.
 """
 
 import numpy as np
 
-def extract_state_at_target_times(x, t, target_time):
+def extract_state_at_target_times(t, y, target_time):
     """
     Given state values in event based (e.g. exact) system, extract the exact
     states at each target time.
     
     Parameters
     ----------
-    x : numpy.ndarray
-        State values which exist between consecutive timepoints
     t : numpy.ndarray
         Event times (plus initial time, which does not involve an event)
+    y : numpy.ndarray
+        State values which exist between consecutive timepoints
     target_time : numpy.ndarray
-        Target timesteps to convert to
+        Target timesteps
 
     Returns
     -------
@@ -28,33 +35,33 @@ def extract_state_at_target_times(x, t, target_time):
     # Clamp to range [0, len(t)-1]
     idx = np.clip(idx, 0, len(t)-1)
 
-    return x[idx]
+    return y[idx]
 
-def interpolate_state_at_times(x, t, target_time):
+def interpolate_state_at_times(t, y, target_time):
     """
     Given state values in time based (e.g. tau leap) system, interpolate the
     states at each target time.
     
     Parameters
     ----------
-    x : numpy.ndarray
-        State values at each timepoint
     t : numpy.ndarray
         Timepoints
+    y : numpy.ndarray
+        State values at each timepoint
     target_time : numpy.ndarray
-        Target timesteps to convert to
+        Target timesteps
 
     Returns
     -------
     numpy.ndarray
     """
-    n_state = x.shape[1]
-    x_interp = np.zeros((len(target_time), n_state))  # empty matrix to receive scaled data = (new timepoints x vars)
+    n_state = y.shape[1]
+    y_interp = np.zeros((len(target_time), n_state))  # empty matrix to receive scaled data = (new timepoints x vars)
     # linearly interpolate to new timepoints
     for i in range(n_state):
-        x_interp[:, i]=np.interp(target_time, t, x[:,i])
+        y_interp[:, i]=np.interp(target_time, t, y[:,i])
 
-    return x_interp
+    return y_interp
 
 def bin_events(event_ids, event_times, target_times, n_events):
     """
@@ -62,12 +69,14 @@ def bin_events(event_ids, event_times, target_times, n_events):
     
     Parameters
     ----------
-    x : numpy.ndarray
-        State values which exist between consecutive timepoints
-    t : numpy.ndarray
-        Event times (plus initial time, which does not involve an event)
+    event_ids : numpy.ndarray
+        index of event which occured
+    event_times : numpy.ndarray
+        Times at which events occured
     target_time : numpy.ndarray
-        Target timesteps to convert to
+        Target timesteps
+    n_events: int
+        Number of possible events
 
     Returns
     -------
@@ -88,26 +97,26 @@ def bin_events(event_ids, event_times, target_times, n_events):
 
     return counts
 
-def change_bins(jumps, old_breaks, new_breaks):
+def change_bins(event_counts, old_breaks, new_breaks):
     """
     Extrapolate the number of events occuring within the old_breaks to a new set new_breaks.
-    This can create non-integer values.
+    Warning: This can create non-integer values.
     
     Parameters
     ----------
-    x : numpy.ndarray
-        State values which exist between consecutive timepoints
-    t : numpy.ndarray
-        Event times (plus initial time, which does not involve an event)
-    target_time : numpy.ndarray
-        Target timesteps to convert to
+    event_counts : numpy.ndarray
+        Matrix of number of times each event occurs per timestep
+    old_breaks : numpy.ndarray
+        Timepoints of event_counts
+    new_breaks : numpy.ndarray
+        Target timesteps
 
     Returns
     -------
     numpy.ndarray
     """
 
-    n_state = jumps.shape[1]
+    n_state = event_counts.shape[1]
     events_per_bin = np.zeros((len(new_breaks)-1, n_state))  # empty matrix to receive scaled data = (new timepoints x vars)
 
     for i in range(n_state):
@@ -118,7 +127,7 @@ def change_bins(jumps, old_breaks, new_breaks):
         tmax_new = new_breaks[1:]
 
         dt = tmax_old-tmin_old
-        density = np.divide(jumps[:, i], dt, where=dt>0)
+        density = np.divide(event_counts[:, i], dt, where=dt>0)
 
         # Broadcast to compute overlaps
         overlap_left = np.maximum(tmin_old[:, None], tmin_new[None, :])

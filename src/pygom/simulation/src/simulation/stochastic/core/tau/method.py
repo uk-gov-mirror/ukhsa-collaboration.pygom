@@ -7,42 +7,42 @@ import numpy as np
 import warnings
 
 class TauMethod(ABC):
-    def __init__(self, transition_func, state_change_mat):
-        self.transition_func = transition_func
-        self.state_change_mat = state_change_mat
+    def __init__(self, event_rates, stoichiometry_matrix):
+        self.event_rates = event_rates
+        self.stoichiometry_matrix = stoichiometry_matrix
 
     @abstractmethod
-    def compute_tau(self, x, t, rates):
+    def compute_tau(self, t, y, rates):
         pass
 
 class Fixed(TauMethod):
-    def __init__(self, transition_func, state_change_mat, tau):
-        super().__init__(transition_func, state_change_mat)
+    def __init__(self, event_rates, stoichiometry_matrix, tau):
+        super().__init__(event_rates, stoichiometry_matrix)
         self.tau = tau
 
-    def compute_tau(self, x, t, rates, thresholds):
+    def compute_tau(self, t, y, rates, thresholds):
         return(self.tau, True)
 
 class Adaptive(TauMethod):
-    def __init__(self, transition_func, state_change_mat, transition_mean_func, transition_var_func):
-        super().__init__(transition_func, state_change_mat)
+    def __init__(self, event_rates, stoichiometry_matrix, transition_mean_func, transition_var_func):
+        super().__init__(event_rates, stoichiometry_matrix)
 
         self.transition_mean_func = transition_mean_func
         self.transition_var_func = transition_var_func
 
-    def _get_min_changes(self, x, t, thresholds):
+    def _get_min_changes(self, t, y, thresholds):
         """
         Get the minimum amounts by which the transition rate (propensity) functions, a(x), can change
         by considering the action of each solo transition.
 
         Output:
             np.ndarray delta
-            where delta[i] = min_j |a_i(x + v_j) - a_i(x)|
+            where delta[i] = min_j |a_i(y + v_j) - a_i(y)|
         """
-        changes = self.state_change_mat(x, t)
+        changes = self.stoichiometry_matrix
 
         # Current propensity functions, a_i(x)
-        rates_before = self.transition_func(x, t)
+        rates_before = self.event_rates(t, y)
 
         # Rule out reactions which cannot possibly without generating illegal states
         noncritical_idx = np.where(thresholds!=0)[0]
@@ -55,12 +55,12 @@ class Adaptive(TauMethod):
         n_propensities = rates_before.size
         rates_after = np.empty((n_reactions, n_propensities))
 
-        # Get new propensity functions after each reaction occurs, a_i(x + v_j)
-        x_new = x[:, None] + changes[:, noncritical_idx ]
+        # Get new propensity functions after each reaction occurs, a_i(y + v_j)
+        y_new = y[:, None] + changes[:, noncritical_idx ]
         for i in range(n_reactions):
-            rates_after[i] = self.transition_func(x_new[:, i ], t)
+            rates_after[i] = self.event_rates(t, y_new[:, i ])
 
-        # Find changes per propensity function per reaction, delta_ij = |a_i(x + v_j) - a_i(x)|
+        # Find changes per propensity function per reaction, delta_ij = |a_i(y + v_j) - a_i(y)|
         delta = np.abs(rates_after - rates_before)
 
         # Find mininum non zero changes per propensity function
@@ -76,17 +76,17 @@ class Cao2006(Adaptive):
     Open pdf version: https://people.cs.vt.edu/~ycao/publication/adaptivetau.pdf
     DOI: https://doi.org/10.1063/1.2745299
     """
-    def __init__(self, transition_func, state_change_mat, transition_mean_func, transition_var_func, epsilon):
-        super().__init__(transition_func, state_change_mat, transition_mean_func, transition_var_func)
+    def __init__(self, event_rates, stoichiometry_matrix, transition_mean_func, transition_var_func, epsilon):
+        super().__init__(event_rates, stoichiometry_matrix, transition_mean_func, transition_var_func)
         self.epsilon = epsilon
 
-    def compute_tau(self, x, t, rates, thresholds):
+    def compute_tau(self, t, y, rates, thresholds):
         # 8a and 8b
-        mu = self.transition_mean_func(x, t)
-        sigma2 = self.transition_var_func(x, t)
+        mu = self.transition_mean_func(t, y)
+        sigma2 = self.transition_var_func(t, y)
 
         # changes must be smaller than the bound
-        delta_min = self._get_min_changes(x, t, thresholds)
+        delta_min = self._get_min_changes(t, y, thresholds)
         bound = np.maximum(self.epsilon*rates, delta_min)
 
         # timesteps which satisfy bound constraint (ignoring cases where bound = 0)

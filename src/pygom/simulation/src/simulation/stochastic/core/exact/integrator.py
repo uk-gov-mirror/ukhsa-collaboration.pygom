@@ -19,20 +19,13 @@ class FirstReactionDiagnostics(SolverDiagnostics):
 
 class ExactLeap(StochasticLeap):
     """
-    Base class for tau leap algorithms. Building on `StochasticLeap`.
-
-    Parameters
-    ----------
-    max_iter : int
-        Maximum number of iterations.
-
-
+    Base class for exact algorithms. Building on `StochasticLeap`.
     """
-    def __init__(self, transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed=None):
-        super().__init__(transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
         self.diag = DirectDiagnostics()
     
-    def _get_new_x(self, x, changes, transition_id):
+    def _get_new_y(self, y, changes, transition_id):
         """
         TODO: docstring
 
@@ -40,7 +33,7 @@ class ExactLeap(StochasticLeap):
 
         Parameters
         ----------
-        x : numpy.ndarray
+        y : numpy.ndarray
             Current state vector
         changes : numpy.ndarray
             State-change matrix specifying how each reaction modifies the state.
@@ -52,10 +45,10 @@ class ExactLeap(StochasticLeap):
         numpy.ndarray
             The new state vector
         """
-        return x + changes[:, transition_id]
+        return y + changes[:, transition_id]
 
 
-    def _zero_rate_behavior(self, x, t):
+    def _zero_rate_behavior(self, t, y):
         """
         Decide what to do when reaction rates are all zero.
         If rates are guaranteed to remain at zero, we might wish to abort the simulation to save time.
@@ -63,28 +56,28 @@ class ExactLeap(StochasticLeap):
 
         Parameters
         ----------
-        x : numpy.ndarray
-            Current state vector.
         t : float
             Current time.
+        y : numpy.ndarray
+            Current state vector.
 
         Returns
         -------
         Step
-            Step.x_new = new state values (which are unchanged from old ones)
+            Step.y_new = new state values (which are unchanged from old ones)
             Step.t_new = new time
             Step.jumps = reaction occurances
             Step.end_sim = True if all rates = 0 led to simulation termination
         """
         self.diag.zero_rate_termination=True
-        return EventStep(x_new=None, t_new=None, event_idx=None, end_sim=True)
+        return EventStep(y_new=None, t_new=None, event_idx=None, end_sim=True)
 
 # ============================================================
 # First Reaction Method
 # ============================================================
 class FirstReaction(ExactLeap):
-    def __init__(self, transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed=None):
-        super().__init__(transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
         self.diag = DirectDiagnostics()
 
     def _propose_jump(self, rates):
@@ -100,23 +93,23 @@ class FirstReaction(ExactLeap):
 
         return transition_idx, dt
     
-    def take_step(self, x, t):
-        rates, changes = self._compute_rates_and_changes(x, t)
+    def take_step(self, t, y):
+        rates, changes = self._compute_rates_and_changes(t, y)
 
         if np.all(rates == 0):
-            return self._zero_rate_behavior(x, t)
+            return self._zero_rate_behavior(t, y)
 
         transition_idx, dt = self._propose_jump(rates)
-        x_new = self._get_new_x(x, changes, transition_idx)
+        y_new = self._get_new_y(y, changes, transition_idx)
         
-        return EventStep(x_new=x_new, t_new=t+dt, event_idx=transition_idx, end_sim=False)
+        return EventStep(y_new=y_new, t_new=t+dt, event_idx=transition_idx, end_sim=False)
 
 # ============================================================
 # Direct Reaction Method
 # ============================================================
 class DirectReaction(ExactLeap):
-    def __init__(self, transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed=None):
-        super().__init__(transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
         self.diag = FirstReactionDiagnostics()
 
     def _propose_jump(self, rates):
@@ -132,13 +125,13 @@ class DirectReaction(ExactLeap):
 
         return transition_idx, dt
 
-    def take_step(self, x, t):
-        rates, changes = self._compute_rates_and_changes(x, t)
+    def take_step(self, t, y):
+        rates, changes = self._compute_rates_and_changes(t, y)
 
         if np.all(rates == 0):
-            return self._zero_rate_behavior(x, t)
+            return self._zero_rate_behavior(t, y)
 
         transition_idx, dt = self._propose_jump(rates)
-        x_new = self._get_new_x(x, changes, transition_idx)
+        y_new = self._get_new_y(y, changes, transition_idx)
         
-        return EventStep(x_new=x_new, t_new=t+dt, event_idx=transition_idx, end_sim=False)
+        return EventStep(y_new=y_new, t_new=t+dt, event_idx=transition_idx, end_sim=False)

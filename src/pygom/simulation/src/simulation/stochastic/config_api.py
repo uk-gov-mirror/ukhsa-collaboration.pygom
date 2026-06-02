@@ -1,6 +1,8 @@
 """
-API so user doesn't have to interact with classes
+Build config data classes from user input
 """
+
+import warnings
 
 from typing import Any, Dict, Union
 
@@ -18,7 +20,6 @@ MethodLike = Union[str, ExactMethodConfig, TauMethodConfig]
 CheckerLike = Union[str, CheckerConfig]
 RefinerLike = Union[str, TauRefinerConfig]
 
-
 def _build_checker(spec: CheckerLike, **opts: Any) -> CheckerConfig:
     """
     Build tau leap step checker
@@ -35,14 +36,12 @@ def _build_checker(spec: CheckerLike, **opts: Any) -> CheckerConfig:
         return NoCheckConfig()
 
     raise ValueError(
-        f"Unknown checker spec: {spec!r}"
-        "Known: 'forbidden_reaction', 'forbidden_state', 'none'"
+        f"Unknown checker spec: {spec!r}. Known: 'forbidden_reaction', 'forbidden_state', 'none'"
     )
-
 
 def _build_refiner(spec: RefinerLike, **opts: Any) -> TauRefinerConfig:
     """
-    Build tau leap precaution
+    Build tau leap precautionary step size refiner
     """
     if isinstance(spec, TauRefinerConfig):
         return spec
@@ -57,43 +56,58 @@ def _build_refiner(spec: RefinerLike, **opts: Any) -> TauRefinerConfig:
         return NoRefinerConfig()
 
     raise ValueError(
-        f"Unknown refiner spec: {spec!r}"
-        "Known: 'prob', 'none'"
+        f"Unknown refiner spec: {spec!r}. Known: 'prob', 'none'"
     )
-
 
 def _method_from_string(name: str, **options: Any) -> Union[ExactMethodConfig, TauMethodConfig]:
     """
     Translate string method names to their corresponding method config dataclass.
-    Raise a helpful error if required options are missing.
+    Raise error if required options are missing.
     """
     key = name.lower()
 
     # ===== exact family =====
     if key == "direct":
+        unused = list(options)
+        if unused:
+            warnings.warn(f"method='direct' does not use variables: {', '.join(unused)}", RuntimeWarning)
         return DirectMethodConfig()
+    
     if key == "first_reaction":
+        unused = list(options)
+        if unused:
+            warnings.warn(f"method='first_reaction' does not use variables: {', '.join(unused)}", RuntimeWarning)
         return FirstReactionMethodConfig()
 
     # ===== tau family =====
-    if key == "fixed_tau":
-        if "tau" not in options:
-            raise ValueError("method='fixed_tau' requires option `tau`")
+    if key == "fixed_tau":        
+        required = ["tau"]
+        optional = ["checker", "checker_opts", "refiner", "refiner_opts"]
+        missing = [name for name in required if name not in options]
+        if missing:
+            raise ValueError(f"method='fixed_tau' missing required options: {', '.join(missing)}")
+
+        unused = [name for name in options if name not in (required+optional)]
+        if unused:
+            warnings.warn(f"method='fixed_tau' does not use variables: {', '.join(unused)}", RuntimeWarning)
+
         return FixedTauConfig(tau=float(options["tau"]))
 
     if key == "cao2006":
-
-        required = ["epsilon", "f_mu", "f_var"]
-
+        required = ["epsilon", "transition_mean_func", "transition_var_func"]
+        optional = ["checker", "checker_opts", "refiner", "refiner_opts"]
         missing = [name for name in required if name not in options]
         if missing:
-            raise ValueError(
-                f"method='cao2006' missing required options: {', '.join(missing)}"
-            )
+            raise ValueError(f"method='cao2006' missing required options: {', '.join(missing)}")
+        
+        unused = [name for name in options if name not in (required+optional)]
+        if unused:
+            warnings.warn(f"method='cao2006' does not use variables: {', '.join(unused)}", RuntimeWarning)
+
         return Cao2006TauConfig(
             epsilon=float(options["epsilon"]),
-            transition_mean_func=options["f_mu"],
-            transition_var_func=options["f_var"])
+            transition_mean_func=options["transition_mean_func"],
+            transition_var_func=options["transition_var_func"])
 
     raise ValueError(
         f"Unknown method {name!r}. "
@@ -175,9 +189,6 @@ def build_config(method: MethodLike, /, **options: Any) -> SolverConfig:
 
             checker = _build_checker(checker_spec, **checker_opts)
             refiner = _build_refiner(refiner_spec, **refiner_opts)
-
-            # if isinstance(method_cfg, Cao2006TauConfig):
-                
 
             return TauConfig(
                 method=method_cfg,

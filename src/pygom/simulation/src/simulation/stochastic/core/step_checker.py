@@ -1,5 +1,5 @@
 """
-Step checker
+Class to check if step is legal
 """
 
 import numpy as np
@@ -13,17 +13,17 @@ class JumpChecker(ABC):
     def __init__(self):
         self.n_illegal = 0
 
-    def check_states(self, proposal : TimeStep, x_min, x_max):
+    def check_states(self, proposal : TimeStep, y_min, y_max):
         """
         Determine if all proposed states are within minimum and maximum limits
 
         Parameters
         ----------
         proposal : Step
-            Proposed step data, from which we extract x_new
-        x_min : numpy.ndarray
+            Proposed step data, from which we extract y_new
+        y_min : numpy.ndarray
             Minimum allowable values for each state variable.
-        x_max : numpy.ndarray
+        y_max : numpy.ndarray
             Maximum allowable values for each state variable.
             
         Returns
@@ -32,9 +32,9 @@ class JumpChecker(ABC):
             True if the proposed values are valid
         """
 
-        x_new = proposal.x_new
+        y_new = proposal.y_new
 
-        if np.any(x_new < x_min) or np.any(x_new > x_max):
+        if np.any(y_new < y_min) or np.any(y_new > y_max):
             return False
 
         return True
@@ -59,15 +59,15 @@ class JumpChecker(ABC):
             True if the proposed jumps are valid
         """
 
-        jumps = proposal.jumps
+        event_counts = proposal.event_counts
 
-        if np.any(jumps > thresholds):
+        if np.any(event_counts > thresholds):
             return False
         
         return True
 
     @abstractmethod
-    def is_legal(self, proposal : TimeStep, x_min, x_max, thresholds):
+    def is_legal(self, proposal : TimeStep, y_min, y_max, thresholds):
         """
         True if proposed step satisfies constraints
         """
@@ -79,9 +79,9 @@ class CriticalReactionCheck(JumpChecker):
     create illegal states by itself.
     """
 
-    def is_legal(self, proposal : TimeStep, x_min, x_max, thresholds):
+    def is_legal(self, proposal : TimeStep, y_min, y_max, thresholds):
 
-        legal = self.check_reactions(proposal, thresholds) and self.check_states(proposal, x_min, x_max)
+        legal = self.check_reactions(proposal, thresholds) and self.check_states(proposal, y_min, y_max)
 
         if legal == False:
             self.n_illegal += 1
@@ -94,9 +94,9 @@ class ForbiddenStateCheck(JumpChecker):
     after the net effect of all reactions.
     """
 
-    def is_legal(self, proposal : TimeStep, x_min, x_max, thresholds):
+    def is_legal(self, proposal : TimeStep, y_min, y_max, thresholds):
 
-        legal = self.check_states(proposal, x_min, x_max)
+        legal = self.check_states(proposal, y_min, y_max)
 
         if legal == False:
             self.n_illegal += 1
@@ -108,5 +108,5 @@ class NoCheck(JumpChecker):
     If we are using a method guaranteed not to generate illegal states, proceed without checks.
     """
 
-    def is_legal(self, proposal : TimeStep, x_min, x_max, thresholds):
+    def is_legal(self, proposal : TimeStep, y_min, y_max, thresholds):
         return True

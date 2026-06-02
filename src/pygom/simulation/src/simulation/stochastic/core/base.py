@@ -1,36 +1,21 @@
-# import numpy as np
-# from abc import ABC, abstractmethod
-# import logging
-
-# import pandas as pd
-# import matplotlib.pyplot as plt
-# from scipy.stats import poisson
-
-# import time
-
-# from dataclasses import dataclass
-
-
 """
-Stochastic jumper base class
+Stochastic stepper base class
 """
 import numpy as np
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-# from ...data_classes import SolverDiagnostics
-
 @dataclass
 class TimeStep:
-    x_new: np.ndarray | None       # new state after timestep
+    y_new: np.ndarray | None       # new state after timestep
     t_new: float | None            # new time after timestep
-    jumps: np.ndarray | None       # number of times each jump occured between old and new timestep
+    event_counts: np.ndarray | None       # number of times each jump occured between old and new timestep
     end_sim: bool                  # True if simulation is to be prematurely ended (e.g if rates
                                    # are all = 0 and user has decided these are grounds to abort)
 
 @dataclass
 class EventStep:
-    x_new: np.ndarray | None       # new state after timestep
+    y_new: np.ndarray | None       # new state after timestep
     t_new: float | None            # new time after timestep
     event_idx: int | None          # index of jump which has occured
     end_sim: bool                  # True if simulation is to be prematurely ended (e.g if rates
@@ -42,44 +27,45 @@ class StochasticLeap(ABC):
 
     Parameters
     ----------
-    transition_func : callable
-        Returns vector of reaction rates
-    state_change_mat : callable
-        Returns the stoichiometric matrix
-    x_min : numpy.ndarray
-        Minimum allowable values for each state variable.
-    x_max : numpy.ndarray
-        Maximum allowable values for each state variable.
+    event_rates : callable
+        Function of time and state, f(t, y), which returns an array of the
+        rates of occurance of each event.
+    stoichiometry_matrix: numpy.ndarray
+        Integer-valued matrix where element [i, j] represents the change in state i
+        resulting from an occurance of event j.
+        Note: May also be referred to as the "state change matrix" or "reaction matrix".
+    y_min: numpy.ndarray
+        Minimum allowed state values
+    y_max: numpy.ndarray
+        Maximum allowed state values
     proceed_if_rates_zero : bool
         If True, continue with simulation when reaction rates are all zero. Otherwise terminate.
-    default_dt : float : default = 1
-        Timestep used when rates are zero, but algorithm is required to proceed.
+    seed : TODO seed type
 
-    Methods
-    -------
-    take_step()
-        Execute the optimization procedure.
     """
 
-    def __init__(self, transition_func, state_change_mat, x_min, x_max, proceed_if_rates_zero, seed=None):
-        self.transition_func = transition_func
-        self.state_change_mat = state_change_mat
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
+        self.event_rates = event_rates
+        self.stoichiometry_matrix = stoichiometry_matrix
         self.proceed_if_rates_zero = proceed_if_rates_zero
-        self.x_min = x_min
-        self.x_max = x_max
-        # self.default_dt = default_dt
+        self.y_min = y_min
+        self.y_max = y_max
         self.rng = np.random.default_rng(seed)
 
-    def _compute_rates_and_changes(self, x, t):
+        n_event, n_state = stoichiometry_matrix.shape
+        self.n_event = n_event
+        self.n_state = n_state
+
+    def _compute_rates_and_changes(self, t, y):
         """
         For the current timestep, calculate reaction rates and state change matrix.
 
         Parameters
         ----------
-        x : numpy.ndarray
-            Current state vector.
         t : float
             Current time.
+        y : numpy.ndarray
+            Current state vector.
 
         Returns
         -------
@@ -88,24 +74,23 @@ class StochasticLeap(ABC):
         changes : numpy.ndarray
             state change matrix
         """
-        rates = self.transition_func(x, t)
-        self.n_reactions = len(rates)
+        rates = self.event_rates(t, y)
 
         if np.any(rates < 0):
-            raise RuntimeError(f"Negative reaction rates encountered.\nTime: {t}\nState: {x}\nRates: {rates}")
+            raise RuntimeError(f"Negative reaction rates encountered.\nTime: {t}\nState: {y}\nRates: {rates}")
     
-        changes = self.state_change_mat(x, t)
+        changes = self.stoichiometry_matrix
 
         return rates, changes
 
-    def _jump_thresholds(self, x, changes):
+    def _jump_thresholds(self, y, changes):
         """
         Calculate the maximum number of times each individual reaction can occur
         before an illegal jump is made.
 
         Parameters
         ----------
-        x : numpy.ndarray
+        y : numpy.ndarray
             Current state vector.
         changes : numpy.ndarray
             State-change matrix specifying how each reaction modifies the state.
@@ -118,8 +103,8 @@ class StochasticLeap(ABC):
         """
 
         # Difference between current state and state limits
-        min_margin = x - self.x_min
-        max_margin = self.x_max - x
+        min_margin = y - self.y_min
+        max_margin = self.y_max - y
 
         # Margins need to be broadcast across all reactions
         min_margin = min_margin[:, None]
@@ -147,40 +132,16 @@ class StochasticLeap(ABC):
 
         return np.min(np.minimum(thresholds_min, thresholds_max), axis=0)
 
-    # def _get_new_x(self, x, changes, jumps):
-    #     """
-    #     Calculate the new state
-
-    #     Parameters
-    #     ----------
-    #     x : numpy.ndarray
-    #         Current state vector
-    #     changes : numpy.ndarray
-    #         State-change matrix specifying how each reaction modifies the state.
-    #     jumps : numpt.ndarray
-    #         Number of times each reaction occurs in the current timestep
-
-    #     Returns
-    #     -------
-    #     numpy.ndarray
-    #         The new state vector
-    #     """
-        
-    #     return x + changes @ jumps
-
     @abstractmethod
-    def _propose_jump(self, x, t, rates, *args):
+    def _propose_jump(self, t, y, rates, *args):
         """
         Return (jumps, dt).
         """
         pass
 
     @abstractmethod
-    def take_step(self, x, t):
+    def take_step(self, t, y):
         """
-        Move system one timestep from (x, t) to (x_new, t_new)
+        Move system one timestep from (y, t) to (y_new, t_new)
         """
         pass
-
-    # def _package_output(self, x_new, t_new, jumps, end_sim):
-    #     return Step(x_new=x_new, t_new=t_new, jumps=jumps, end_sim=end_sim)

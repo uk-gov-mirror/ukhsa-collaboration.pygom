@@ -1,3 +1,7 @@
+"""
+Deterministic solver class
+"""
+
 import numpy as np
 from scipy.integrate import solve_ivp
 from typing import Any
@@ -12,39 +16,39 @@ from dataclasses import dataclass
 @dataclass
 class DeterministicOutput:
     t: np.ndarray
-    x: np.ndarray
-    jumps: np.ndarray
+    y: np.ndarray
+    event_counts: np.ndarray
     scipy_out: Any
 
 class DeterministicSolver:
-    def __init__(self, ode, trans_rates, n_state, n_trans):
+    def __init__(self, ode, event_rates, n_state, n_event, jac_ode=None, jac_events=None):
         self.ode = ode
-        self.trans_rates = trans_rates
+        self.event_rates = event_rates
         self.n_state = n_state
-        self.n_trans = n_trans
+        self.n_event = n_event
+        self.jac_ode = jac_ode
+        self.jac_events = jac_events
 
-    def augmented_ode(self, t, x_aug):
+    def augmented_ode(self, t, y_aug):
         """
         Augment state vector with transition rates
-        x_aug = [ [states], [transitions] ]
-
-        Avoid building new compartments explicitly:
-        - checks already done
-        - initial conditions taken care of
+        y_aug = [ [states], [transitions] ]
         """
-        x = x_aug[:self.n_state]
+        y = y_aug[:self.n_state]
         
-        # change in states
-        dx = self.ode(x, t)
+        # rate of change in states
+        dy_dt = self.ode(t, y)
         
-        # transition occurances
-        dT = self.trans_rates(x, t)
+        # rate of change of event counts
+        de_dt = self.event_rates(t, y)
         
-        return np.concatenate([dx, dT])
+        return np.concatenate([dy_dt, de_dt])
     
-    def augmented_jacobian(self, t, x_aug):
+    def augmented_jacobian(self, t, y_aug):
         """
-
+        Augment state jacobian matrix with transition rate jacobian matrix
+        jac_aug = [ [jac_states], [0]
+                    [0],          [jac_transitions] ]
         """
 
         # TODO: be explicit with sparsity
@@ -52,58 +56,56 @@ class DeterministicSolver:
         # assert jac_t.shape[1] == self.n_state
         # assert jac_t.shape[0] == len(x_aug) - self.n_stat
 
-        x = x_aug[:self.n_state]
+        y = y_aug[:self.n_state]
         
-        # change in states
-        jac_x = self.jacobian(x, t)
-        
-        # transition occurances
-        jac_t = self.rates_jacobian(x, t)
+        jac_y = self.jac_ode(t, y)             # states
+        jac_e = self.jac_events(t, y)       # event_counts
 
-        jac_aug = np.zeros( (len(x_aug), len(x_aug)) )
-
-        jac_aug[:self.n_state, :self.n_state] = jac_x
-        jac_aug[self.n_state:, :self.n_state] = jac_t
+        jac_aug = np.zeros( (len(y_aug), len(y_aug)) )
+        jac_aug[:self.n_state, :self.n_state] = jac_y
+        jac_aug[self.n_state:, :self.n_state] = jac_e
         
         return jac_aug
 
-    def integrate(self, t, x0, t0=0.0, **kwargs):
+    def integrate(self,
+                  t_span,
+                  y0,
+                  method,
+                  t_eval,
+                  dense_output,
+                  events,
+                  vectorized,
+                  args,
+                  **options):
 
-        trans0 = np.zeros(self.n_trans)
-        x0_aug = np.concatenate([x0, trans0])
+        e0 = np.zeros(self.n_event)
+        y_aug0 = np.concatenate([y0, e0])
 
-        if isinstance(t, float):
-            sol = solve_ivp(
-                fun = self.augmented_ode,
-                t_span = (t0, t),
-                y0 = x0_aug,
-                jac = self.augmented_jacobian,
-                **kwargs
-            )
-        elif isinstance(t, np.ndarray):
-            sol = solve_ivp(
-                fun = self.augmented_ode,
-                t_span = (t0, t[-1]),
-                y0 = x0_aug,
-                t_eval=t,
-                jac = self.augmented_jacobian,
-                **kwargs
-            )
-        else:
-            raise ValueError("Invalid time format. Must be numpy.array or float.")
+        if method in ['Radau', 'BDF', 'LSODA']:
+            options.setdefault("jac", self.augmented_jacobian)
 
-        # TODO: popping seems not approved due to immutable object. Pop the things we want
-        # Everything remaining is categorised as "scipy diagnostic info"
+        sol = solve_ivp(
+            fun = self.augmented_ode,
+            t_span = t_span,
+            y0 = y_aug0,
+            method=method,
+            t_eval=t_eval,
+            dense_output=dense_output,
+            events=events,
+            vectorized=vectorized,
+            args=args,
+            **options
+        )
+
         t = sol.t
-        y = sol.y
+        y_aug = sol.y
 
-        states = y[:self.n_state, :]
-        trans = y[self.n_state:, :]
-        dT = np.diff(trans, axis=1)
+        y = y_aug[:self.n_state, :]
+        event_counts = y_aug[self.n_state:, :]
+        event_counts = np.diff(event_counts, axis=1)
 
         return DeterministicOutput(
             t=t,
-            x=states.T,
-            jumps=dT.T,
-            scipy_out=sol
-            )
+            y=y.T,
+            event_counts=event_counts.T,
+            scipy_out=sol)

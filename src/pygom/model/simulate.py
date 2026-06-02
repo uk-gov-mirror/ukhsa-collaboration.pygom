@@ -34,9 +34,9 @@ from .maths import (StateChangeMatrix,
                     TransitionVariance,
                     TransitionJacobian)
 
-from ..simulation.src.simulation.api import solve_stochastic, solve_deterministic
+# from ..simulation.src.simulation.api import solve_stochastic, solve_deterministic
 
-from ..simulation.src.simulation.stochastic.config_api import build_config
+# from ..simulation.src.simulation.stochastic.config_api import build_config
 
 
 from .ode_utils.variable_store import CallableParameter

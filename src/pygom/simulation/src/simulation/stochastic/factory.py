@@ -1,5 +1,5 @@
 """
-Factory to assemble solver components from user input
+Factory to assemble solver components from config classes
 """
 
 from .config import SolverConfig
@@ -12,22 +12,20 @@ from .core.tau.method import Fixed, Cao2006
 from .config import CriticalReactionConfig, NoCheckConfig, ForbiddenStateConfig
 from .core.step_checker import CriticalReactionCheck, NoCheck, ForbiddenStateCheck
 
-from .config import TauRefinerConfig, NoRefinerConfig, ProbabilisticRefinerConfig
+from .config import NoRefinerConfig, ProbabilisticRefinerConfig
 from .core.tau.precaution import ProbabilisticTauPrecaution, NoTauPrecaution
 
 def make_stepper(
     *,
     config: SolverConfig,
-    transition_func,
-    state_change_mat,
-    x_min,
-    x_max,
+    event_rates,
+    stoichiometry_matrix,
+    y_min,
+    y_max,
     proceed_if_rates_zero,
-    seed
-    # **options
-):
+    seed):
     """
-    Construct a complete stochastic stepper
+    Construct a complete stochastic stepping class from config classes
     """
 
     # ============================================================
@@ -38,20 +36,20 @@ def make_stepper(
 
         if isinstance(method_cfg, DirectMethodConfig):
             return DirectReaction(
-                transition_func=transition_func,
-                state_change_mat=state_change_mat,
-                x_min=x_min,
-                x_max=x_max,
+                event_rates=event_rates,
+                stoichiometry_matrix=stoichiometry_matrix,
+                y_min=y_min,
+                y_max=y_max,
                 proceed_if_rates_zero=proceed_if_rates_zero,
                 seed=seed
             )
 
         elif isinstance(method_cfg, FirstReactionMethodConfig):
             return FirstReaction(
-                transition_func=transition_func,
-                state_change_mat=state_change_mat,
-                x_min=x_min,
-                x_max=x_max,
+                event_rates=event_rates,
+                stoichiometry_matrix=stoichiometry_matrix,
+                y_min=y_min,
+                y_max=y_max,
                 proceed_if_rates_zero=proceed_if_rates_zero,
                 seed=seed
             )
@@ -70,16 +68,16 @@ def make_stepper(
 
         if isinstance(method_cfg, FixedTauConfig):
             tau_method = Fixed(
-                transition_func,
-                state_change_mat,
+                event_rates=event_rates,
+                stoichiometry_matrix=stoichiometry_matrix,
                 tau=method_cfg.tau,
             )
 
         elif isinstance(method_cfg, Cao2006TauConfig):
 
             tau_method = Cao2006(
-                transition_func,
-                state_change_mat,
+                event_rates=event_rates,
+                stoichiometry_matrix=stoichiometry_matrix,
                 transition_mean_func=method_cfg.transition_mean_func,
                 transition_var_func=method_cfg.transition_var_func,
                 epsilon=method_cfg.epsilon,
@@ -128,10 +126,10 @@ def make_stepper(
         # Construct TauLeap
         # ------------------------
         return TauLeap(
-            transition_func=transition_func,
-            state_change_mat=state_change_mat,
-            x_min=x_min,
-            x_max=x_max,
+            event_rates=event_rates,
+            stoichiometry_matrix=stoichiometry_matrix,
+            y_min=y_min,
+            y_max=y_max,
             proceed_if_rates_zero=proceed_if_rates_zero,
             retry_max=config.retry_max,
             tau_rescale=config.tau_rescale,

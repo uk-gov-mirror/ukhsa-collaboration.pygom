@@ -1,6 +1,7 @@
-# --------------
-# Precaution tau
-# --------------
+"""
+Classes to preemptively calculate if step is likely to be illegal and the
+reduce step size as a precaution
+"""
 
 from abc import ABC, abstractmethod
 import numpy as np
