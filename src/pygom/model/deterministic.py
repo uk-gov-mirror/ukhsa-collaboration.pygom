@@ -760,68 +760,68 @@ class DeterministicOde(BaseOdeModel):
         self.initial_state = x0t0[0]
         self.initial_time = x0t0[1]
 
-    # # TODO: solver
-    # def integrate(self, t, full_output=False):
-    #     '''
-    #     Integrate over a range of t when t is an array and a output at time t
+    # TODO: solver
+    def integrate(self, t, full_output=False):
+        '''
+        Integrate over a range of t when t is an array and a output at time t
 
-    #     Parameters
-    #     ----------
-    #     t: array like
-    #         the range of time points which we want to see the result of
-    #     full_output: bool
-    #         if we want additional information
-    #     '''
-    #     # type checking
-    #     self._setIntegrateTime(t)
+        Parameters
+        ----------
+        t: array like
+            the range of time points which we want to see the result of
+        full_output: bool
+            if we want additional information
+        '''
+        # type checking
+        self._setIntegrateTime(t)
 
-    #     # get a new draw of any stochastic parameters
-    #     self._parameter_store.new_realisation()
+        # get a new draw of any stochastic parameters
+        self._parameter_store.new_realisation()
 
-    #     # # if our parameters are stochastic, then we are going to generate
-    #     # # another set of parameters to run
-    #     # if self._parameter_store.has_stochastic_parameters:
-    #     #     # this should always be true.  If not, then we have screwed up
-    #     #     # somewhere within this class.
-    #     #     raise Exception("stop! how do we deal with generated vs. fixed values?")
-    #     #     if isinstance(self._stochasticParam, dict):
-    #     #         self.parameters = self._stochasticParam
+        # # if our parameters are stochastic, then we are going to generate
+        # # another set of parameters to run
+        # if self._parameter_store.has_stochastic_parameters:
+        #     # this should always be true.  If not, then we have screwed up
+        #     # somewhere within this class.
+        #     raise Exception("stop! how do we deal with generated vs. fixed values?")
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
-    #     return self._integrate(self._odeTime, full_output)
+        return self._integrate(self._odeTime, full_output)
 
-    # # TODO: solver/delete
-    # def integrate2(self, t, full_output=False, method=None):
-    #     '''
-    #     Integrate over a range of t when t is an array and a output
-    #     at time t.  Select a suitable method to integrate when
-    #     method is None.
+    # TODO: solver/delete
+    def integrate2(self, t, full_output=False, method=None):
+        '''
+        Integrate over a range of t when t is an array and a output
+        at time t.  Select a suitable method to integrate when
+        method is None.
 
-    #     Parameters
-    #     ----------
-    #     t: array like
-    #         the range of time points which we want to see the result of
-    #     full_output: bool
-    #         if we want additional information
-    #     method: str, optional
-    #         the integration method.  All those available in
-    #         :class:`ode <scipy.integrate.ode>` are allowed with 'vode'
-    #         and 'ivode' representing the non-stiff and stiff version
-    #         respectively.  Defaults to None, which tries to choose the
-    #         integration method via eigenvalue analysis (only one) using
-    #         the initial conditions
-    #     '''
+        Parameters
+        ----------
+        t: array like
+            the range of time points which we want to see the result of
+        full_output: bool
+            if we want additional information
+        method: str, optional
+            the integration method.  All those available in
+            :class:`ode <scipy.integrate.ode>` are allowed with 'vode'
+            and 'ivode' representing the non-stiff and stiff version
+            respectively.  Defaults to None, which tries to choose the
+            integration method via eigenvalue analysis (only one) using
+            the initial conditions
+        '''
 
-    #     self._setIntegrateTime(t)
-    #     # if our parameters are stochastic, then we are going to generate
-    #     # another set of parameters to run
-    #     self._parameter_store.new_realisation()
+        self._setIntegrateTime(t)
+        # if our parameters are stochastic, then we are going to generate
+        # another set of parameters to run
+        self._parameter_store.new_realisation()
         
-    #     # if self._stochasticParam is not None:
-    #     #     # this should always be true
-    #     #     if isinstance(self._stochasticParam, dict):
-    #     #         self.parameters = self._stochasticParam
+        # if self._stochasticParam is not None:
+        #     # this should always be true
+        #     if isinstance(self._stochasticParam, dict):
+        #         self.parameters = self._stochasticParam
 
-    #     return self._integrate2(self._odeTime, full_output, method)
+        return self._integrate2(self._odeTime, full_output, method)
 
     # TODO: solver/delete
     def _setIntegrateTime(self, t):
@@ -844,43 +844,43 @@ class DeterministicOde(BaseOdeModel):
 
         self._odeTime = t
 
-    # # TODO: solver/delete
-    # def _integrate(self, t, full_output=True):
-    #     '''
-    #     Integrate using :class:`scipy.integrate.odeint` underneath
-    #     '''
-    #     assert self._t0 is not None, "Initial time not set"
+    # TODO: solver/delete
+    def _integrate(self, t, full_output=True):
+        '''
+        Integrate using :class:`scipy.integrate.odeint` underneath
+        '''
+        assert self._t0 is not None, "Initial time not set"
 
-    #     f = ode_utils.integrate
-    #     self._odeSolution, self._odeOutput = f(self,
-    #                                            self._x0,
-    #                                            t,
-    #                                            full_output=True)
-    #     if full_output:
-    #         return self._odeSolution, self._odeOutput
-    #     else:
-    #         return self._odeSolution
+        f = ode_utils.integrate
+        self._odeSolution, self._odeOutput = f(self,
+                                               self._x0,
+                                               t,
+                                               full_output=True)
+        if full_output:
+            return self._odeSolution, self._odeOutput
+        else:
+            return self._odeSolution
 
-    # # TODO: solver/delete
-    # def _integrate2(self, t, full_output=True, method=None):
-    #     '''
-    #     Integrate using :class:`scipy.integrate.ode` underneath
-    #     '''
-    #     assert self._x0 is not None, "Initial state not set"
+    # TODO: solver/delete
+    def _integrate2(self, t, full_output=True, method=None):
+        '''
+        Integrate using :class:`scipy.integrate.ode` underneath
+        '''
+        assert self._x0 is not None, "Initial state not set"
 
-    #     f = ode_utils.integrateFuncJac
-    #     self._odeSolution, self._odeOutput = f(self.ode.T,
-    #                                            self.jacobian.T,
-    #                                            self._x0,
-    #                                            t[0], t[1::],
-    #                                            includeOrigin=True,
-    #                                            full_output=True,
-    #                                            method=method)
+        f = ode_utils.integrateFuncJac
+        self._odeSolution, self._odeOutput = f(self.ode.T,
+                                               self.jacobian.T,
+                                               self._x0,
+                                               t[0], t[1::],
+                                               includeOrigin=True,
+                                               full_output=True,
+                                               method=method)
 
-    #     if full_output:
-    #         return self._odeSolution, self._odeOutput
-    #     else:
-    #         return self._odeSolution
+        if full_output:
+            return self._odeSolution, self._odeOutput
+        else:
+            return self._odeSolution
 
     # TODO: plot
     def plot(self):

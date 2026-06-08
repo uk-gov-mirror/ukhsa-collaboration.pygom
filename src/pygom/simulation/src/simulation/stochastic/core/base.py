@@ -40,17 +40,17 @@ class StochasticLeap(ABC):
         Maximum allowed state values
     proceed_if_rates_zero : bool
         If True, continue with simulation when reaction rates are all zero. Otherwise terminate.
-    seed : TODO seed type
-
+    seed : int
+        Seed used to initialise random number generator
     """
 
-    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
         self.event_rates = event_rates
         self.stoichiometry_matrix = stoichiometry_matrix
         self.proceed_if_rates_zero = proceed_if_rates_zero
         self.y_min = y_min
         self.y_max = y_max
-        self.rng = np.random.default_rng(seed)
+        self.rng = rng or np.random.default_rng()
 
         n_event, n_state = stoichiometry_matrix.shape
         self.n_event = n_event

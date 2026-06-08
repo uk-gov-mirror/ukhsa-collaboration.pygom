@@ -35,8 +35,10 @@ from .maths import (StateChangeMatrix,
                     TransitionJacobian)
 
 # from ..simulation.src.simulation.api import solve_stochastic, solve_deterministic
-
 # from ..simulation.src.simulation.stochastic.config_api import build_config
+
+from ..simulation.src.simulation.stochastic.solve_stochastic import solve_stochastic
+from ..simulation.src.simulation.deterministic.solve_deterministic import solve_deterministic
 
 
 from .ode_utils.variable_store import CallableParameter
@@ -111,250 +113,189 @@ class SimulateOde(DeterministicOde):
 
     # # TODO 1: Deterministic solver
 
-    def solve_deterministic(self, t, perf=False, **kwargs):
 
-        result = solve_deterministic(
-            x0 = self.initial_state,
-            t = t,
-            ode_eqns = self.ode,
-            trans_rates = self.event_rate_vector,
-            n_state = self.num_state,
-            n_trans = self.num_events,
-            t0=self.initial_time,
-            perf = perf,
-            **kwargs)
-
-        return result
-
-    def solve_stochastic(
+    def solve_deterministic(
             self,
             t,
-            method,
-            proc=False,
+            method="LSODA",
+            dense_output=False,
+            events=None,
+            vectorized=False,
+            args=None,
             perf=False,
-            # x0=None,
-            # t0=None,
-            seed=None,
             iteration=1,
+            seed=None,
             parallel=False,
-            client=None,
-            parallel_backend="dask",
             **options):
-
-        # TODO: interface between pygom and solvers or keep as below?...
-        # TODO: seeding
-
-        if method == "cao2006":
-            options["f_mu"] = self.transition_mean
-            options["f_var"] = self.transition_variance
-
-        config = build_config(method, **options)
+    
+        if (not self._parameter_store.has_stochastic_parameters) and (iteration>1):
+            warnings.warn("System only has deterministic parameters, but multiple"
+                          "iterations specified. Perhaps you wish to set iteration=1 instead?")
 
         # Normalise time input
+        t0 = self.initial_time
         if isinstance(t, Number):
-            t = float(t)
-        elif isinstance(t, (list, tuple)):
-            t = np.array(t)
-        elif not isinstance(t, np.ndarray):
-            raise InputError("Unknown data type for time")
+            t_span = (t0, t)
+            t_eval = None
+        elif isinstance(t, np.ndarray):
+            t_span = (t0, t.max())
+            t_eval = t
+        else:
+            raise InputError("Unknown dtype for time. Expected Number or numpy.array")
+        
 
-        # Generate quantities prior to simulations:
+        def _run_single_iteration(iter_ss):
+            params_ss = iter_ss.spawn(1)[0]
+            stochastic_params = self._parameter_store.stochastic_parameters
+            param_seqs = params_ss.spawn(len(stochastic_params))
 
-        # Random seeds
-        master_rng = np.random.default_rng(seed)
+            for seq, param in zip(param_seqs, stochastic_params.values()):
+                if isinstance(param.value, CallableParameter):
+                    param.value.rng = np.random.default_rng(seq)
 
-        rng_params = np.random.default_rng(master_rng.integers(2**32))
-        rng_solver = np.random.default_rng(master_rng.integers(2**32))
+            self._parameter_store.new_realisation()
 
-        # seeds for solver
-        seeds = rng_solver.integers(0, 2**32 - 1, size=iteration)
+            jacobian_methods = ['LSODA', 'Radau', 'BDF']
 
-        # rng for params
-        # self._parameter_store.rng = rng_params
-
-        for param in self._parameter_store.stochastic_parameters.values():
-            if isinstance(param.value, CallableParameter):
-                print("initialising rng")
-                param.value.rng = rng_params
+            if method in jacobian_methods:
+                return solve_deterministic(
+                        ode_eqns=self.ode.T,
+                        event_rates=self.event_rate_vector.T,
+                        n_state=self.num_state,
+                        n_event=self.num_events,
+                        t_span=t_span,
+                        y0=self.initial_state,
+                        jac_ode=self.jacobian.T,
+                        jac_events=self.rates_jacobian.T,
+                        method=method,
+                        t_eval=t_eval,
+                        dense_output=dense_output,
+                        events=events,
+                        vectorized=vectorized,
+                        args=args,
+                        perf=perf,
+                        **options)
+            else:
+                return solve_deterministic(
+                        ode_eqns=self.ode.T,
+                        event_rates=self.event_rate_vector.T,
+                        n_state=self.num_state,
+                        n_event=self.num_events,
+                        t_span=t_span,
+                        y0=self.initial_state,
+                        method=method,
+                        t_eval=t_eval,
+                        dense_output=dense_output,
+                        events=events,
+                        vectorized=vectorized,
+                        args=args,
+                        perf=perf,
+                        **options)
+        
+        master_ss = np.random.SeedSequence(seed)
+        iteration_seqs = master_ss.spawn(iteration)
 
         if not parallel:
             logging.debug("Performing serial simulation")
 
             out = []
             for i in range(iteration):
-                self._parameter_store.new_realisation()
-
-                result = solve_stochastic(
-                    self.initial_state,
-                    t,
-                    self.event_rate_vector,
-                    self.state_change_matrix,
-                    self.x_min,
-                    self.x_max,
-                    self.num_events,
-                    config=config,
-                    t0=self.initial_time,
-                    proceed_if_rates_zero=proc,
-                    perf=perf,
-                    seed=seeds[i])
-                
+                result = _run_single_iteration(iteration_seqs[i])
                 out.append(result)
 
             return out
 
-            # return [
-            #     solve_stochastic(
-            #         self.initial_state,
-            #         t,
-            #         self.event_rate_vector,
-            #         self.state_change_matrix,
-            #         self.x_min,
-            #         self.x_max,
-            #         self.num_events,
-            #         config=config,
-            #         t0=self.initial_time,
-            #         proceed_if_rates_zero=proc,
-            #         perf=perf,
-            #         seed=seeds[i])
-            #     for i in range(iteration)
-            # ]
+    def solve_stochastic(
+            self,
+            t,
+            method,
+            seed=None,
+            proceed_if_rates_zero=False,
+            perf=False,
+            iteration=1,
+            parallel=False,
+            client=None,
+            parallel_backend="dask",
+            **options):
+
+        if method == "cao2006":
+            options["transition_mean_func"] = self.transition_mean.T
+            options["transition_var_func"] = self.transition_variance.T
+
+        # Normalise time input
+        t0 = self.initial_time
+        if isinstance(t, Number):
+            t_span = (t0, t)
+            t_eval = None
+        elif isinstance(t, np.ndarray):
+            t_span = (t0, t.max())
+            t_eval = t
+        else:
+            raise InputError("Unknown dtype for time. Expected Number or numpy.array")
+        
+        # Evaluate stoichiometry_matrix at initial conditions and assume constant
+        stoichiometry_matrix = self.state_change_matrix(self.initial_state, self.initial_time)
+
+        def _run_single_iteration(iter_ss):
+            solver_ss, params_ss = iter_ss.spawn(2)
+            solver_rng = np.random.default_rng(solver_ss)
+            stochastic_params = self._parameter_store.stochastic_parameters
+            param_seqs = params_ss.spawn(len(stochastic_params))
+
+            for seq, param in zip(param_seqs, stochastic_params.values()):
+                if isinstance(param.value, CallableParameter):
+                    param.value.rng = np.random.default_rng(seq)
+
+            self._parameter_store.new_realisation()
+
+            return solve_stochastic(
+                    event_rates=self.event_rate_vector.T,
+                    stoichiometry_matrix=stoichiometry_matrix,
+                    t_span=t_span,
+                    y0=self.initial_state,
+                    y_min=self.x_min,
+                    y_max=self.x_max,
+                    method=method,
+                    t_eval=t_eval,
+                    proceed_if_rates_zero=proceed_if_rates_zero,
+                    perf=perf,
+                    rng=solver_rng,
+                    **options)
+        
+        master_ss = np.random.SeedSequence(seed)
+        iteration_seqs = master_ss.spawn(iteration)
+
+
+        if not parallel:
+            logging.debug("Performing serial simulation")
+
+            out = []
+            for i in range(iteration):
+                # model = self.copy()
+                result = _run_single_iteration(iteration_seqs[i])
+                out.append(result)
+
+            return out
 
         # ----------------------------------------------------
         # Parallel execution
         # ----------------------------------------------------
-
+        
         if parallel_backend == "dask":
             logging.debug(f"Using {parallel_backend} for parallel simulation")
 
             if client is None:
                 from dask.distributed import Client
                 client = Client()
-
-            futures = []
-            for i in range(iteration):
-                self._parameter_store.new_realisation()
-
-                result = solve_stochastic(
-                    self.initial_state,
-                    t,
-                    self.event_rate_vector,
-                    self.state_change_matrix,
-                    self.x_min,
-                    self.x_max,
-                    self.num_events,
-                    config=config,
-                    t0=self.initial_time,
-                    proceed_if_rates_zero=proc,
-                    perf=perf,
-                    seed=seeds[i])
-                
-                futures.append(result)
-
+            
+            futures = [
+                client.submit(_run_single_iteration, iteration_seqs[i], self.copy())
+                for i in range(iteration)
+            ]
             return client.gather(futures)
-
-            # futures = [
-            #     client.submit(
-            #         solve_stochastic,
-            #         self.initial_state,
-            #         t,
-            #         self.event_rate_vector,
-            #         self.state_change_matrix,
-            #         self.x_min,
-            #         self.x_max,
-            #         self.num_events,
-            #         config=config,
-            #         t0=self.initial_time,
-            #         proceed_if_rates_zero=proc,
-            #         perf=perf,
-            #         seed=seeds[i])
-            #     for i in range(iteration)
-            # ]
-            # return client.gather(futures)
 
         raise ValueError(f"Unknown backend: {parallel_backend}")
 
-    def solve_determ(self, t, iteration=1, parallel=False, full_output=False):
-        '''
-        Simulate the ode by generating new realization of the stochastic
-        parameters and integrate the system deterministically.
-
-        Parameters
-        ----------
-        t: array like
-            the range of time points which we want to see the result of
-        iteration: int
-            number of iterations you wish to simulate
-        parallel: bool, optional
-            Defaults to True
-        full_output: bool, optional
-            if we want additional information, Y_all in the return,
-            defaults to false
-
-        Returns
-        -------
-        Y: :class:`numpy.ndarray`
-            of shape (len(t), len(state)), mean of all the simulation
-        Y_all: :class:`np.ndarray`
-            of shape (iteration, len(t), len(state))
-        '''
-
-        # if our parameters not stochastic, then we are going to
-        # throw a warning because trying to  randomly draw parameters
-        # when they are set to be constant is just plain stupid
-
-        if not self._parameter_store.has_stochastic_parameters:
-            warnings.warn("System only has deterministic parameters, maybe you"
-                          "just want to integrate the model using the "
-                          "integrate method?")
-        if iteration is None:
-            raise InputError("Need to specify the number of iterations")
-        if t is None:
-            raise InputError("Need to specify the time we wish to observe")
-
-        self._odeSolution = self.integrate(t)
-
-        # try to compute the simulation in parallel
-        if parallel:
-            try:
-                # for i in self._stochasticParam:
-                #     if isinstance(i, scipy.stats._distn_infrastructure.rv_frozen):
-                #         raise Exception("Cannot perform parallel simulation "
-                #                         +"using a serialized object as distribution")
-                # # check the type of parameter we have as input
-
-                warnings.warn('Parallel computation not fully tested. Please '
-                'check a subset before relying on these answers.'
-                )
-
-                import dask.bag
-                y = list()
-                # Generate a list of parameter values (thetas) to calculate 
-                for i in range(iteration):
-                    self._parameter_store.new_realisation()
-                    y.append(self._parameter_store.values)
-
-                def sim(x):
-                    self.parameters = x
-                    self._setIntegrateTime(t)
-                    return self._integrate(self._odeTime, full_output=False)
-
-                xtmp = dask.bag.from_sequence(y)
-                solutionList = xtmp.map(sim).compute()
-            except Exception: # as e:
-                # logging.debug(e)
-                # logging.debug("Serial")
-                solutionList = [self.integrate(t) for i in range(iteration)]
-        else:
-            solutionList = [self.integrate(t) for i in range(iteration)]
-
-        # now make our 3D array
-        # the first dimension is the number of iteration
-        Y = np.dstack(solutionList).mean(axis=2)
-
-        if full_output:
-            return Y, solutionList
-        else:
-            return Y
 
     def plot(self, sim_X=None, sim_T=None):
         '''

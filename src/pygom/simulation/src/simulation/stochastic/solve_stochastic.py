@@ -20,7 +20,7 @@ def solve_stochastic(
         y_max,
         method,
         t_eval=None,
-        seed=None,
+        rng=None,
         proceed_if_rates_zero=False,
         perf=False,
         **options):
@@ -65,8 +65,8 @@ def solve_stochastic(
     t_eval : array_like or None, optional
         Times at which to store the computed solution, must be sorted and lie
         within `t_span`. If None (default), use points selected by the solver.
-    seed : numpy. TODO: get name of this
-        Random seed
+    seed : int
+        Number used to initialise random number generator
     proceed_if_rates_zero : bool
         If True, a tau leap method will keep going until tf, even if the event rates are zero.
         If False, simulation will prematurely end.
@@ -191,7 +191,7 @@ def solve_stochastic(
         y_min=y_min,
         y_max=y_max,
         proceed_if_rates_zero=proceed_if_rates_zero,
-        seed=seed
+        rng=rng
     )
 
     ################

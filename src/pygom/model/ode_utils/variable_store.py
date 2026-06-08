@@ -481,12 +481,13 @@ class CallableParameter:
         Otherwise fall back to the old behavior.
         """
 
-        try:
-            # Try passing rng explicitly
-            return self._callable(n, *self.args, rng=self.rng, **self.kwargs)
-        except TypeError:
-            # Function did not accept rng → backwards compatible path
-            return self._callable(n, *self.args, **self.kwargs)
+        return self._callable(n, *self.args, rng=self.rng, **self.kwargs)
+        # try:
+        #     # Try passing rng explicitly
+        #     return self._callable(n, *self.args, rng=self.rng, **self.kwargs)
+        # except TypeError:
+        #     # Function did not accept rng → backwards compatible path
+        #     return self._callable(n, *self.args, **self.kwargs)
 
 class ParameterStore(VariableStore):
     '''

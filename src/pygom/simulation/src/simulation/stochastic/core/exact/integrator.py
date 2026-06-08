@@ -21,8 +21,8 @@ class ExactLeap(StochasticLeap):
     """
     Base class for exact algorithms. Building on `StochasticLeap`.
     """
-    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
-        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
         self.diag = DirectDiagnostics()
     
     def _get_new_y(self, y, changes, transition_id):
@@ -76,8 +76,8 @@ class ExactLeap(StochasticLeap):
 # First Reaction Method
 # ============================================================
 class FirstReaction(ExactLeap):
-    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
-        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
         self.diag = DirectDiagnostics()
 
     def _propose_jump(self, rates):
@@ -108,8 +108,8 @@ class FirstReaction(ExactLeap):
 # Direct Reaction Method
 # ============================================================
 class DirectReaction(ExactLeap):
-    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed=None):
-        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
+    def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
         self.diag = FirstReactionDiagnostics()
 
     def _propose_jump(self, rates):

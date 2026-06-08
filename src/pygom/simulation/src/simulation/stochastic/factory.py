@@ -23,7 +23,7 @@ def make_stepper(
     y_min,
     y_max,
     proceed_if_rates_zero,
-    seed):
+    rng):
     """
     Construct a complete stochastic stepping class from config classes
     """
@@ -41,7 +41,7 @@ def make_stepper(
                 y_min=y_min,
                 y_max=y_max,
                 proceed_if_rates_zero=proceed_if_rates_zero,
-                seed=seed
+                rng=rng
             )
 
         elif isinstance(method_cfg, FirstReactionMethodConfig):
@@ -51,7 +51,7 @@ def make_stepper(
                 y_min=y_min,
                 y_max=y_max,
                 proceed_if_rates_zero=proceed_if_rates_zero,
-                seed=seed
+                rng=rng
             )
 
         else:
@@ -136,7 +136,7 @@ def make_stepper(
             tau_method=tau_method,
             proposal_checker=checker,
             tau_refiner=refiner,
-            seed=seed
+            rng=rng
         )
 
     # ============================================================

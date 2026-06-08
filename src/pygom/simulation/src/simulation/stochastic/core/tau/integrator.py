@@ -25,8 +25,8 @@ class TauLeap(StochasticLeap):
                  tau_method : TauMethod,
                  proposal_checker : JumpChecker,
                  tau_refiner : TauRefiner,
-                 seed=None):
-        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, seed)
+                 rng=None):
+        super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
 
         self.tau_method = tau_method
         self.proposal_checker = proposal_checker
