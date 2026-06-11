@@ -174,8 +174,8 @@ def solve_stochastic(
         raise TypeError("y_max must be a numpy array")
     if y_max.ndim != 1:
         raise ValueError("y_max must be 1 dimensional")
-    if not np.issubdtype(y_max.dtype, np.integer):
-        raise TypeError("y_max must have integer dtype")
+    # if not np.issubdtype(y_max.dtype, np.integer):
+    #     raise TypeError("y_max must have integer dtype")
     if len(y_max) != n_state:
         raise ValueError(f"y_max ({len(y_max)}) and reaction matrix ({n_state}) disagree on number of states")
 

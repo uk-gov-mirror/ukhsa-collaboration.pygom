@@ -110,7 +110,6 @@ class SimulateOde(DeterministicOde):
         #     started with get_ or _compute)
 
 
-
     # # TODO 1: Deterministic solver
 
 
@@ -217,6 +216,9 @@ class SimulateOde(DeterministicOde):
             client=None,
             parallel_backend="dask",
             **options):
+        
+        y_min = np.zeros(self.num_state, dtype=int)
+        y_max = np.full(self.num_state, np.inf)
 
         if method == "cao2006":
             options["transition_mean_func"] = self.transition_mean.T
@@ -253,8 +255,8 @@ class SimulateOde(DeterministicOde):
                     stoichiometry_matrix=stoichiometry_matrix,
                     t_span=t_span,
                     y0=self.initial_state,
-                    y_min=self.x_min,
-                    y_max=self.x_max,
+                    y_min=y_min,
+                    y_max=y_max,
                     method=method,
                     t_eval=t_eval,
                     proceed_if_rates_zero=proceed_if_rates_zero,
@@ -295,6 +297,118 @@ class SimulateOde(DeterministicOde):
             return client.gather(futures)
 
         raise ValueError(f"Unknown backend: {parallel_backend}")
+
+
+    ###########################################################################
+    #
+    # Unrolling of ode to transitions
+    #
+    # TODO: I doubt any of this works with the event based framework
+    #       but it didn't work perfectly anyway. Will be a challenge
+    #       now we are dealing with more general systems.
+    ###########################################################################
+
+    def get_unrolled_obj(self):
+        '''
+        Returns a :class:`SimulateOde` with the same state and parameters
+        as the current object but with the equations defined by a set of
+        transitions and birth death process instead of say, odes
+        '''
+        transition = self.get_transitions_from_ode()
+        bdList = self.get_bd_from_ode()
+
+        return SimulateOde(
+                           [str(s) for s in self._stateList],
+                           [str(p) for p in self._paramList],
+                           derived_param=self._derivedParamEqn,
+                           transition=transition,
+                           birth_death=bdList
+                           )
+
+    def get_transitions_from_ode(self):
+        '''
+        Returns a list of :class:`Transition` from this object by unrolling
+        the odes.  All the elements are of TransitionType.T
+        '''
+        M = self._generateTransitionMatrix()
+
+        transition = list()
+        for i, s1 in enumerate(self._stateList):
+            for j, s2 in enumerate(self._stateList):
+                if M[i,j] != 0:
+                    t = Transition(origin=str(s1),
+                                   destination=str(s2),
+                                   equation=str(M[i,j]),
+                                   transition_type=TransitionType.T)
+                    transition.append(t)
+
+        return transition
+
+    def _get_A(self, A=None):
+        if A is None:
+            if not ode_utils.none_or_empty_list(self._odeList):
+                eqn_list = [t.equation for t in self._odeList]
+                A = sympy.Matrix(checkEquation(eqn_list,
+                                               *self._getListOfVariablesDict(),
+                                               subs_derived=False))
+                return A
+            else:
+                raise Exception("Object was not initialized using a set of ode")
+        else:
+            return A
+
+    def get_bd_from_ode(self, A=None):
+        '''
+        Returns a list of:class:`Transition` from this object by unrolling
+        the odes.  All the elements are of TransitionType.B or
+        TransitionType.D
+        '''
+
+        A=self._get_A(A)
+
+        bdList, _term = _ode_composition.getUnmatchedExpressionVector(A, True)
+        if len(bdList) > 0:
+            M = self._generateTransitionMatrix(A)
+
+            A1 = _ode_composition.pureTransitionToOde(M)
+            diffA = sympy.simplify(A - A1)
+
+            # get our birth and death process
+            bdUnroll = list()
+            states = [str(i) for i in self.state_list]
+
+            for i, a in enumerate(diffA):
+                for b in bdList:
+                    if _ode_composition._hasExpression(a, b):
+                        if sympy.Integer(-1) in _ode_composition.getLeafs(b):
+                            bdUnroll.append(Transition(origin=states[i],
+                                            equation=str(b*-1),
+                                            transition_type=TransitionType.D))
+                        else:
+                            bdUnroll.append(Transition(origin=states[i],
+                                            equation=str(b),
+                                            transition_type=TransitionType.B))
+                        a -= b
+
+            return bdUnroll
+        else:
+            return []
+
+    def _generateTransitionMatrix(self, A=None):#, transitionExpressionList=None):
+        '''
+        Finds the transition matrix from the set of ode.  It is
+        important to note that although some of the functions used
+        in this method appear to be the same as _getReactantMatrix
+        and _getStateChangeMatrix, they are different in the sense
+        that the functions called here is focused on the terms of
+        the equation rather than the states.
+        '''
+        A=self._get_A(A)
+        bdList, _term = _ode_composition.getUnmatchedExpressionVector(A, True)
+        fx = _ode_composition.stripBDFromOde(A, bdList)
+        states = [s for s in self._iterStateList()]
+        M, _remain = _ode_composition.odeToPureTransition(fx, states, True)
+        return M
 
 
     def plot(self, sim_X=None, sim_T=None):

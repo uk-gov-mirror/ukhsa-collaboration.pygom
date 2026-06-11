@@ -12,17 +12,16 @@ class TestABC(TestCase):
         # define the model and parameters
         beta = 0.5
         gamma = 1.0/3.0
-        self.ode = common_models.SIR_norm({'beta':beta, 'gamma':gamma})
+        self.ode = common_models.SIR_norm({'beta': beta, 'gamma':gamma})
         
         # the initial state, normalized to one
-        i0=1.27e-6
+        i0 = 1.27e-6
         self.x0 = [1-i0, i0, 0]
         # set the time sequence that we would like to observe
         self.t = np.linspace(0, 150, 100)
         self.ode.initial_values = (self.x0, self.t[0])
         # find the solution
-        # self.solution = self.ode.integrate(self.t[1::])
-        self.solution = self.ode.solve_deterministic(self.t).result.x
+        self.solution = self.ode.solve_deterministic(self.t)[0].result.y
         
         # what the posterior median estimates should be close to
         self.target = np.array([beta, gamma])
@@ -32,12 +31,21 @@ class TestABC(TestCase):
         y = self.solution[1::, 1:3]
         
         # setting the parameters in the inference
-        parameters = [pgabc.Parameter('beta', 'unif', 0, 3, logscale=False),
-                      pgabc.Parameter('gamma', 'unif', 0, 3, logscale=False)]
-        
+        parameters = [
+            pgabc.Parameter('beta', 'unif', 0, 3, logscale=False),
+            pgabc.Parameter('gamma', 'unif', 0, 3, logscale=False)]
+
         # creating the loss and abc objects
-        sir_obj = pgabc.create_loss("SquareLoss", parameters, self.ode, self.x0, self.t[0],
-                                  self.t[1::], y, ['I', 'R'])
+        sir_obj = pgabc.create_loss(
+            loss_type="SquareLoss",
+            parameters=parameters,
+            ode=self.ode,
+            x0=self.x0,
+            t0=self.t[0],
+            t=self.t[1::],
+            y=y,
+            state_name=['I', 'R'])
+        
         sir_abc = pgabc.ABC(sir_obj, parameters)
         
         # getting the posterior sample

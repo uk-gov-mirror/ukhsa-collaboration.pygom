@@ -1358,7 +1358,7 @@ class BaseLoss(object):
         #                                       full_output=False,
         #                                       method=self._ode._intName)
 
-        return solution.result.y[:, self._stateIndex]
+        return solution[0].result.y[:, self._stateIndex]
 
     def _sensToGradWithoutIndex(self, sens, diffLoss):
         """
