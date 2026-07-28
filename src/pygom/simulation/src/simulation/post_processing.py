@@ -127,7 +127,16 @@ def change_bins(event_counts, old_breaks, new_breaks):
         tmax_new = new_breaks[1:]
 
         dt = tmax_old-tmin_old
-        density = np.divide(event_counts[:, i], dt, where=dt>0)
+
+        # density = np.divide(event_counts[:, i], dt, where=dt>0)
+
+        density = np.divide(
+            event_counts[:, i],
+            dt,
+            out=np.zeros_like(dt, dtype=float),
+            where=dt > 0,
+        )
+
 
         # Broadcast to compute overlaps
         overlap_left = np.maximum(tmin_old[:, None], tmin_new[None, :])

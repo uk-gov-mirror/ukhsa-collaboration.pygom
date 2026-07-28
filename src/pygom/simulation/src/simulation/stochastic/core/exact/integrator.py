@@ -78,17 +78,12 @@ class ExactLeap(StochasticLeap):
 class FirstReaction(ExactLeap):
     def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
         super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
-        self.diag = DirectDiagnostics()
+        # self.diag = DirectDiagnostics()
+        self.diag = FirstReactionDiagnostics()
 
     def _propose_jump(self, rates):
-        # jump_times = np.random.exponential(1.0 / rates)
         jump_times = self.rng.exponential(1.0 / rates)
-
-        # find reaction with smallest time
         transition_idx = np.argmin(jump_times)
-
-        # jumps = np.zeros_like(rates, dtype=int)
-        # jumps[transition_id] = 1
         dt = jump_times[transition_idx]
 
         return transition_idx, dt
@@ -110,17 +105,17 @@ class FirstReaction(ExactLeap):
 class DirectReaction(ExactLeap):
     def __init__(self, event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng=None):
         super().__init__(event_rates, stoichiometry_matrix, y_min, y_max, proceed_if_rates_zero, rng)
-        self.diag = FirstReactionDiagnostics()
+        # self.diag = FirstReactionDiagnostics()
+        self.diag = DirectDiagnostics()
 
     def _propose_jump(self, rates):
+        # total_rate = rates.sum()
+        # transition_idx = self.rng.choice(len(rates), p=rates / total_rate)
+        # dt = self.rng.exponential(1.0 / total_rate)
+
         total_rate = rates.sum()
-        # transition_idx = np.random.choice(len(rates), p=rates / total_rate)
-        transition_idx = self.rng.choice(len(rates), p=rates / total_rate)
-
-        # jumps = np.zeros(len(rates), dtype=np.int8)
-        # jumps[transition_index] = 1
-
-        # dt = np.random.exponential(1.0 / total_rate)
+        u = self.rng.random() * total_rate
+        transition_idx = np.searchsorted(np.cumsum(rates), u)
         dt = self.rng.exponential(1.0 / total_rate)
 
         return transition_idx, dt
