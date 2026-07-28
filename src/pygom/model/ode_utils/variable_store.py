@@ -388,8 +388,7 @@ class VariableStore(object):
                                          ' tuples, (NAME, VALUE) and'
                                          ' PyGOM tried to evaluate it on that'
                                          ' basis but these entries '
-                                        f'{[value for value in values 
-                                            if len(value)!=2]}',
+                                        f'{[value for value in values if len(value)!=2]},'
                                         ' were not of length 2,'
                                         ' please check these.') from e
                     # Set as dict

@@ -16,7 +16,7 @@ from ._model_errors import InputError, SimulationError
 from .ode_utils import check_array_type
 
 # Code from the cython module
-from ._tau_leap import _cy_test_tau_leap_safety
+# from ._tau_leap import _cy_test_tau_leap_safety
 
 
 

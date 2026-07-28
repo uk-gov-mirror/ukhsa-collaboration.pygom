@@ -42,7 +42,11 @@ class ODEVariable(object):
         self.symbol = symbol
         self.value = value
         self.units = units
-        self.limits = limits
+
+        if limits is None:
+            self.limits = (0, np.inf)
+        else:
+            self.limits = limits
 
     def __str__(self)->str:
         return self.ID

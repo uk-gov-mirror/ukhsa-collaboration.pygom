@@ -339,47 +339,133 @@ class DeterministicOde(BaseOdeModel):
 
         return self.eval_sens_jacobian_state(time=t, state=state, sens=sens)
 
-    # TODO: algebra
+    # def eval_sens_jacobian_state(self, time=None, state=None, sens=None):
+
+    #     nS = self.num_state
+    #     nP = self.num_param
+
+    #     J = self.diff_jacobian(state, time)
+    #     S = self._SAUtil.vecToMatSens(sens)
+
+    #     A = J.dot(S).T
+    #     out = np.reshape(A, (nS * nP, nS), order='F')
+
+    #     return out
+
     def eval_sens_jacobian_state(self, time=None, state=None, sens=None):
-        '''
-        Evaluate the jacobian of the sensitivities w.r.t the states given
-        parameters, state and time. An extension of :meth:`.sens_jacobian_state`
-        but now also include the parameters.
 
-        Parameters
-        ----------
-        parameters: list
-            see :meth:`.parameters`
-        time: double
-            The current time
-        state: array list
-            The current numerical value for the states which can be
-            :class:`numpy.ndarray` or :class:`list`
-
-        Returns
-        -------
-        :class:`numpy.matrix` or :class:`mpmath.matrix`
-            Matrix of dimension [number of state x number of state]
-
-        Notes
-        -----
-        Name and order of state and time are also different.
-
-        See Also
-        --------
-        :meth:`.sens_jacobian_state`
-
-        '''
+        # TODO: copilot generated code to fix ordering errors
 
         nS = self.num_state
         nP = self.num_param
 
-        # dot first, then transpose, then reshape
-        # basically, some magic
-        # don't ask me what is actually going on here, I did it
-        # while having my wizard hat on
-        return(np.reshape(self.diff_jacobian(state, time).dot(
-            self._SAUtil.vecToMatSens(sens)).transpose(), (nS*nP, nS)))
+        # diff_jacobian() returns the Hessians of the ODE system stacked
+        # vertically:
+        #
+        #     J =
+        #     [ H_0 ]
+        #     [ H_1 ]
+        #     [ ... ]
+        #     [ H_(nS-1) ]
+        #
+        # where H_i is the Hessian of the i-th ODE equation with respect
+        # to the state variables.
+        J = self.diff_jacobian(state, time)
+
+        # Sensitivity matrix:
+        #
+        #     S[:, p] = ∂x/∂θ_p
+        #
+        # with shape (n_state, n_param).
+        S = self._SAUtil.vecToMatSens(sens)
+
+        # The lower-left block of the augmented Jacobian is:
+        #
+        #     ∂(J_x S)/∂x
+        #
+        # For each parameter p and equation i we need:
+        #
+        #     H_i @ S[:, p]
+        #
+        # where H_i is the Hessian of equation i.
+        #
+        # The previous implementation used:
+        #
+        #     A = J.dot(S).T
+        #     reshape(..., order='F')
+        #
+        # which relied on implicit reshaping/permutation of the stacked
+        # Hessian tensor. This produced an incorrect mapping of Hessian
+        # contributions to sensitivity equations and resulted in an
+        # analytical Jacobian that disagreed with a finite-difference
+        # Jacobian check.
+        #
+        # The explicit implementation below performs the tensor
+        # contraction directly and preserves the expected ordering:
+        #
+        #     [dS/dθ1, dI/dθ1, ...,
+        #      dS/dθ2, dI/dθ2, ...]
+        #
+        out = np.zeros((nS * nP, nS))
+
+        for p in range(nP):
+            for eq in range(nS):
+                H = J[eq*nS:(eq+1)*nS, :]
+                out[p*nS + eq, :] = H.dot(S[:, p])
+
+        return out
+
+
+    # # TODO: algebra
+    # def eval_sens_jacobian_state(self, time=None, state=None, sens=None):
+    #     '''
+    #     Evaluate the jacobian of the sensitivities w.r.t the states given
+    #     parameters, state and time. An extension of :meth:`.sens_jacobian_state`
+    #     but now also include the parameters.
+
+    #     Parameters
+    #     ----------
+    #     parameters: list
+    #         see :meth:`.parameters`
+    #     time: double
+    #         The current time
+    #     state: array list
+    #         The current numerical value for the states which can be
+    #         :class:`numpy.ndarray` or :class:`list`
+
+    #     Returns
+    #     -------
+    #     :class:`numpy.matrix` or :class:`mpmath.matrix`
+    #         Matrix of dimension [number of state x number of state]
+
+    #     Notes
+    #     -----
+    #     Name and order of state and time are also different.
+
+    #     See Also
+    #     --------
+    #     :meth:`.sens_jacobian_state`
+
+    #     '''
+
+    #     nS = self.num_state
+    #     nP = self.num_param
+
+    #     # dot first, then transpose, then reshape
+    #     # basically, some magic
+    #     # don't ask me what is actually going on here, I did it
+    #     # while having my wizard hat on
+    #     # return(
+    #     #     np.reshape(
+    #     #         self.diff_jacobian(state, time).dot(self._SAUtil.vecToMatSens(sens)).transpose(), (nS*nP, nS)))
+    
+
+    #     J = self.diff_jacobian(state, time)
+    #     S = self._SAUtil.vecToMatSens(sens)
+    #     A = J.dot(S).T  # transpose after multiply
+
+    #     return np.reshape(A, (nS * nP, nS), order='F')
+
 
     ############################## derivative of jacobian
 
@@ -1165,6 +1251,11 @@ class DeterministicOde(BaseOdeModel):
         # The Jacobian of the ode, then the sensitivities w.r.t state and
         # the sensitivities. In block form.  Theoretically, only the diagonal
         # blocks are important but we output the full matrix for completeness
+
+
+        GJ = self.grad_jacobian(state, t)
+        SJ = self.sens_jacobian_state(state_param, t)
+        
         return np.asarray(np.bmat([
             [J, np.zeros((self.num_state, self.num_state*self.num_param))],
             [sensJacobianOfState, outJ]
@@ -1372,8 +1463,23 @@ class DeterministicOde(BaseOdeModel):
 
         # now the jacobian of the state vs initial value
         DJ = self.diff_jacobian(state, t)
-        A = DJ.dot(np.reshape(state_param[(nS*(nP+1))::], (nS, nS), 'F'))
-        A = np.reshape(A.transpose(), (nS*nS, nS))
+
+        # A = DJ.dot(np.reshape(state_param[(nS*(nP+1))::], (nS, nS), 'F'))
+        # A = np.reshape(A.transpose(), (nS*nS, nS))
+
+        IV = np.reshape(
+            state_param[(nS*(nP+1))::],
+            (nS, nS),
+            'F'
+        )
+
+        A = np.zeros((nS*nS, nS))
+
+        for iv_col in range(nS):
+            for eq in range(nS):
+                H = DJ[eq*nS:(eq+1)*nS, :]
+                A[iv_col*nS + eq, :] = H.dot(IV[:, iv_col])
+
 
         if nP == 0:
             return np.asarray(np.bmat([

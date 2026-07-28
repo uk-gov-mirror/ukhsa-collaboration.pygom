@@ -983,10 +983,17 @@ class BaseOdeModel(object):
         '''
         Creates the states and parameters cache
         '''
+
+        # NOTE: if derived params are included in param list then when compiling it
+        #       will try to use expressions (e.g. 'S+I+R') as args in the function definition.
+        # self._sp = (self._state_store.symbol_dict | 
+        #             {'t': self._t} | 
+        #             self._parameter_store.symbol_dict |
+        #             self._derivedParamDict)
+
         self._sp = (self._state_store.symbol_dict | 
                     {'t': self._t} | 
-                    self._parameter_store.symbol_dict |
-                    self._derivedParamDict)
+                    self._parameter_store.symbol_dict)
 
     @property
     def states_and_parameters(self)->list[sympy.Symbol]:
@@ -1586,6 +1593,17 @@ class BaseOdeModel(object):
         """
         for p in self._parameter_store.symbol_list:
             yield p
+
+    def _getListOfVariablesDict(self):
+        # param_dict = [self._paramDict, self._stateDict, self._vectorStateDict]
+
+        param_dict = [
+            self._parameter_store.symbol_dict,
+            self._state_store.symbol_dict,
+            self._vectorStateDict
+        ]
+
+        return param_dict, self._derivedParamDict
 
     ########################################################################
     #
