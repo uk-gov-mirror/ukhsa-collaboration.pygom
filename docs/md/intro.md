@@ -2,7 +2,7 @@
 
 ## What does this package do?
 
-PyGOM (Python Generic ODE Model) is a Python package which provides a simple interface for users to construct Ordinary Differential Equation (ODE) models, with a focus on compartmental models and epidemiology.
+PyGOM (Python Generic ODE Model) is a Python package which provides a simple interface for users to construct compartmental models, with a focus on epidemiology.
 This is backed by a comprehensive and easy to use tool–box implementing functions to easily perform common operations such as parameter estimation and solving for deterministic or stochastic time evolution.
 The package source is freely available (hosted on [GitHub](https://github.com/ukhsa-collaboration/pygom)) and organized in a way that permits easy extension. With both the algebraic and numeric calculations performed automatically (but still accessible), the end user is freed to focus on model development.
 
