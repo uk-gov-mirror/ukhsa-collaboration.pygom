@@ -159,8 +159,8 @@ class SimulateOde(DeterministicOde):
             if method in jacobian_methods:
                 return solve_deterministic(
                         ode_eqns=self.ode.T,
-                        event_rates=self.event_rate_vector.T,
                         n_state=self.num_state,
+                        event_rates=self.event_rate_vector.T,
                         n_event=self.num_events,
                         t_span=t_span,
                         y0=self.initial_state,
@@ -177,8 +177,8 @@ class SimulateOde(DeterministicOde):
             else:
                 return solve_deterministic(
                         ode_eqns=self.ode.T,
-                        event_rates=self.event_rate_vector.T,
                         n_state=self.num_state,
+                        event_rates=self.event_rate_vector.T,
                         n_event=self.num_events,
                         t_span=t_span,
                         y0=self.initial_state,
