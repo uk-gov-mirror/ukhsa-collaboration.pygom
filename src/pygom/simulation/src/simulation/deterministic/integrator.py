@@ -21,13 +21,26 @@ class DeterministicOutput:
     scipy_out: Any
 
 class DeterministicSolver:
-    def __init__(self, ode, event_rates, n_state, n_event, jac_ode=None, jac_events=None):
+    def __init__(self, ode, n_state, event_rates=None, n_event=None, jac_ode=None, jac_events=None):
         self.ode = ode
-        self.event_rates = event_rates
         self.n_state = n_state
-        self.n_event = n_event
-        self.jac_ode = jac_ode
-        self.jac_events = jac_events
+
+        # "Pure ODE" means that:
+        # i) the user has not specified the underlying compartmental model, OR
+        # ii) the ode system is not the result of a compartmental model (e.g. Newton laws of motion)
+        self.pure_ode = True
+
+        if (n_event is not None) and (n_event != 0):
+            self.n_event = n_event
+
+            if event_rates is None:
+                raise(ValueError("event_rates must be specified alongside n_event"))
+
+            self.event_rates = event_rates
+            self.jac_events = jac_events
+            self.pure_ode = False
+
+        self.jac_ode = jac_ode     
 
     def augmented_ode(self, t, y_aug):
         """
@@ -78,34 +91,65 @@ class DeterministicSolver:
                   args,
                   **options):
 
-        e0 = np.zeros(self.n_event)
-        y_aug0 = np.concatenate([y0, e0])
+        # If system is just and ODE, solve it.
+        # If system has an underlying compartmental model, augment it with
+        # event occurance equations and solve the augented system
 
-        if method in ['Radau', 'BDF', 'LSODA']:
-            options.setdefault("jac", self.augmented_jacobian)
+        if self.pure_ode:
+            if method in ['Radau', 'BDF', 'LSODA']:
+                options.setdefault("jac", self.jac_ode)
 
-        sol = solve_ivp(
-            fun = self.augmented_ode,
-            t_span = t_span,
-            y0 = y_aug0,
-            method=method,
-            t_eval=t_eval,
-            dense_output=dense_output,
-            events=events,
-            vectorized=vectorized,
-            args=args,
-            **options
-        )
+            sol = solve_ivp(
+                fun = self.ode,
+                t_span = t_span,
+                y0 = y0,
+                method=method,
+                t_eval=t_eval,
+                dense_output=dense_output,
+                events=events,
+                vectorized=vectorized,
+                args=args,
+                **options
+            )
 
-        t = sol.t
-        y_aug = sol.y
+            t = sol.t
+            y = sol.y
 
-        y = y_aug[:self.n_state, :]
-        event_counts = y_aug[self.n_state:, :]
-        event_counts = np.diff(event_counts, axis=1)
+            return DeterministicOutput(
+                t=t,
+                y=y.T,
+                event_counts=None,
+                scipy_out=sol)
 
-        return DeterministicOutput(
-            t=t,
-            y=y.T,
-            event_counts=event_counts.T,
-            scipy_out=sol)
+        else:
+            e0 = np.zeros(self.n_event)
+            y_aug0 = np.concatenate([y0, e0])
+
+            if method in ['Radau', 'BDF', 'LSODA']:
+                options.setdefault("jac", self.augmented_jacobian)
+
+            sol = solve_ivp(
+                fun = self.augmented_ode,
+                t_span = t_span,
+                y0 = y_aug0,
+                method=method,
+                t_eval=t_eval,
+                dense_output=dense_output,
+                events=events,
+                vectorized=vectorized,
+                args=args,
+                **options
+            )
+
+            t = sol.t
+            y_aug = sol.y
+
+            y = y_aug[:self.n_state, :]
+            event_counts = y_aug[self.n_state:, :]
+            event_counts = np.diff(event_counts, axis=1)
+
+            return DeterministicOutput(
+                t=t,
+                y=y.T,
+                event_counts=event_counts.T,
+                scipy_out=sol)

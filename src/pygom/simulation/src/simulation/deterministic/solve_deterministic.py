@@ -71,7 +71,7 @@ def solve_deterministic(
     if (method in ['Radau', 'BDF', 'LSODA']) and ( (jac_ode is None) or (jac_events is None) ):
         raise KeyError(f"Need Jacobian for method: {method}")
 
-    stepper = DeterministicSolver(ode_eqns, event_rates, n_state, n_event, jac_ode, jac_events)
+    stepper = DeterministicSolver(ode_eqns, n_state, event_rates, n_event, jac_ode, jac_events)
 
     if perf:
         start_time = time.perf_counter()
