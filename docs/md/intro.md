@@ -8,7 +8,11 @@ The package source is freely available (hosted on [GitHub](https://github.com/uk
 
 ## Release notes:
 
-### [0.1.9] - 2024-11-30 (Latest release)
+### [0.1.9] - 2026-07-30 (Latest release)
+
+[... add release notes here ...]
+
+### [0.1.9] - 2024-11-30
 
 - Added
     - Method {func}`solve_stochast` of {class}`SimulateOde` has 1 additional output (for a total of 3): the number of times each event occurs in between each time step. This is useful if you are interested in infection incidence rather than prevalence, for example.

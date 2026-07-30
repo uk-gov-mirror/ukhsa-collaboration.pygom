@@ -1,25 +1,59 @@
+
 # Installation
 
-Installation instructions may be found on the [GitHub project README](https://github.com/ukhsa-collaboration/pygom/), but we include them here also.
+## Install from Source
 
-## From source
+The PyGOM source code is available from GitHub:
 
-Source code for PyGOM can be downloaded from the GitHub repository: https://github.com/ukhsa-collaboration/pygom
+<https://github.com/ukhsa-collaboration/pygom>
 
-Clone the repository and install from the project root:
+### Clone the repository
 
 ```bash
 git clone https://github.com/ukhsa-collaboration/pygom.git
+```
 
+### Create and activate an environment
+
+If you require support for compartmental model diagrams, create (and activate) a Conda environment with Graphviz installed:
+
+```bash
+conda create -n pygom-env python=3.11 graphviz
+conda activate pygom-env
+```
+
+If visualisation is not required, you may use a standard Conda environment or a Python virtual environment (venv).
+
+### Install PyGOM
+
+Navigate to the project root
+
+```bash
 cd pygom
+```
 
+If you wish to install from a specific branch, switch to it prior to installation:
+
+```bash
+git checkout <branch-name>
+```
+
+Install PyGOM
+
+```bash
 python -m pip install .
 ```
 
-For development, an editable install can be used
+For development work, an editable install can instead be used
 
 ```bash
 python -m pip install -e .
+```
+
+To build the documentation locally, install the additional documentation dependencies:
+
+```bash
+python -m pip install -e ".[docs]"
 ```
 
 ```{note}
@@ -27,25 +61,22 @@ Please be aware that there may be redundant files within the package as it is un
 The latest fully reviewed version of PyGOM will be on the master branch and we recommend that users install the version from there.
 ```
 
-The final prerequisite, if you are working on a Windows machine, is that you will also need to install:
-If you want the visualisation features, you need graphviz.
-This feature may be phased out or a pure python implementation found
-- [Graphviz](https://graphviz.org/)
+## Install from PyPI
 
-## From PyPI
+Alternatively, install the latest released version directly from PyPI:
 
-Alternatively, the latest release can be installed from [PyPI](https://pypi.org/project/pygom/):
+<https://pypi.org/project/pygom/>
 
 ```bash
 pip install pygom
 ```
 
-# Testing the package
+## Verifying the Installation
 
-Test files should then be run from the command line to check that installation has completed successfully
+Run the test suite to confirm that the installation completed successfully:
 
 ```bash
-python setup.py test
+python -m unittest discover --verbose --start-directory tests
 ```
 
-This can take some minutes to complete.
+This may take some minutes to complete.
