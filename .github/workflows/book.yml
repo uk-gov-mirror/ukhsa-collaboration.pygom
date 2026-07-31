@@ -72,6 +72,7 @@ jobs:
               with:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
                 publish_dir: docs/_build/html
+                
             # deploy book to github-pages dev
             - name: GitHub Pages dev 
               uses: peaceiris/actions-gh-pages@v4
@@ -80,4 +81,13 @@ jobs:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
                 publish_dir: docs/_build/html
                 destination_dir: dev
+
+            # deploy book to github-pages solvers_dev
+            - name: GitHub Pages solvers_dev
+              uses: peaceiris/actions-gh-pages@v4
+              if: github.ref == 'refs/heads/solvers_dev'
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: docs/_build/html
+                destination_dir: solvers_dev
                 
