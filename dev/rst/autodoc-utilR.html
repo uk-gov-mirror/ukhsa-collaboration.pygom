@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>utilR &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,17 +47,20 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -162,18 +165,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -186,8 +178,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -197,15 +188,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../notebooks/insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -225,10 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -276,9 +260,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -419,9 +403,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -437,52 +419,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dbeta"><code class="docutils literal notranslate"><span class="pre">dbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dbinom"><code class="docutils literal notranslate"><span class="pre">dbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dchisq"><code class="docutils literal notranslate"><span class="pre">dchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dexp"><code class="docutils literal notranslate"><span class="pre">dexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dgamma"><code class="docutils literal notranslate"><span class="pre">dgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dmvnorm"><code class="docutils literal notranslate"><span class="pre">dmvnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dnbinom"><code class="docutils literal notranslate"><span class="pre">dnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dnorm"><code class="docutils literal notranslate"><span class="pre">dnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dpois"><code class="docutils literal notranslate"><span class="pre">dpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dunif"><code class="docutils literal notranslate"><span class="pre">dunif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.gamma_mu_shape"><code class="docutils literal notranslate"><span class="pre">gamma_mu_shape()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.nb2pmf"><code class="docutils literal notranslate"><span class="pre">nb2pmf()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pbinom"><code class="docutils literal notranslate"><span class="pre">pbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pchisq"><code class="docutils literal notranslate"><span class="pre">pchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pexp"><code class="docutils literal notranslate"><span class="pre">pexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pgamma"><code class="docutils literal notranslate"><span class="pre">pgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pnbinom"><code class="docutils literal notranslate"><span class="pre">pnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pnorm"><code class="docutils literal notranslate"><span class="pre">pnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.ppois"><code class="docutils literal notranslate"><span class="pre">ppois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.punif"><code class="docutils literal notranslate"><span class="pre">punif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qbeta"><code class="docutils literal notranslate"><span class="pre">qbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qbinom"><code class="docutils literal notranslate"><span class="pre">qbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qchisq"><code class="docutils literal notranslate"><span class="pre">qchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qexp"><code class="docutils literal notranslate"><span class="pre">qexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qgamma"><code class="docutils literal notranslate"><span class="pre">qgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qnbinom"><code class="docutils literal notranslate"><span class="pre">qnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qnorm"><code class="docutils literal notranslate"><span class="pre">qnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qpois"><code class="docutils literal notranslate"><span class="pre">qpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qunif"><code class="docutils literal notranslate"><span class="pre">qunif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rbeta"><code class="docutils literal notranslate"><span class="pre">rbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rbinom"><code class="docutils literal notranslate"><span class="pre">rbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rchisq"><code class="docutils literal notranslate"><span class="pre">rchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rexp"><code class="docutils literal notranslate"><span class="pre">rexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rgamma"><code class="docutils literal notranslate"><span class="pre">rgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rmvnorm"><code class="docutils literal notranslate"><span class="pre">rmvnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rnorm"><code class="docutils literal notranslate"><span class="pre">rnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rpois"><code class="docutils literal notranslate"><span class="pre">rpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.runif"><code class="docutils literal notranslate"><span class="pre">runif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.test_seed"><code class="docutils literal notranslate"><span class="pre">test_seed()</span></code></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -596,17 +532,17 @@ See: Bolker, B. M. (2008). Negative Binomial. In Ecological Models in R (pp. 124
 <div><p>Jupyter notebook titled “Loss function Calculations.ipnyb”</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>array like observation.</em>) – </p></li>
 <li><p><strong>mu</strong> (<em>mean</em><em> or </em><em>prediction.</em>) – </p></li>
 <li><p><strong>k</strong> (<em>overdispersion parameter</em><em> (</em><em>variance = mean</em><em>(</em><em>1+mean/k</em><em>)</em><em>)</em><em>. Note some notation uses $lpha$</em><em>, </em><em>(</em><em>$k=lpha^{-1}$</em><em>)</em><em>.</em>) – </p></li>
-<li><p><strong>log</strong> (<em>if True the natural log</em><em> of </em><em>the pmf is given.</em>) – </p></li>
+<li><p><strong>log</strong> (<em>if True the natural log of the pmf is given.</em>) – </p></li>
 <li><p><strong>See</strong> – Bolker, B. M. (2008). Negative Binomial. In Ecological Models in R (pp. 124–126). Princeton University Press.
 File “Loss function Calculations.ipnyb”</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><em>log pmf</em></p></li>
 <li><p><strong>math</strong> (<cite>mathcalp(x; mu,k)) = exp(ln(frac{Gamma left(k+xright)}{Gamma left(kright)x!}(frac{k}{k+mu})^{k}(frac{mu}{k+mu})^{x}))</cite>)</p></li>
@@ -779,18 +715,6 @@ object of <code class="xref py py-class docutils literal notranslate"><span clas
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pygom.utilR.rgamma">
-<span class="sig-prename descclassname"><span class="pre">pygom.utilR.</span></span><span class="sig-name descname"><span class="pre">rgamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/utilR/distn.html#rgamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.utilR.rgamma" title="Permalink to this definition">#</a></dt>
-<dd><p>See
-<a class="reference external" href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/GammaDist.html">https://stat.ethz.ch/R-manual/R-patched/library/stats/html/GammaDist.html</a></p>
-<p>&#64;param seed represent which type of seed to use.  None or False uses the
-default seed.  When seed is an integer number, it will reset the seed
-via numpy.random.seed.  When seed=True, then a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> object will be used. If seed is an
-object of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> then it will be used directly</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="pygom.utilR.rmvnorm">
 <span class="sig-prename descclassname"><span class="pre">pygom.utilR.</span></span><span class="sig-name descname"><span class="pre">rmvnorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/utilR/distn.html#rmvnorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.utilR.rmvnorm" title="Permalink to this definition">#</a></dt>
 <dd><p>See
@@ -839,7 +763,7 @@ object of <code class="xref py py-class docutils literal notranslate"><span clas
 <dd><p>Test the input type of <cite>seed</cite> and return a new random generator if
 appropriate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>seed</strong> – If True, then a new <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> will be created.
 If False, then a <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> with the current
 global state of the random number generator is returned.
@@ -848,17 +772,13 @@ random state.
 If it is already a <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> object then
 the same object is returned.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 </tbody>
 </table>
@@ -920,59 +840,6 @@ the same object is returned.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dbeta"><code class="docutils literal notranslate"><span class="pre">dbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dbinom"><code class="docutils literal notranslate"><span class="pre">dbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dchisq"><code class="docutils literal notranslate"><span class="pre">dchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dexp"><code class="docutils literal notranslate"><span class="pre">dexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dgamma"><code class="docutils literal notranslate"><span class="pre">dgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dmvnorm"><code class="docutils literal notranslate"><span class="pre">dmvnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dnbinom"><code class="docutils literal notranslate"><span class="pre">dnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dnorm"><code class="docutils literal notranslate"><span class="pre">dnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dpois"><code class="docutils literal notranslate"><span class="pre">dpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.dunif"><code class="docutils literal notranslate"><span class="pre">dunif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.gamma_mu_shape"><code class="docutils literal notranslate"><span class="pre">gamma_mu_shape()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.nb2pmf"><code class="docutils literal notranslate"><span class="pre">nb2pmf()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pbinom"><code class="docutils literal notranslate"><span class="pre">pbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pchisq"><code class="docutils literal notranslate"><span class="pre">pchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pexp"><code class="docutils literal notranslate"><span class="pre">pexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pgamma"><code class="docutils literal notranslate"><span class="pre">pgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pnbinom"><code class="docutils literal notranslate"><span class="pre">pnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.pnorm"><code class="docutils literal notranslate"><span class="pre">pnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.ppois"><code class="docutils literal notranslate"><span class="pre">ppois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.punif"><code class="docutils literal notranslate"><span class="pre">punif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qbeta"><code class="docutils literal notranslate"><span class="pre">qbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qbinom"><code class="docutils literal notranslate"><span class="pre">qbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qchisq"><code class="docutils literal notranslate"><span class="pre">qchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qexp"><code class="docutils literal notranslate"><span class="pre">qexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qgamma"><code class="docutils literal notranslate"><span class="pre">qgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qnbinom"><code class="docutils literal notranslate"><span class="pre">qnbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qnorm"><code class="docutils literal notranslate"><span class="pre">qnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qpois"><code class="docutils literal notranslate"><span class="pre">qpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.qunif"><code class="docutils literal notranslate"><span class="pre">qunif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rbeta"><code class="docutils literal notranslate"><span class="pre">rbeta()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rbinom"><code class="docutils literal notranslate"><span class="pre">rbinom()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rchisq"><code class="docutils literal notranslate"><span class="pre">rchisq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rexp"><code class="docutils literal notranslate"><span class="pre">rexp()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rgamma"><code class="docutils literal notranslate"><span class="pre">rgamma()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rmvnorm"><code class="docutils literal notranslate"><span class="pre">rmvnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rnorm"><code class="docutils literal notranslate"><span class="pre">rnorm()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.rpois"><code class="docutils literal notranslate"><span class="pre">rpois()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.runif"><code class="docutils literal notranslate"><span class="pre">runif()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.utilR.test_seed"><code class="docutils literal notranslate"><span class="pre">test_seed()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
             
           </div>
           <footer class="bd-footer-content">
@@ -992,7 +859,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

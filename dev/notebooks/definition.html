@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Introduction &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,17 +47,20 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -65,7 +68,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Mathematical description" href="solution.html" />
-    <link rel="prev" title="Building the documentation locally" href="../md/building_doc.html" />
+    <link rel="prev" title="Building the Documentation Locally" href="../md/building_doc.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -162,18 +165,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -186,8 +178,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="current nav bd-sidenav">
@@ -197,15 +188,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -225,10 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -276,9 +260,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -419,9 +403,9 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -443,15 +427,20 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions-between-states">Transitions between states</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions-in-to-and-out-of-the-system">Transitions in to and out of the system</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlated-transitions">Correlated transitions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-singular-transitions">Non singular transitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compartments">Compartments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">Transitions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#between-compartments">Between compartments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#birth-and-death-processes">Birth and Death processes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-magnitudes">Transition magnitudes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#events">Events</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-transition-events">Multi transition events</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
 
             </nav>
@@ -466,111 +455,183 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
-<p>The main benefits of using PyGOM are probably most evident when it is applied to compartmental models.
-This class of model is used to represent systems involving the transport of material (continuous or discrete) between different categories.
-These are commonly employed in epidemiology, in which humans (or animals) may flow between different disease states, but are also found in chemistry, tracking the formation of molecules, or in economics, where money may move from one sector to another.</p>
-<p>To outline the key features of a compartmental model, we build on a simple Susceptible-Infected-Recovered (SIR) epidemic model with examples of increasing complexity.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For those unfamiliar with the SIR model, an outline can be found in the <a class="reference internal" href="common_models/SIR.html"><span class="doc">common models</span></a> section.</p>
-</div>
-<section id="transitions-between-states">
-<h2>Transitions between states<a class="headerlink" href="#transitions-between-states" title="Permalink to this heading">#</a></h2>
-<p>In the simplest SIR compartmental model, individuals move from one state to another through 2 types of transition:</p>
+<p>Although the “O” in PyGOM stands for <strong>O</strong>rdinary Differential Equation (ODE), the package is fundamentally built around <strong>compartmental models</strong>.</p>
+<p>A compartmental model describes how entities move between different states or categories.
+A defining (and simplifying) feature of such models is that rather than tracking every individual entity, we track the total quantity present in each state.
+Examples from different fields include:</p>
 <ul class="simple">
-<li><p>Infection, which turns a Susceptible individual into an Infected one</p></li>
-<li><p>Recovery, which turns an Infected individual into a Recovered one</p></li>
+<li><p>Epidemiology: individuals move between disease states</p></li>
+<li><p>Chemistry: atoms form different molecules</p></li>
+<li><p>Economics: money moves between individuals or sectors</p></li>
+<li><p>Ecology: animals move between age classes, locations or behavioural states</p></li>
 </ul>
-<p>To fully specify the dynamics of the system, we must supplement these events with the rate at which they occur.
-In this case, infections occur at a rate <span class="math notranslate nohighlight">\(\frac{\beta S I}{N}\)</span> and recoveries at a rate <span class="math notranslate nohighlight">\(\gamma I\)</span>.</p>
-<p>We can graphically represent compartmental models using boxes (nodes) to indicate the states and arrows (directed edges) to show the transfer of individuals.
-The arrows are then annotated with the rate at which the transitions occur and it is implied that a transition event leads to the transfer of one individual.</p>
+<p>These systems are described in terms of the fundamental concepts:</p>
+<ul class="simple">
+<li><p>The <strong>compartments</strong> we wish to track</p></li>
+<li><p>The <strong>transitions</strong> that move quantities between compartments</p></li>
+<li><p>The <strong>events</strong> that trigger those transitions</p></li>
+</ul>
+<p>We shall now illustrate these ideas, making use of the simple Susceptible–Infected–Recovered (SIR) epidemic model.</p>
+<section id="compartments">
+<h2>Compartments<a class="headerlink" href="#compartments" title="Permalink to this heading">#</a></h2>
+<p>A compartment represents a category that entities may occupy.
+At any one time, the state of the system is completely determined by the populations of these compartments and is represented by the <strong>state vector</strong>: <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The word “state” is also used to refer to the compartments themselves.
+For example, we may talk about “disease states” S, I and R, and other times refer to the “state of the system”, <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>.</p>
+</div>
+<p>For example, the SIR epidemic model contains three states:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{y} =
+\begin{pmatrix}
+S\\
+I\\
+R
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+<p>where S, I and R give the total number of Susceptible, Infected and Recovered indivduals respectively.</p>
+<p>The state vector tells us the current state of the system, but to describe how the system evolves, we must define the possible movements individuals can make.</p>
+</section>
+<section id="transitions">
+<h2>Transitions<a class="headerlink" href="#transitions" title="Permalink to this heading">#</a></h2>
+<p>A transition describes how entities move to and from compartments.</p>
+<section id="between-compartments">
+<h3>Between compartments<a class="headerlink" href="#between-compartments" title="Permalink to this heading">#</a></h3>
+<p>In these types of transition, entities move between compartments.
+In the SIR model example, there are two such transitions:</p>
+<ul class="simple">
+<li><p>Infection, moving an individual from the S to the I compartment</p></li>
+<li><p>Recovery, moving an individual from the I to the R compartment</p></li>
+</ul>
+<p>These may be represented graphically, where compartment counts are represented by nodes and transitions by directed edges, as follows:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/6fabe3c0a98cb34054dc213bb63c0e06bf4eabc82226e2b147194526faeca76f.svg" src="../_images/6fabe3c0a98cb34054dc213bb63c0e06bf4eabc82226e2b147194526faeca76f.svg" /></div>
+<img alt="../_images/a0274a482b82663707ca43600e0c99eaf85cc0b1598f9d059192f18b1974fda4.svg" src="../_images/a0274a482b82663707ca43600e0c99eaf85cc0b1598f9d059192f18b1974fda4.svg" /></div>
 </div>
 </section>
-<section id="transitions-in-to-and-out-of-the-system">
-<h2>Transitions in to and out of the system<a class="headerlink" href="#transitions-in-to-and-out-of-the-system" title="Permalink to this heading">#</a></h2>
-<p>It is not complicated to extend the compartmental model framework to transitions which are not between states.
-This could appear in the SIR model through births and deaths, for example.
-Here, we allow individuals to be born in a susceptible state at a rate, <span class="math notranslate nohighlight">\(\mu\)</span>, proportional to the total population, <span class="math notranslate nohighlight">\(N\)</span>.
-We also have deaths occurring from each compartment at the same rate, proportional to the population of the respective compartment.</p>
+<section id="birth-and-death-processes">
+<h3>Birth and Death processes<a class="headerlink" href="#birth-and-death-processes" title="Permalink to this heading">#</a></h3>
+<p>Transitions need not occur between two existing compartments, in fact, entities may enter or leave the modelled system.</p>
+<p>For example, an SIR model with births and deaths might include the transitions:</p>
+<ul class="simple">
+<li><p>Individuals being born into the S compartment</p></li>
+<li><p>Individuals potentially dying whilst in any of the S, I or R compartments</p></li>
+</ul>
 <p>To indicate these graphically, birth and death processes lack an origin or a destination state respectively:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/edb388c6b4896a688785172f46a8f68678a49bb43aca51204fb91a7217b51724.svg" src="../_images/edb388c6b4896a688785172f46a8f68678a49bb43aca51204fb91a7217b51724.svg" /></div>
+</div>
+</section>
+<section id="transition-magnitudes">
+<h3>Transition magnitudes<a class="headerlink" href="#transition-magnitudes" title="Permalink to this heading">#</a></h3>
+<p>So far, every transition has changed the population of a compartment by exactly one unit.
+This is common in epidemic models, where transitions often correspond to individual people changing state.
+However, to allow for study of more general systems, PyGOM enables transitions to have arbitrary magnitude.</p>
+<p>Non-unit transitions arise naturally in many applications.
+For example, chemical reactions frequently consume and produce multiple molecules in a single reaction.</p>
+<p>To produce an example which builds on the SIR model requires a bit of imagination.
+Suppose vaccinations are administered through periodic mass-vaccination campaigns.
+If each round vaccinates 100 susceptible individuals, then a vaccination transition might be represented as the transfer of 100 people from S to R.</p>
+<p>Graphically, we indicate the magnitude by adding an annotation to the arrowhead.
+Arrowheads without annotation are, of course, assumed to have magnitude of one.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/cf705676de70bb1d9c9eb1468a2c44d7280621f5579fc95e535f080827925efe.svg" src="../_images/cf705676de70bb1d9c9eb1468a2c44d7280621f5579fc95e535f080827925efe.svg" /></div>
+</div>
+<p>The transition still describes movement between compartments, only now the amount being transferred has changed.</p>
+</section>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this heading">#</a></h2>
+<p>A transition describes how entities move, but it does not describe when those movements occur.
+To fully specify the dynamics of a compartmental model, we introduce the concept of events.
+An event combines:</p>
+<ol class="arabic simple">
+<li><p>the rate describing how often it occurs</p></li>
+<li><p>one or more transitions that occur when the event happens</p></li>
+</ol>
+<p>For example,</p>
+<ul class="simple">
+<li><p>the infection event in the SIR model occurs at rate <span class="math notranslate nohighlight">\(\frac{\beta S I}{N}\)</span> and triggers the <span class="math notranslate nohighlight">\(S \rightarrow I\)</span> transition</p></li>
+<li><p>the recovery event occurs at rate <span class="math notranslate nohighlight">\(\gamma I\)</span> and triggers the <span class="math notranslate nohighlight">\(I \rightarrow R\)</span> transition</p></li>
+<li><p>the death event in, say, the recovered compartment occurs at a rate, <span class="math notranslate nohighlight">\(\mu R\)</span>, triggering the <span class="math notranslate nohighlight">\(R \rightarrow\)</span> transition</p></li>
+<li><p>the birth event occurs at a rate, <span class="math notranslate nohighlight">\(\mu N\)</span>, triggering the <span class="math notranslate nohighlight">\(\rightarrow S\)</span> transition</p></li>
+<li><p>the vaccination event occurs at rate <span class="math notranslate nohighlight">\(v S\)</span> and triggers the transition <span class="math notranslate nohighlight">\(100 S \rightarrow 100 R\)</span>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the vaccination event, we see that we might equally think about the event inducing a singular vaccination transition 100 times, rather that the magnitude being contained within the transition.
+This is just a matter of convention and the one chosen for PyGOM is that the magnitude is specified with the transition.</p>
+</div>
+<p>In our simple SIR example with births and deaths, there is a one-to-one correspondence between transitions and events.
+This makes it easy to represent graphically, where the transitions are annotated by the corresponding rate.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="../_images/62b8e4cc19f111b68336a2c61a14e8056c59a1d309fc0949073b8c07660c85a1.svg" src="../_images/62b8e4cc19f111b68336a2c61a14e8056c59a1d309fc0949073b8c07660c85a1.svg" /></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We may actually be interested in tracking the total number of deaths, in which case we would define a new compartment, say <span class="math notranslate nohighlight">\(D\)</span>, and have this as the destination state for the death processes.</p>
-</div>
-</section>
-<section id="correlated-transitions">
-<h2>Correlated transitions<a class="headerlink" href="#correlated-transitions" title="Permalink to this heading">#</a></h2>
-<p>It is possible for an event to trigger multiple transitions to occur.
-For instance, let’s examine what happens if we wish to track the cumulative number of infections.
-Every time an infection occurs, as well as an individual transferring from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(I\)</span>, the <span class="math notranslate nohighlight">\(I_{tot}\)</span> compartment increments by 1 too.
-We show this graphically as a birth process into <span class="math notranslate nohighlight">\(I_{tot}\)</span> and indicate that it is correlated with the <span class="math notranslate nohighlight">\(S\rightarrow I\)</span> transition by a shared colour (the default colour, black, does not imply correlation so that recovery, births and deaths are independent processes).
-Correlated transitions have the same underlying rate, so that, strictly speaking, only one rate needs be specified along the blue edges.
-However, it can help for clarity to include the <span class="math notranslate nohighlight">\(\frac{\beta S I}{N}\)</span> in both cases, as we have done here.</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<img alt="../_images/b915f45207a9679066f2faf459ccb2cd26982b5542380abf76a3325584627399.svg" src="../_images/b915f45207a9679066f2faf459ccb2cd26982b5542380abf76a3325584627399.svg" /></div>
-</div>
-<section id="non-singular-transitions">
-<h3>Non singular transitions<a class="headerlink" href="#non-singular-transitions" title="Permalink to this heading">#</a></h3>
-<p>The final feature we should account for is the magnitude of transitions.
-So far, we have only dealt with transitions which result in the state populations changing by <span class="math notranslate nohighlight">\(\pm 1\)</span>.
-This is typically the case for epidemic compartmental models, where we are dealing with the movement of individuals.
-We could imagine scenarios, such as vaccinations being administered in batches of, say, 100, meaning that in one vaccination round 100 individuals will move from <span class="math notranslate nohighlight">\(S\)</span> to <span class="math notranslate nohighlight">\(R\)</span> in one go.
-Or, perhaps, if we restrict our study a cohort of twins then each birth event increments the <span class="math notranslate nohighlight">\(S\)</span> population by 2.</p>
-<p>It is more common, however, to find these kinds of situations in the study chemical systems.
-For example, if we were tracking populations of <span class="math notranslate nohighlight">\(\mathrm{H}_2\)</span>, <span class="math notranslate nohighlight">\(\mathrm{O}_2\)</span> and <span class="math notranslate nohighlight">\(\mathrm{H}_2\mathrm{O}\)</span> in the synthesis of water, then one reaction results in population changes: <span class="math notranslate nohighlight">\(\mathrm{H}_2\)</span>: -2, <span class="math notranslate nohighlight">\(\mathrm{O}_2\)</span>: -1 and <span class="math notranslate nohighlight">\(\mathrm{H}_2\mathrm{O}\)</span> +2.</p>
-<p>In our SIR model, let’s say we wish to track the monetary cost of the epidemic, <span class="math notranslate nohighlight">\(M\)</span>.
-With this example, we see that the magnitude of a transition need not be an integer quantity.
-If each infection costs <span class="math notranslate nohighlight">\(c\)</span> monetary units then we must add another correlated transition to our model.
-This time, we must indicate that the transition has a different magnitude and we do so by adding a label of the amount to the arrowhead.</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<img alt="../_images/100dfe2f88e3fa1449c11d3977900cf7e920d6358f3b2dabae95b18183998271.svg" src="../_images/100dfe2f88e3fa1449c11d3977900cf7e920d6358f3b2dabae95b18183998271.svg" /></div>
-</div>
-</section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="definition">
-<h1>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">#</a></h1>
-<p>Gathering these features together, we have the foundations of what a compartmental model is.
-The fundamental unit we shall call the <strong>Event</strong> and this consists of:</p>
-<ol class="arabic simple">
-<li><p>The rate at which it occurs</p></li>
-<li><p>Constituent <strong>Transitions</strong> which are triggered when the event occurs. Each Transition is then defined by:</p>
+<section id="multi-transition-events">
+<h3>Multi transition events<a class="headerlink" href="#multi-transition-events" title="Permalink to this heading">#</a></h3>
+<p>More generally, a single event may cause multiple transitions to occur simultaneously.
+For instance, suppose we wish to track both the cumulative number of infections and the resources used in an epidemic.
+We introduce two additional compartments:</p>
 <ul class="simple">
-<li><p>i) Type (between states or birth/death)</p></li>
-<li><p>ii) Magnitude of the state change</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{tot}\)</span>: Cumulative infections</p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span>: Cumulative monetary cost</p></li>
+</ul>
+<p>Now, whenever infection occurs, three transitions occur simultaneously:</p>
+<ul class="simple">
+<li><p>An individual moves from S to I</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{tot}\)</span> increases by 1</p></li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span> incrases by the cost, <span class="math notranslate nohighlight">\(c\)</span></p></li>
+</ul>
+<p>This can be shown graphically as follows:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/478b576e325b7ea27149f4236575a090662f1ca36b361c3cac3239f3b018c5cd.svg" src="../_images/478b576e325b7ea27149f4236575a090662f1ca36b361c3cac3239f3b018c5cd.svg" /></div>
+</div>
+<p>We indicate the simulteneity of the infection and cost transitions by the shared blue colour (note that multiple transitions in the default colour, black, are not implied to be simultaneous).
+Since transitions belonging to a common event have the same underlying rate, only one rate needs be specified on the graph.</p>
+<p>This distinction between transitions and events is fundamental to the way PyGOM represents compartmental models.</p>
+<!-- ```{note}
+
+### Reactions vs Events
+
+For epidemiological systems, our interpretation of transitions as material moving between states is a comfortable one.
+However, chemical reactions, for example, often involve several compartments being consumed and produced simultaneously.
+
+For example, in the synthesis of water,
+
+$2 H_2 + O_2 \rightarrow 2 H_2 O$
+
+Chemists may be used to regarding the transition as being a state change of [-2, -1, +2].
+
+In the formalism we have layed out, the event consists of 3 transitions: deaths of two hydrogen molecules, death of one oxygen molecule and birth of two two molecules.
+
+Since PyGOM is geared towards epi rather than chemistry, we are ok with this.
+``` -->
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h1>
+<p>A compartmental model in PyGOM is defined by:</p>
+<ol class="arabic simple">
+<li><p>a collection of compartments</p></li>
+<li><p>a collection of transitions describing permitted movements</p></li>
+<li><p>a collection of events, each consisting of</p>
+<ul class="simple">
+<li><p>an event rate</p></li>
+<li><p>one or more transitions</p></li>
 </ul>
 </li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is why the classes <a class="reference internal" href="../rst/autodoc-model.html#pygom.model.Event" title="pygom.model.Event"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a> and <a class="reference internal" href="../rst/autodoc-model.html#pygom.model.Transition" title="pygom.model.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a> are the building blocks of a PyGOM model, as outlined in the <a class="reference internal" href="model_spec_2.html"><span class="doc">Defining a system of differential equations</span></a> section.</p>
-</div>
-<p>For example, the compartmental model above consists of 6 events:</p>
-<ol class="arabic simple">
-<li><p>The infection event which has a rate, <span class="math notranslate nohighlight">\(\frac{\beta S I}{N}\)</span>, and involves 3 transitions:</p>
-<ul class="simple">
-<li><p>Transition from <span class="math notranslate nohighlight">\(S \rightarrow I\)</span> with magnitude 1</p></li>
-<li><p>Birth rate into <span class="math notranslate nohighlight">\(I_{\mathrm{tot}}\)</span> with magnitude 1</p></li>
-<li><p>Birth rate into <span class="math notranslate nohighlight">\(M\)</span>, with magnitude <span class="math notranslate nohighlight">\(c\)</span></p></li>
-</ul>
-</li>
-<li><p>The recovery event which has a rate, <span class="math notranslate nohighlight">\(\gamma I\)</span>, and involves 1 transition:</p>
-<ul class="simple">
-<li><p>Transition from <span class="math notranslate nohighlight">\(I \rightarrow R\)</span> with magnitude 1</p></li>
-</ul>
-</li>
-<li><p>Events 3 to 6 are one birth and three death events</p></li>
-</ol>
+<p>These concepts are sufficient to define the structure of a model.
+In the next section, we show how they can be represented mathematically and how the resulting representation may be solved.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -609,7 +670,7 @@ The fundamental unit we shall call the <strong>Event</strong> and this consists 
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Building the documentation locally</p>
+        <p class="prev-next-title">Building the Documentation Locally</p>
       </div>
     </a>
     <a class="right-next"
@@ -638,15 +699,20 @@ The fundamental unit we shall call the <strong>Event</strong> and this consists 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions-between-states">Transitions between states</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions-in-to-and-out-of-the-system">Transitions in to and out of the system</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlated-transitions">Correlated transitions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-singular-transitions">Non singular transitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compartments">Compartments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">Transitions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#between-compartments">Between compartments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#birth-and-death-processes">Birth and Death processes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-magnitudes">Transition magnitudes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#events">Events</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-transition-events">Multi transition events</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
 
   </nav></div>
@@ -672,7 +738,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

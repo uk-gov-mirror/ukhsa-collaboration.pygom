@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>FitzHugh &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,17 +47,20 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -65,7 +68,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Frequently asked questions" href="../../md/faq.html" />
-    <link rel="prev" title="Lotka Volterra" href="Lotka_Volterra.html" />
+    <link rel="prev" title="Legrand Ebola SEIHFR" href="Legrand_Ebola_SEIHFR.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -162,18 +165,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -186,8 +178,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -197,15 +188,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -225,10 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -276,9 +260,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -446,10 +430,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="fitzhugh">
 <h1>FitzHugh<a class="headerlink" href="#fitzhugh" title="Permalink to this heading">#</a></h1>
-<p><a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.FitzHugh" title="pygom.model.FitzHugh"><code class="xref py py-func docutils literal notranslate"><span class="pre">FitzHugh()</span></code></a> - the <span id="id1">FitzHugh<sup><a class="reference internal" href="../../md/bib.html#id6" title="Richard FitzHugh. Impulses and physiological states in theoretical models of nerve membrane. Biophysical Journal, 1961. doi:10.1016/S0006-3495(61)86902-6.">4</a></sup></span> model without external stimulus.</p>
-<p>The FitzHugh model is commonly used to test ODE software <span id="id2"><sup><a class="reference internal" href="../../md/bib.html#id16" title="J. O. Ramsay, G. Hooker, D. Campbell, and J. Cao. Parameter estimation for differential equations: a generalized smoothing approach. Journal of the Royal Statistical Society. Series B: Statistical Methodology, 2007. doi:10.1111/j.1467-9868.2007.00610.x.">10</a></sup></span> <span id="id3"><sup><a class="reference internal" href="../../md/bib.html#id8" title="Mark Girolami and Ben Calderhead. Riemann manifold langevin and hamiltonian monte carlo methods. Journal of the Royal Statistical Society. Series B: Statistical Methodology, 2011. doi:10.1111/j.1467-9868.2010.00765.x.">6</a></sup></span>, the model itself describes the excitation state of a neuron membrane as an excitation spike passes. PyGOM also includes other functions which are commonly used to test numerical integrators such as:
-<a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.vanDerPol" title="pygom.model.vanDerPol"><code class="xref py py-func docutils literal notranslate"><span class="pre">vanDerPol()</span></code></a> - the Van der Pol oscillator <span id="id4"><sup><a class="reference internal" href="../../md/bib.html#id19" title="Balth. van der Pol. On relaxation-oscillations. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2:978-992, 11 1926. doi:10.1080/14786442608564127.">12</a></sup></span> and
-<a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.Robertson" title="pygom.model.Robertson"><code class="xref py py-func docutils literal notranslate"><span class="pre">Robertson()</span></code></a> - the Robertson reaction <span id="id5"><sup><a class="reference internal" href="../../md/bib.html#id18" title="H.H Robertson. The solution of a set of reaction rate equations. Academic Press, pages 178-182, 1966. URL: https://www.scirp.org/%28S%28vtj3fa45qm1ean45vvffcz55%29%29/reference/referencespapers.aspx?referenceid=2485718.">11</a></sup></span>.
+<p><a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.FitzHugh" title="pygom.model.FitzHugh"><code class="xref py py-func docutils literal notranslate"><span class="pre">FitzHugh()</span></code></a> - the <span id="id1">FitzHugh<sup><a class="reference internal" href="../../md/bib.html#id6" title="Richard FitzHugh. Impulses and physiological states in theoretical models of nerve membrane. Biophysical Journal, 1961. doi:10.1016/S0006-3495(61)86902-6.">2</a></sup></span> model without external stimulus.</p>
+<p>The FitzHugh model is commonly used to test ODE software <span id="id2"><sup><a class="reference internal" href="../../md/bib.html#id16" title="J. O. Ramsay, G. Hooker, D. Campbell, and J. Cao. Parameter estimation for differential equations: a generalized smoothing approach. Journal of the Royal Statistical Society. Series B: Statistical Methodology, 2007. doi:10.1111/j.1467-9868.2007.00610.x.">6</a></sup></span> <span id="id3"><sup><a class="reference internal" href="../../md/bib.html#id8" title="Mark Girolami and Ben Calderhead. Riemann manifold langevin and hamiltonian monte carlo methods. Journal of the Royal Statistical Society. Series B: Statistical Methodology, 2011. doi:10.1111/j.1467-9868.2010.00765.x.">3</a></sup></span>, the model itself describes the excitation state of a neuron membrane as an excitation spike passes. PyGOM also includes other functions which are commonly used to test numerical integrators such as:
+<a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.vanDerPol" title="pygom.model.vanDerPol"><code class="xref py py-func docutils literal notranslate"><span class="pre">vanDerPol()</span></code></a> - the Van der Pol oscillator <span id="id4"><sup><a class="reference internal" href="../../md/bib.html#id19" title="Balth. van der Pol. On relaxation-oscillations. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2:978-992, 11 1926. doi:10.1080/14786442608564127.">8</a></sup></span> and
+<a class="reference internal" href="../../rst/autodoc-model.html#pygom.model.Robertson" title="pygom.model.Robertson"><code class="xref py py-func docutils literal notranslate"><span class="pre">Robertson()</span></code></a> - the Robertson reaction <span id="id5"><sup><a class="reference internal" href="../../md/bib.html#id18" title="H.H Robertson. The solution of a set of reaction rate equations. Academic Press, pages 178-182, 1966. URL: https://www.scirp.org/%28S%28vtj3fa45qm1ean45vvffcz55%29%29/reference/referencespapers.aspx?referenceid=2485718.">7</a></sup></span>.
 The FitzHugh model equations are as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{aligned}
@@ -463,13 +447,19 @@ The FitzHugh model equations are as follows:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pygom</span><span class="w"> </span><span class="kn">import</span> <span class="n">common_models</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">ode</span> <span class="o">=</span> <span class="n">common_models</span><span class="o">.</span><span class="n">FitzHugh</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mf">3.0</span><span class="p">})</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">common_models</span><span class="o">.</span><span class="n">FitzHugh</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mf">3.0</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 
-<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
-<span class="n">ode</span><span class="o">.</span><span class="n">initial_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initial_values</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="n">solution</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">solve_determ</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">::])</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">solve_deterministic</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -482,13 +472,24 @@ The FitzHugh model equations are as follows:</p>
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ode</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state_names</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">state_list</span>
+<span class="n">n_state</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_names</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_state</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_state</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">solution</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">state_names</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../_images/2d54369f8acebb40b53ccb5148d71d31b9f12102e81755ecd8ff42e3ae3d74d9.png" src="../../_images/2d54369f8acebb40b53ccb5148d71d31b9f12102e81755ecd8ff42e3ae3d74d9.png" />
+<img alt="../../_images/e421a03f5c88eae44dcfab112711643a58e175ec6d5c99d815c826fa017dbd26.png" src="../../_images/e421a03f5c88eae44dcfab112711643a58e175ec6d5c99d815c826fa017dbd26.png" />
 </div>
 </div>
 </section>
@@ -524,12 +525,12 @@ The FitzHugh model equations are as follows:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Lotka_Volterra.html"
+       href="Legrand_Ebola_SEIHFR.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Lotka Volterra</p>
+        <p class="prev-next-title">Legrand Ebola SEIHFR</p>
       </div>
     </a>
     <a class="right-next"
@@ -567,7 +568,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Mathematical description &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,24 +47,27 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/solution';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Defining a system of differential equations" href="model_spec_2.html" />
+    <link rel="next" title="Defining a Model" href="model_spec_2.html" />
     <link rel="prev" title="Introduction" href="definition.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -162,18 +165,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -186,8 +178,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="current nav bd-sidenav">
@@ -197,15 +188,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -225,10 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -276,9 +260,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -419,9 +403,9 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -442,8 +426,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinary-differential-equations">Ordinary Differential Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-vector">State vector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-change-matrix">State change matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-rate-vector">Event-Rate Vector</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-time-markov-chains">Continuous Time Markov Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinary-differential-equations">Ordinary Differential Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
             </nav>
         </div>
@@ -457,92 +445,199 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="mathematical-description">
 <h1>Mathematical description<a class="headerlink" href="#mathematical-description" title="Permalink to this heading">#</a></h1>
-<p>In order to solve the time evolution of the compartmental model, we require some translation into mathematics.
-The different solving methods of PyGOM is a subject for a <a class="reference internal" href="model_solver.html"><span class="doc">later chapter</span></a>, for now we introduce the two ways such systems may be viewed. Recall the model of the previous section:</p>
+<p>In the previous chapter, compartmental models were introduced in terms of compartments, transitions and events.
+This model structure exists without the need to commit to any particular method of simulation.</p>
+<p>Now, we introduce mathematical objects that represent these concepts which allow for two ways to find solutions:</p>
+<ol class="arabic simple">
+<li><p>Continuous-Time Markov Chains (CTMCs), which model the stochastic occurrence of individual events.</p></li>
+<li><p>Ordinary Differential Equations (ODEs), which describe the average behaviour of those events.</p></li>
+</ol>
+<p>For illustration, we continue to use the extended SIR model (with births and deaths) introduced previously:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/100dfe2f88e3fa1449c11d3977900cf7e920d6358f3b2dabae95b18183998271.svg" src="../_images/100dfe2f88e3fa1449c11d3977900cf7e920d6358f3b2dabae95b18183998271.svg" /></div>
+<img alt="../_images/b98776853e48f498a2a23882672112c9226f787c3c272b6484d51e0c9ee64d01.svg" src="../_images/b98776853e48f498a2a23882672112c9226f787c3c272b6484d51e0c9ee64d01.svg" /></div>
 </div>
+<section id="state-vector">
+<h2>State vector<a class="headerlink" href="#state-vector" title="Permalink to this heading">#</a></h2>
+<p>We start with the <strong>state vector</strong>, <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, describing the populations of the different compartments.</p>
+<p>For the extended SIR model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{y} =
+\begin{pmatrix}
+S\\
+I\\
+R\\
+I_{tot}\\
+M
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+</section>
+<section id="state-change-matrix">
+<h2>State change matrix<a class="headerlink" href="#state-change-matrix" title="Permalink to this heading">#</a></h2>
+<p>Consider an event, <span class="math notranslate nohighlight">\(j\)</span>.
+When it occurs, the state vector changes as:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+\boldsymbol{y} \rightarrow \boldsymbol{y} + \boldsymbol{v}_j
+\end{aligned}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{v}_j\)</span>​ is the <strong>state-change vector</strong> associated with that event.
+For example, the infection event (which we’ll say is the event with index 1) has a state change vector:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{v}_1 =
+\begin{pmatrix}
+-1\\
+1\\
+0\\
+1\\
+c
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+<p>Note that the state-change vector represents the combined effect of all transitions associated with the event.
+Collecting the state-change vectors for all events yields the <strong>state-change matrix</strong> (or <strong>stoichiometry matrix</strong>)</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+\mathcal{D} = [\boldsymbol{v}_1, \ldots \boldsymbol{v}_{N_E}]
+\end{aligned}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_E\)</span> is the total number of events.
+The element <span class="math notranslate nohighlight">\(\mathcal{D}_{ij}\)</span> gives the change in compartment <span class="math notranslate nohighlight">\(i\)</span> caused by an occurance of the event <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>For the extended SIR model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\mathcal{D} =
+\begin{pmatrix}
+-1 &amp;  0 &amp;  1 &amp; -1 &amp;  0 &amp;  0\\
+ 1 &amp; -1 &amp;  0 &amp;  0 &amp; -1 &amp;  0\\
+ 0 &amp;  1 &amp;  0 &amp;  0 &amp;  0 &amp; -1\\
+ 1 &amp;  0 &amp;  0 &amp;  0 &amp;  0 &amp;  0\\
+ c &amp;  0 &amp;  0 &amp;  0 &amp;  0 &amp;  0\\
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+<p>where the columns refer to state change vectors for infection, recovery, births, S deaths, I deaths and R deaths respectively.</p>
+</section>
+<section id="event-rate-vector">
+<h2>Event-Rate Vector<a class="headerlink" href="#event-rate-vector" title="Permalink to this heading">#</a></h2>
+<p>Each event occurs at some rate <span class="math notranslate nohighlight">\(\lambda_j\)</span>​ and these rates are collected into the <strong>event-rate vector</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{\lambda} =
+\begin{pmatrix}
+\lambda_1 \\
+\vdots \\
+\lambda_{N_E}
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+<p>In the SIR model:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\boldsymbol{\lambda} =
+\begin{pmatrix}
+\frac{\beta S I}{N} \\
+\gamma I \\
+\mu N \\
+\mu S \\
+\mu I \\
+\mu R
+\end{pmatrix}
+\end{aligned}
+\end{split}\]</div>
+<p>The state vector <span class="math notranslate nohighlight">\(\boldsymbol{y}\)</span>, state-change matrix <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, and event-rate vector <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> together define a compartmental model in PyGOM.
+We now introduce the two related, but distinct, ways a compartmental model can be solved.</p>
+</section>
+<section id="continuous-time-markov-chains">
+<h2>Continuous Time Markov Chains<a class="headerlink" href="#continuous-time-markov-chains" title="Permalink to this heading">#</a></h2>
+<p>This event-based formalism follows closely from the mathematical description just outlined.
+Here:</p>
+<ul class="simple">
+<li><p>State variables represent discrete counts</p></li>
+<li><p>Events cause discrete jumps in the system state</p></li>
+</ul>
+<p>The system evolves through the random occurance of events.
+Events occur according to their associated rates and thus their waiting times are exponentially distributed.
+The model evolves as a sequence of random jumps between states.</p>
+<p>CTMCs are particularly useful when:</p>
+<ul class="simple">
+<li><p>Population sizes are small</p></li>
+<li><p>Stochastic effects are important</p></li>
+<li><p>Extinction events are possible</p></li>
+<li><p>Variability between realisations is of interest</p></li>
+</ul>
+</section>
 <section id="ordinary-differential-equations">
 <h2>Ordinary Differential Equations<a class="headerlink" href="#ordinary-differential-equations" title="Permalink to this heading">#</a></h2>
-<p>One way to frame these mathematically is via Ordinary Differential Equations (ODEs): a relationship between quantities and their rates of change with respect to one independent variable - in this case, time.
-In general, <span class="math notranslate nohighlight">\(n\)</span> variables, <span class="math notranslate nohighlight">\(\mathbf{y}(t) = \left(y_{1}(t),\ldots,y_{n}(t)\right)\)</span>, describe the state of the system at time, <span class="math notranslate nohighlight">\(t\)</span>.
-The rates of change of these variables are governed by the current state of the system, time and parameters, <span class="math notranslate nohighlight">\(\boldsymbol{\theta} = \left(\theta_{1},\ldots, \theta_{p}\right)\)</span>:</p>
+<p>The ODE description is often viewed as a large-population approximation to the underlying CTMC.
+This interpretation departs from previous approach in that:</p>
+<ul class="simple">
+<li><p>State variables are continuous</p></li>
+<li><p>Events contribute through continuous flows</p></li>
+</ul>
+<p>The system advances, not due to random occurrences of individual events, but continuously in time through the average effect of all events.
+Using matrix multiplication to sum over all events:</p>
 <div class="math notranslate nohighlight">
-\[\begin{aligned}
-\frac{\mathrm{d} \mathbf{y}}{\mathrm{d} t} = f(\mathbf{y},\boldsymbol{\theta}, t)
-\end{aligned}\]</div>
-<p>where <span class="math notranslate nohighlight">\(f\)</span> is a vector function giving the rates of change of each dependent variable.
-For the example in question, the ODEs are:</p>
+\[
+\begin{aligned}
+\frac{\mathrm{d} \mathbf{y}}{\mathrm{d} t} = \mathcal{D} \boldsymbol{\lambda}
+\end{aligned}
+\]</div>
+<p>Applying this to the extended SIR model:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
+\[\begin{split}
+\begin{aligned}
 \frac{\mathrm{d} S}{\mathrm{d} t} &amp;= -\frac{\beta S I}{N} + \mu N - \mu S\\
 \frac{\mathrm{d} I}{\mathrm{d} t} &amp;= \frac{\beta S I}{N} - \gamma I - \mu I\\
 \frac{\mathrm{d} R}{\mathrm{d} t} &amp;= \gamma I - \mu R\\
 \frac{\mathrm{d} I_{\mathrm{tot}}}{\mathrm{d} t} &amp;= \frac{\beta S I}{N}\\
 \frac{\mathrm{d} M}{\mathrm{d} t} &amp;= \frac{c \beta S I}{N}
-\end{aligned}\end{split}\]</div>
-<p>In framing the problem in this way we are making two approximations.
-Firstly, we are allowing the population numbers to be treated as continuous variables.
-Having non integer numbers of people is clearly not realistic, but can be acceptable when considering large populations.
-Secondly, in taking the net effect of the underlying processes, we confine ourselves to study only the deterministic evolution of the system.</p>
-</section>
-<section id="continuous-time-markov-chains">
-<h2>Continuous Time Markov Chains<a class="headerlink" href="#continuous-time-markov-chains" title="Permalink to this heading">#</a></h2>
-<p>In a Continuous Time Markov Chain (CTMC), we again have the vector of variables, <span class="math notranslate nohighlight">\(\mathbf{y}(t)\)</span>, describing the state of the system.
-There are <span class="math notranslate nohighlight">\(N_E\)</span> different types of event and the effect of an event occurring is to change the state by some amount.
-Mathematically speaking, if event <span class="math notranslate nohighlight">\(j\)</span> occurs then the variable <span class="math notranslate nohighlight">\(y_i\)</span> changes by <span class="math notranslate nohighlight">\(\mathcal{D}_{ij}\)</span>, which, as with ODEs, may depend on the current state, time and parameters:</p>
-<div class="math notranslate nohighlight">
-\[\begin{aligned}
-\Delta y_i \text{ due to event of transition type, j } = \mathcal{D}_{ij}(\mathbf{y}, \boldsymbol{\theta}, t)
-\end{aligned}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is a <span class="math notranslate nohighlight">\(n \times N_E\)</span> matrix.
-These events occur randomly in time and independently of each other at rates (also possibly dependent on the state of the system):</p>
-<div class="math notranslate nohighlight">
-\[\begin{aligned}
-\boldsymbol{\lambda}(\mathbf{y}, \boldsymbol{\theta}, t) = \left(\lambda_{1}(\mathbf{y}, \boldsymbol{\theta}, t),\ldots, \lambda_{N_E}(\mathbf{y}, \boldsymbol{\theta}, t)\right)
-\end{aligned}\]</div>
-<p>For our case:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\mathbf{y}=
-\begin{pmatrix}
-S\\
-I\\
-R\\
-I_{\mathrm{tot}}\\
-M
-\end{pmatrix}
-\text{, } \boldsymbol{\lambda} =
-\begin{pmatrix}
-\frac{\beta S I}{N}, \gamma I, \mu N, \mu S, \mu I, \mu R
-\end{pmatrix}
-\text{, } \mathcal{D} =
-\begin{pmatrix}
--1 &amp; 0 &amp; 1 &amp; -1 &amp; 0 &amp; 0\\
-1 &amp; -1 &amp; 0 &amp; 0 &amp; -1 &amp; 0\\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -1\\
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
-c &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
-\end{pmatrix}
-\end{aligned}\end{split}\]</div>
-<p>where the column and row vector formatting of <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> respectively is to better illustrate their context with the matrix, <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>.
-How we solve a mathematical problem framed in this way will be covered later on, for now we note that it is possible to derive exact, stochastic solutions, unlike in the ODE case.</p>
+\end{aligned}
+\end{split}\]</div>
+<p>This approximation is often appropriate when populations are sufficiently large that random fluctuations are relatively unimportant.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p><strong>Not all ODEs are CTMCs</strong></p>
-<p>It is worth including a warning at this point.
-We’ve seen that our SIR example model is amenable to both an ODE and a CTMC approach, however, this is not the case for all systems.
-Borrowing an example from physics, Hooke’s Law describes how the position, <span class="math notranslate nohighlight">\(x\)</span>, and velocity, <span class="math notranslate nohighlight">\(v\)</span>, of a mass, <span class="math notranslate nohighlight">\(m\)</span>, attached to a spring (with spring constant, <span class="math notranslate nohighlight">\(k\)</span>) evolves with time.
-The set of ODEs are as follows:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\frac{\mathrm{d}x}{\mathrm{d}t}&amp;=v\\
-\frac{\mathrm{d}v}{\mathrm{d}t}&amp;= -\frac{k}{m}x
-\end{aligned}\end{split}\]</div>
-<p>Whilst it is possible to introduce stochasticity to this system, perhaps due to random fluctuations in the spring properties, this will not take the form of a CTMC.
-There is actually nothing to mathematically forbid one from modelling the system as a CTMC with <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}= \begin{pmatrix} 1\\ 1 \end{pmatrix}\)</span>, <span class="math notranslate nohighlight">\(\mathcal{D}=\begin{pmatrix} v &amp; 0 \\ 0 &amp; -\frac{k}{m} x \end{pmatrix}\)</span>, but the resulting dynamics will not have a basis in reality since the underlying system is not a compartmental model.</p>
-<p>It is therefore useful to remember that whilst PyGOM can be, in principle, used for any system of ODEs, it should only be used to provide stochastic results for true compartmental models.</p>
+<p>The ODE solution should not generally be interpreted as the mean of a collection of CTMC realisations.
+For example, in an epidemic system where a substantial fraction of the realisations go extinct, the ODE solution will closely resemble the trajectories which grow, not reflecting an average of growing and extinct outcomes.</p>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<p>The same compartmental model may be interpreted in two different ways.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>CTMC</p></th>
+<th class="head"><p>ODE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Discrete state variables</p></td>
+<td><p>Continuous state variables</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stochastic</p></td>
+<td><p>Deterministic</p></td>
+</tr>
+<tr class="row-even"><td><p>Events occur individually</p></td>
+<td><p>Events contribute through their average effect</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stepped state trajectories</p></td>
+<td><p>Smooth state trajectories</p></td>
+</tr>
+<tr class="row-even"><td><p>Variability between different realisations</p></td>
+<td><p>Same result every time</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 </section>
@@ -591,7 +686,7 @@ There is actually nothing to mathematically forbid one from modelling the system
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Defining a system of differential equations</p>
+        <p class="prev-next-title">Defining a Model</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -611,8 +706,12 @@ There is actually nothing to mathematically forbid one from modelling the system
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinary-differential-equations">Ordinary Differential Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-vector">State vector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-change-matrix">State change matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-rate-vector">Event-Rate Vector</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-time-markov-chains">Continuous Time Markov Chains</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ordinary-differential-equations">Ordinary Differential Equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
   </nav></div>
 
@@ -637,7 +736,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

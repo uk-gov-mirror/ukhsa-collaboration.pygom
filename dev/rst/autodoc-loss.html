@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>loss &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,17 +47,20 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -162,18 +165,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -186,8 +178,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -197,15 +188,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../notebooks/insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -225,10 +211,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -276,9 +260,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -419,9 +403,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -437,82 +419,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma"><code class="docutils literal notranslate"><span class="pre">Gamma</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Gamma.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.diff_loss"><code class="docutils literal notranslate"><span class="pre">Gamma.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.loss"><code class="docutils literal notranslate"><span class="pre">Gamma.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.GammaLoss"><code class="docutils literal notranslate"><span class="pre">GammaLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom"><code class="docutils literal notranslate"><span class="pre">NegBinom</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.diff2Loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.diff_loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinomLoss"><code class="docutils literal notranslate"><span class="pre">NegBinomLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal"><code class="docutils literal notranslate"><span class="pre">Normal</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Normal.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.diff_loss"><code class="docutils literal notranslate"><span class="pre">Normal.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.loss"><code class="docutils literal notranslate"><span class="pre">Normal.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NormalLoss"><code class="docutils literal notranslate"><span class="pre">NormalLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson"><code class="docutils literal notranslate"><span class="pre">Poisson</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Poisson.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.diff_loss"><code class="docutils literal notranslate"><span class="pre">Poisson.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.loss"><code class="docutils literal notranslate"><span class="pre">Poisson.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.PoissonLoss"><code class="docutils literal notranslate"><span class="pre">PoissonLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square"><code class="docutils literal notranslate"><span class="pre">Square</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Square.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.diff_loss"><code class="docutils literal notranslate"><span class="pre">Square.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.loss"><code class="docutils literal notranslate"><span class="pre">Square.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.SquareLoss"><code class="docutils literal notranslate"><span class="pre">SquareLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.antiderivative"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.antiderivative()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.derivative"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.derivative()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.derivatives"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.derivatives()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_coeffs"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_coeffs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_knots"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_knots()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_residual"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_residual()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.integral"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.integral()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.roots"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.roots()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.set_smoothing_factor"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.set_smoothing_factor()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.asymptotic"><code class="docutils literal notranslate"><span class="pre">asymptotic()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.bootstrap"><code class="docutils literal notranslate"><span class="pre">bootstrap()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_grad_interpolant"><code class="docutils literal notranslate"><span class="pre">cost_grad_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_interpolant"><code class="docutils literal notranslate"><span class="pre">cost_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_sample"><code class="docutils literal notranslate"><span class="pre">cost_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.geometric"><code class="docutils literal notranslate"><span class="pre">geometric()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.get_init"><code class="docutils literal notranslate"><span class="pre">get_init()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.grad_sample"><code class="docutils literal notranslate"><span class="pre">grad_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.jac_sample"><code class="docutils literal notranslate"><span class="pre">jac_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.leastsq"><code class="docutils literal notranslate"><span class="pre">leastsq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.minimize_scalar"><code class="docutils literal notranslate"><span class="pre">minimize_scalar()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial"><code class="docutils literal notranslate"><span class="pre">partial</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.args"><code class="docutils literal notranslate"><span class="pre">partial.args</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.func"><code class="docutils literal notranslate"><span class="pre">partial.func</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.keywords"><code class="docutils literal notranslate"><span class="pre">partial.keywords</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.profile"><code class="docutils literal notranslate"><span class="pre">profile()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.residual_interpolant"><code class="docutils literal notranslate"><span class="pre">residual_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.residual_sample"><code class="docutils literal notranslate"><span class="pre">residual_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.simps"><code class="docutils literal notranslate"><span class="pre">simps()</span></code></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -529,7 +435,7 @@ document.write(`
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">Gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Gamma" title="Permalink to this definition">#</a></dt>
 <dd><p>Gamma distribution loss object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>Shape</strong> (<em>float</em>) – shape (a in latex equations)</p></li>
@@ -545,17 +451,17 @@ See:</p>
 <div><p>Jupiter notebook “Loss function Calculations.ipnyb”</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>scnd_deriv_yhat</strong> – <span class="math notranslate nohighlight">\(\frac{a \left(- \hat{y} + 2 y\right)}{\hat{y}^{3}}\)</span></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -570,17 +476,17 @@ See:</p>
 <div><p>File “Loss function Calculations.ipnyb”</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – prediction</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>first_deriv_yhat</strong> – <span class="math notranslate nohighlight">\(\frac{a \left(\hat{y} - y\right)}{\hat{y}^{2}}\)</span></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -597,7 +503,7 @@ See: Bolker, B. M. (2008). Gamma. In Ecological Models in R (pp. 131–133).</p>
 File “Loss function Calculations.ipnyb”</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – prediction</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -606,7 +512,7 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>negative log-likelihood, <span class="math notranslate nohighlight">\(\mathcal{L}(\hat{y}; y,a)\)</span></p>
 </dd>
 </dl>
@@ -625,7 +531,7 @@ without it missing arguments errors could occur.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">NegBinom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#NegBinom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.NegBinom" title="Permalink to this definition">#</a></dt>
 <dd><p>Negative Binomial distribution loss object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>k</strong> (<em>float</em>) – Overdispersion parameter (k=mean+mean(mean/variance))</p></li>
@@ -643,7 +549,7 @@ Bolker, B. M. (2008). Negative Binomial. In Ecological Models in R (pp. 124–12
 Princeton University Press</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -654,10 +560,10 @@ without it missing arguments errors could occur.</p></li>
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>scnd_deriv_yhat</strong> –</p>
 <dl class="field-list simple">
-<dt class="field-odd">math</dt>
+<dt class="field-odd">math<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><a href="#id1"><span class="problematic" id="id2">`</span></a>frac{k(hat{y}(k + hat{y}) + hat{y}(y -hat{y}) + (k +</dt><dd><p>hat{y})(y - hat{y})}{hat{y}^{2}(k + hat{y})^{2}}`</p>
 </dd>
@@ -666,7 +572,7 @@ residuals are used.</p></li>
 </dl>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -683,7 +589,7 @@ Bolker, B. M. (2008). Negative Binomial. In Ecological Models in R (pp. 124–12
 Princeton University Press</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation
 apply_weighting: boolean
@@ -695,10 +601,10 @@ without it missing arguments errors could occur</p></li>
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>first_deriv_yhat</strong> – <span class="math notranslate nohighlight">\(\frac{k(\hat{y}-y)}{\hat{y}(k + \hat{y})}\)</span></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -710,7 +616,7 @@ residuals are used.</p></li>
 <dd><p>The loss under a Negative Binomial distribution.  Defined as the
 negative log-likelihood of the Negative Binomial 2 distribution.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -719,7 +625,7 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>negative log-likelihood, <span class="math notranslate nohighlight">\(\mathcal{L}(\hat{y}; y,k)\)</span></p>
 </dd>
 </dl>
@@ -738,7 +644,7 @@ without it missing arguments errors could occur.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">Normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Normal" title="Permalink to this definition">#</a></dt>
 <dd><p>Normal distribution loss object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>sigma</strong> (<em>float</em>) – standard deviation</p></li>
@@ -750,7 +656,7 @@ without it missing arguments errors could occur.</p></li>
 <span class="sig-name descname"><span class="pre">diff2Loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Normal.diff2Loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Normal.diff2Loss" title="Permalink to this definition">#</a></dt>
 <dd><p>Twice derivative of the normal loss.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observations</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -759,10 +665,10 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>s</strong> – inverse of the variance with shape = yhat.shape</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -774,17 +680,17 @@ without it missing arguments errors could occur.</p></li>
 <dd><p>Derivative of the loss function which is
 <span class="math notranslate nohighlight">\(\sigma^{-1}(y - \hat{y})\)</span></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>r</strong> – <span class="math notranslate nohighlight">\(\nabla \mathcal{L}(\hat{y}, y)\)</span></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -796,17 +702,17 @@ residuals are used.</p></li>
 <dd><p>The loss under a normal distribution.  Defined as the
 negative log-likelihood here.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>negative log-likelihood,</strong> – <cite>mathcalfrac{1}{sqrt{2pi}sigma}e^{-frac{(y-hat{y})^{2}}{2sigma^{2}}</cite></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>math:</p>
 </dd>
 </dl>
@@ -825,7 +731,7 @@ residuals are used.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">Poisson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Poisson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Poisson" title="Permalink to this definition">#</a></dt>
 <dd><p>Poisson distribution loss object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>y</strong> (<em>array like</em>) – observation</p>
 </dd>
 </dl>
@@ -834,7 +740,7 @@ residuals are used.</p></li>
 <span class="sig-name descname"><span class="pre">diff2Loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Poisson.diff2Loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Poisson.diff2Loss" title="Permalink to this definition">#</a></dt>
 <dd><p>Twice derivative of the Poisson loss.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observations</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -843,10 +749,10 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>s</strong> – <span class="math notranslate nohighlight">\(\frac{y}{\hat{y}^{2}}\)</span> with shape = yhat.shape</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -857,14 +763,14 @@ without it missing arguments errors could occur.</p></li>
 <span class="sig-name descname"><span class="pre">diff_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Poisson.diff_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Poisson.diff_loss" title="Permalink to this definition">#</a></dt>
 <dd><p>Derivative of the loss function, <span class="math notranslate nohighlight">\(1 - y\hat{y}^{-1}\)</span></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="math notranslate nohighlight">\(\nabla \mathcal{L}(\hat{y},y)\)</span></p>
 </dd>
 </dl>
@@ -876,7 +782,7 @@ residuals are used.</p></li>
 <dd><p>The loss under a Poisson distribution.  Defined as the
 negative log-likelihood here.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -885,7 +791,7 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>negative log-likelihood, <span class="math notranslate nohighlight">\(\mathcal{L}(\hat{y}, y)\)</span></p>
 </dd>
 </dl>
@@ -904,7 +810,7 @@ without it missing arguments errors could occur.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">Square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Square" title="Permalink to this definition">#</a></dt>
 <dd><p>Square loss object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>y</strong> (<em>array like</em>) – observations</p>
 </dd>
 </dl>
@@ -913,7 +819,7 @@ without it missing arguments errors could occur.</p></li>
 <span class="sig-name descname"><span class="pre">diff2Loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Square.diff2Loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Square.diff2Loss" title="Permalink to this definition">#</a></dt>
 <dd><p>Twice derivative of the square loss.  Which is simply 2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observations</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – Residuals are not used in calculation, as such True or False
@@ -922,11 +828,11 @@ calculation is made with residuals for other loss functions, so
 without it missing arguments errors could occur.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>either a scalar, vector or matrix depending on the shape of
 of the input yhat</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array with values of 2</p>
 </dd>
 </dl>
@@ -939,14 +845,14 @@ of the input yhat</p>
 the minimization problem i.e. our objective function is the
 negative of the log-likelihood</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="math notranslate nohighlight">\(-2(y_{i} - \hat{y}_{i})\)</span></p>
 </dd>
 </dl>
@@ -957,14 +863,14 @@ residuals are used.</p></li>
 <span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yhat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_weighting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygom/loss/loss_type.html#Square.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.Square.loss" title="Permalink to this definition">#</a></dt>
 <dd><p>Loss under square loss.  Not really saying much here</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>yhat</strong> (<em>array like</em>) – observation</p></li>
 <li><p><strong>apply_weighting</strong> (<em>boolean</em>) – If True multiplies array of residuals by weightings, else raw
 residuals are used.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (y-\hat{y})^{2}\)</span></p>
 </dd>
 </dl>
@@ -985,7 +891,7 @@ residuals are used.</p></li>
 <p>Fits a spline y = spl(x) of degree <cite>k</cite> to the provided <cite>x</cite>, <cite>y</cite> data.  <cite>s</cite>
 specifies the number of knots by specifying a smoothing condition.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>(</em><em>N</em><em>,</em><em>) </em><em>array_like</em>) – 1-D array of independent input data. Must be increasing;
 must be strictly increasing if <cite>s</cite> is 0.</p></li>
@@ -1090,27 +996,29 @@ data points:</p>
 <p>Notice the need to replace a <code class="docutils literal notranslate"><span class="pre">nan</span></code> by a numerical value (precise value
 does not matter as long as the corresponding weight is zero.)</p>
 <p class="rubric">References</p>
-<p>Based on algorithms described in <a href="#id24"><span class="problematic" id="id3">[1]_</span></a>, <a href="#id25"><span class="problematic" id="id4">[2]_</span></a>, <a href="#id26"><span class="problematic" id="id5">[3]_</span></a>, and <a class="footnote-reference brackets" href="#id10" id="id6">4</a>:</p>
-<dl class="footnote brackets">
-<dt class="label" id="id7"><span class="brackets">1</span></dt>
-<dd><p>P. Dierckx, “An algorithm for smoothing, differentiation and
+<p>Based on algorithms described in <a href="#id24"><span class="problematic" id="id3">[1]_</span></a>, <a href="#id25"><span class="problematic" id="id4">[2]_</span></a>, <a href="#id26"><span class="problematic" id="id5">[3]_</span></a>, and <a class="footnote-reference brackets" href="#id10" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>:</p>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>P. Dierckx, “An algorithm for smoothing, differentiation and
 integration of experimental data using spline functions”,
 J.Comp.Appl.Maths 1 (1975) 165-184.</p>
-</dd>
-<dt class="label" id="id8"><span class="brackets">2</span></dt>
-<dd><p>P. Dierckx, “A fast algorithm for smoothing data on a rectangular
+</aside>
+<aside class="footnote brackets" id="id8" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>P. Dierckx, “A fast algorithm for smoothing data on a rectangular
 grid while using spline functions”, SIAM J.Numer.Anal. 19 (1982)
 1286-1304.</p>
-</dd>
-<dt class="label" id="id9"><span class="brackets">3</span></dt>
-<dd><p>P. Dierckx, “An improved algorithm for curve fitting with spline
+</aside>
+<aside class="footnote brackets" id="id9" role="note">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>P. Dierckx, “An improved algorithm for curve fitting with spline
 functions”, report tw54, Dept. Computer Science,K.U. Leuven, 1981.</p>
-</dd>
-<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
-<dd><p>P. Dierckx, “Curve and surface fitting with splines”, Monographs on
+</aside>
+<aside class="footnote brackets" id="id10" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">4</a><span class="fn-bracket">]</span></span>
+<p>P. Dierckx, “Curve and surface fitting with splines”, Monographs on
 Numerical Analysis, Oxford University Press, 1993.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -1138,14 +1046,14 @@ Numerical Analysis, Oxford University Press, 1993.</p>
 <span class="sig-name descname"><span class="pre">antiderivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scipy/interpolate/_fitpack2.html#UnivariateSpline.antiderivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.UnivariateSpline.antiderivative" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a new spline representing the antiderivative of this spline.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Order of antiderivative to evaluate. Default: 1</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>spline</strong> – Spline of order k2=k+n representing the antiderivative of this
 spline.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pygom.loss.UnivariateSpline" title="pygom.loss.UnivariateSpline">UnivariateSpline</a></p>
 </dd>
 </dl>
@@ -1191,14 +1099,14 @@ although some floating point error accumulates:</p>
 <span class="sig-name descname"><span class="pre">derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scipy/interpolate/_fitpack2.html#UnivariateSpline.derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.UnivariateSpline.derivative" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a new spline representing the derivative of this spline.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Order of derivative to evaluate. Default: 1</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>spline</strong> – Spline of order k2=k-n representing the derivative of this
 spline.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pygom.loss.UnivariateSpline" title="pygom.loss.UnivariateSpline">UnivariateSpline</a></p>
 </dd>
 </dl>
@@ -1235,13 +1143,13 @@ fit an order 4 spline):</p>
 <span class="sig-name descname"><span class="pre">derivatives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scipy/interpolate/_fitpack2.html#UnivariateSpline.derivatives"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.UnivariateSpline.derivatives" title="Permalink to this definition">#</a></dt>
 <dd><p>Return all derivatives of the spline at the point x.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>float</em>) – The point to evaluate the derivatives at.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>der</strong> – Derivatives of the orders 0 to k.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray, shape(k+1,)</p>
 </dd>
 </dl>
@@ -1285,16 +1193,16 @@ fit an order 4 spline):</p>
 <span class="sig-name descname"><span class="pre">integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scipy/interpolate/_fitpack2.html#UnivariateSpline.integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.UnivariateSpline.integral" title="Permalink to this definition">#</a></dt>
 <dd><p>Return definite integral of the spline between two given points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> (<em>float</em>) – Lower limit of integration.</p></li>
 <li><p><strong>b</strong> (<em>float</em>) – Upper limit of integration.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>integral</strong> – The value of the definite integral of the spline between limits.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1374,7 +1282,7 @@ factor s and with the knots found at the last call.</p>
 under the <span class="math notranslate nohighlight">\(\mathcal{X}^{2}\)</span> assumption for the
 likelihood</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>ode object</em>) – an object initialized from <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLoss</span></code></p></li>
 <li><p><strong>alpha</strong> (<em>numeric</em><em>, </em><em>optional</em>) – confidence level, <span class="math notranslate nohighlight">\(0 &lt; \alpha &lt; 1\)</span>.  Defaults to 0.05.</p></li>
@@ -1384,7 +1292,7 @@ inferred from the input obj</p></li>
 <li><p><strong>ub</strong> (<em>array like</em><em>, </em><em>optional</em>) – expected upper bound</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>l</strong> (<em>array like</em>) – lower confidence interval</p></li>
 <li><p><strong>u</strong> (<em>array like</em>) – upper confidence interval</p></li>
@@ -1400,7 +1308,7 @@ inferred from the input obj</p></li>
 <dd><p>Finds the confidence interval at the <span class="math notranslate nohighlight">\(\alpha\)</span> level
 via bootstrap</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>ode object</em>) – an object initialized from <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLoss</span></code></p></li>
 <li><p><strong>alpha</strong> (<em>numeric</em><em>, </em><em>optional</em>) – confidence level, <span class="math notranslate nohighlight">\(0 &lt; \alpha &lt; 1\)</span>. Defaults to 0.05.</p></li>
@@ -1412,7 +1320,7 @@ via bootstrap</p>
 <li><p><strong>full_output</strong> (<em>bool</em>) – if the full set of estimates is required.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>l</strong> (<em>array like</em>) – lower confidence interval</p></li>
 <li><p><strong>u</strong> (<em>array like</em>) – upper confidence interval</p></li>
@@ -1428,7 +1336,7 @@ via bootstrap</p>
 <dd><p>Returns the cost (sum of squared residuals) and the gradient between the
 first derivative of the interpolant and the function of the ode</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>spline_list</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.interpolate.UnivariateSpline</span></code></p></li>
@@ -1436,7 +1344,7 @@ first derivative of the interpolant and the function of the ode</p>
 <li><p><strong>theta</strong> (<em>array list</em>) – parameter value</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>cost</strong> (<em>double</em>) – sum of squared residuals</p></li>
 <li><p><em>g</em> – gradient of the squared residuals</p></li>
@@ -1452,7 +1360,7 @@ first derivative of the interpolant and the function of the ode</p>
 <dd><p>Returns the cost (sum of squared residuals) between the first
 derivative of the interpolant and the function of the ode</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>spline_list</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.interpolate.UnivariateSpline</span></code></p></li>
@@ -1462,10 +1370,10 @@ derivative of the interpolant and the function of the ode</p>
 <li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>optional</em>) – sum the vector/matrix</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>cost</strong> – sum of squared residuals</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>double</p>
 </dd>
 </dl>
@@ -1478,7 +1386,7 @@ derivative of the interpolant and the function of the ode</p>
 derivative of the interpolant and the function of the ode using
 samples at time points t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>fxApprox</strong> (<em>list</em>) – list of approximated values for the first derivative</p></li>
@@ -1493,10 +1401,10 @@ the integrand on each of the dimensions of the ode.  False returns
 the sum of this vector, a scalar.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>r</strong> – the cost or the residuals if vec is True</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array list</p>
 </dd>
 </dl>
@@ -1512,7 +1420,7 @@ the sum of this vector, a scalar.</p></li>
 <dd><p>Finds the geometric confidence interval under profiling
 at the <span class="math notranslate nohighlight">\(\alpha\)</span> level the normal approximation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>ode object</em>) – an object initialized from <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLoss</span></code></p></li>
 <li><p><strong>alpha</strong> (<em>numeric</em>) – confidence level, <span class="math notranslate nohighlight">\(0 &lt; \alpha &lt; 1\)</span></p></li>
@@ -1530,7 +1438,7 @@ defined at point <span class="math notranslate nohighlight">\(\theta\)</span>.</
 the point estimates of l and u</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>l</strong> (<em>array like</em>) – lower confidence interval</p></li>
 <li><p><strong>u</strong> (<em>array like</em>) – upper confidence interval</p></li>
@@ -1549,7 +1457,7 @@ point for all parameters</p></li>
 <dd><p>Get an initial guess of theta given the observations y and the
 corresponding time points t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>:array like</em>) – observed values</p></li>
 <li><p><strong>t</strong> (<em>array like</em>) – time</p></li>
@@ -1558,10 +1466,10 @@ corresponding time points t.</p>
 <li><p><strong>full_output</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if the optimization result should be returned. Defaults to False.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>theta</strong> – a guess of the parameters</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array like</p>
 </dd>
 </dl>
@@ -1575,7 +1483,7 @@ values of the interpolant given samples at time points t. Note
 that the parameters taken here is chosen to be same as
 <a class="reference internal" href="#pygom.loss.cost_sample" title="pygom.loss.cost_sample"><code class="xref py py-func docutils literal notranslate"><span class="pre">cost_sample()</span></code></a> for convenience.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>fxApprox</strong> (<em>list</em>) – list of approximated values for the first derivative</p></li>
@@ -1587,10 +1495,10 @@ that the parameters taken here is chosen to be same as
 additional argument</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>g</strong> – gradient of the objective function</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
 </dd>
 </dl>
@@ -1606,17 +1514,17 @@ additional argument</p></li>
 <dd><p>Interpolate the solution of the ode given the time points
 and a suitable smoothing vector using univariate spline</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>solution</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – f(t) of the ode with the rows correspond to time</p></li>
 <li><p><strong>t</strong> (<em>array like</em>) – time</p></li>
 <li><p><strong>s</strong> (<em>smoothing scalar</em><em>, </em><em>optional</em>) – greater or equal to zero</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>splineList</strong> – of <code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.interpolate.UnivariateSpline</span></code></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -1630,7 +1538,7 @@ values of the interpolant given samples at time points t. Note
 that the parameters taken here is chosen to be same as
 <a class="reference internal" href="#pygom.loss.cost_sample" title="pygom.loss.cost_sample"><code class="xref py py-func docutils literal notranslate"><span class="pre">cost_sample()</span></code></a> for convenience.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>fxApprox</strong> (<em>list</em>) – list of approximated values for the first derivative</p></li>
@@ -1640,10 +1548,10 @@ that the parameters taken here is chosen to be same as
 <li><p><strong>vec</strong> (<em>bool</em><em>, </em><em>optional</em>) – if the matrix should be flattened to be a vector</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>r</strong> – the residuals</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array list</p>
 </dd>
 </dl>
@@ -1662,7 +1570,7 @@ that the parameters taken here is chosen to be same as
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>callable</em>) – Should take at least one (possibly length <code class="docutils literal notranslate"><span class="pre">N</span></code> vector) argument and
 returns <code class="docutils literal notranslate"><span class="pre">M</span></code> floating point numbers. It must not return NaNs or
@@ -1691,7 +1599,7 @@ relative errors are of the order of the machine precision.</p></li>
 <li><p><strong>diag</strong> (<em>sequence</em><em>, </em><em>optional</em>) – N positive entries that serve as a scale factors for the variables.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul>
 <li><p><strong>x</strong> (<em>ndarray</em>) – The solution (or the result of the last iteration for an unsuccessful
 call).</p></li>
@@ -1773,7 +1681,7 @@ or whether <cite>x0</cite> is a scalar.</p>
 <span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">minimize_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bracket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scipy/optimize/_minimize.html#minimize_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygom.loss.minimize_scalar" title="Permalink to this definition">#</a></dt>
 <dd><p>Local minimization of scalar function of one variable.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fun</strong> (<em>callable</em>) – <p>Objective function.
 Scalar function, must return a scalar.</p>
@@ -1818,14 +1726,14 @@ options.</p></li>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>res</strong> – The optimization result represented as a <code class="docutils literal notranslate"><span class="pre">OptimizeResult</span></code> object.
 Important attributes are: <code class="docutils literal notranslate"><span class="pre">x</span></code> the solution array, <code class="docutils literal notranslate"><span class="pre">success</span></code> a
 Boolean flag indicating if the optimizer exited successfully and
 <code class="docutils literal notranslate"><span class="pre">message</span></code> which describes the cause of the termination. See
 <cite>OptimizeResult</cite> for a description of other attributes.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>OptimizeResult</p>
 </dd>
 </dl>
@@ -1875,21 +1783,22 @@ the method. You can find an example in the scipy.optimize tutorial.</p>
 <p><span class="versionmodified added">New in version 0.11.0.</span></p>
 </div>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id16"><span class="brackets">1</span></dt>
-<dd><p>Press, W., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery.
+<aside class="footnote brackets" id="id16" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Press, W., S.A. Teukolsky, W.T. Vetterling, and B.P. Flannery.
 Numerical Recipes in C. Cambridge University Press.</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets">2</span></dt>
-<dd><p>Forsythe, G.E., M. A. Malcolm, and C. B. Moler. “Computer Methods
+</aside>
+<aside class="footnote brackets" id="id17" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Forsythe, G.E., M. A. Malcolm, and C. B. Moler. “Computer Methods
 for Mathematical Computations.” Prentice-Hall Series in Automatic
 Computation 259 (1977).</p>
-</dd>
-<dt class="label" id="id18"><span class="brackets">3</span></dt>
-<dd><p>Brent, Richard P. Algorithms for Minimization Without Derivatives.
+</aside>
+<aside class="footnote brackets" id="id18" role="note">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Brent, Richard P. Algorithms for Minimization Without Derivatives.
 Courier Corporation, 2013.</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <p>Consider the problem of minimizing the following function.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -1951,7 +1860,7 @@ of the given arguments and keywords.</p>
 <span class="math notranslate nohighlight">\(\alpha\)</span> level under the <span class="math notranslate nohighlight">\(\mathcal{X}^{2}\)</span>
 assumption for the likelihood</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obj</strong> (<em>ode object</em>) – an object initialized from <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLoss</span></code></p></li>
 <li><p><strong>alpha</strong> (<em>numeric</em>) – confidence level, <span class="math notranslate nohighlight">\(0 &lt; \alpha &lt; 1\)</span></p></li>
@@ -1962,7 +1871,7 @@ optimal using methods provided by obj</p></li>
 <li><p><strong>full_output</strong> (<em>bool</em><em>, </em><em>optional</em>) – if more output is desired</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>l</strong> (<em>array like</em>) – lower confidence interval</p></li>
 <li><p><strong>u</strong> (<em>array like</em>) – upper confidence interval</p></li>
@@ -1978,7 +1887,7 @@ optimal using methods provided by obj</p></li>
 <dd><p>Returns the residuals between the first derivative of the
 interpolant and the function of the ode</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>spline_list</strong> (<em>list</em>) – list of <code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.interpolate.UnivariateSpline</span></code></p></li>
@@ -1988,10 +1897,10 @@ interpolant and the function of the ode</p>
 <li><p><strong>aggregate</strong> (<em>bool</em><em>, </em><em>optional</em>) – sum the vector/matrix</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>r</strong> – the residuals</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array list</p>
 </dd>
 </dl>
@@ -2004,7 +1913,7 @@ interpolant and the function of the ode</p>
 interpolant and the function of the ode using samples at
 time points t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ode</strong> (<a class="reference internal" href="autodoc-model.html#pygom.model.DeterministicOde" title="pygom.model.DeterministicOde"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeterministicOde</span></code></a>) – an ode object</p></li>
 <li><p><strong>fxApprox</strong> (<em>list</em>) – list of approximated values for the first derivative</p></li>
@@ -2014,10 +1923,10 @@ time points t.</p>
 <li><p><strong>vec</strong> (<em>bool</em><em>, </em><em>optional</em>) – if the matrix should be flattened to be a vector</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>r</strong> – the residuals</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array list</p>
 </dd>
 </dl>
@@ -2029,11 +1938,11 @@ time points t.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pygom.loss.simps">
-<span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">simps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygom.loss.simps" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pygom.loss.</span></span><span class="sig-name descname"><span class="pre">simps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygom.loss.simps" title="Permalink to this definition">#</a></dt>
 <dd><p>Integrate y(x) using samples along the given axis and the composite
 Simpson’s rule. If x is None, spacing of dx is assumed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y</strong> (<em>array_like</em>) – Array to be integrated.</p></li>
 <li><p><strong>x</strong> (<em>array_like</em><em>, </em><em>optional</em>) – If given, the points at which <cite>y</cite> is sampled.</p></li>
@@ -2042,10 +1951,10 @@ Simpson’s rule. If x is None, spacing of dx is assumed.</p>
 <li><p><strong>axis</strong> (<em>int</em><em>, </em><em>optional</em>) – Axis along which to integrate. Default is the last axis.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The estimated integral computed with the composite Simpson’s rule.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -2074,13 +1983,12 @@ exact if the function is a polynomial of order 3 or less. If
 the samples are not equally spaced, then the result is exact only
 if the function is a polynomial of order 2 or less.</p>
 <p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id23"><span class="brackets">1</span></dt>
-<dd><p>Cartwright, Kenneth V. Simpson’s Rule Cumulative Integration with
+<aside class="footnote brackets" id="id23" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Cartwright, Kenneth V. Simpson’s Rule Cumulative Integration with
 MS Excel and Irregularly-spaced Data. Journal of Mathematical
 Sciences and Mathematics Education. 12 (2): 1-9</p>
-</dd>
-</dl>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -2102,10 +2010,6 @@ Sciences and Mathematics Education. 12 (2): 1-9</p>
 </dd></dl>
 
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 </tbody>
 </table>
@@ -2167,89 +2071,6 @@ Sciences and Mathematics Education. 12 (2): 1-9</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma"><code class="docutils literal notranslate"><span class="pre">Gamma</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Gamma.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.diff_loss"><code class="docutils literal notranslate"><span class="pre">Gamma.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Gamma.loss"><code class="docutils literal notranslate"><span class="pre">Gamma.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.GammaLoss"><code class="docutils literal notranslate"><span class="pre">GammaLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom"><code class="docutils literal notranslate"><span class="pre">NegBinom</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.diff2Loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.diff_loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinom.loss"><code class="docutils literal notranslate"><span class="pre">NegBinom.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NegBinomLoss"><code class="docutils literal notranslate"><span class="pre">NegBinomLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal"><code class="docutils literal notranslate"><span class="pre">Normal</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Normal.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.diff_loss"><code class="docutils literal notranslate"><span class="pre">Normal.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Normal.loss"><code class="docutils literal notranslate"><span class="pre">Normal.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.NormalLoss"><code class="docutils literal notranslate"><span class="pre">NormalLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson"><code class="docutils literal notranslate"><span class="pre">Poisson</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Poisson.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.diff_loss"><code class="docutils literal notranslate"><span class="pre">Poisson.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Poisson.loss"><code class="docutils literal notranslate"><span class="pre">Poisson.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.PoissonLoss"><code class="docutils literal notranslate"><span class="pre">PoissonLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square"><code class="docutils literal notranslate"><span class="pre">Square</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.diff2Loss"><code class="docutils literal notranslate"><span class="pre">Square.diff2Loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.diff_loss"><code class="docutils literal notranslate"><span class="pre">Square.diff_loss()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.Square.loss"><code class="docutils literal notranslate"><span class="pre">Square.loss()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.SquareLoss"><code class="docutils literal notranslate"><span class="pre">SquareLoss</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.antiderivative"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.antiderivative()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.derivative"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.derivative()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.derivatives"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.derivatives()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_coeffs"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_coeffs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_knots"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_knots()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.get_residual"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.get_residual()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.integral"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.integral()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.roots"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.roots()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.UnivariateSpline.set_smoothing_factor"><code class="docutils literal notranslate"><span class="pre">UnivariateSpline.set_smoothing_factor()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.asymptotic"><code class="docutils literal notranslate"><span class="pre">asymptotic()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.bootstrap"><code class="docutils literal notranslate"><span class="pre">bootstrap()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_grad_interpolant"><code class="docutils literal notranslate"><span class="pre">cost_grad_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_interpolant"><code class="docutils literal notranslate"><span class="pre">cost_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.cost_sample"><code class="docutils literal notranslate"><span class="pre">cost_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.geometric"><code class="docutils literal notranslate"><span class="pre">geometric()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.get_init"><code class="docutils literal notranslate"><span class="pre">get_init()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.grad_sample"><code class="docutils literal notranslate"><span class="pre">grad_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.jac_sample"><code class="docutils literal notranslate"><span class="pre">jac_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.leastsq"><code class="docutils literal notranslate"><span class="pre">leastsq()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.minimize_scalar"><code class="docutils literal notranslate"><span class="pre">minimize_scalar()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial"><code class="docutils literal notranslate"><span class="pre">partial</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.args"><code class="docutils literal notranslate"><span class="pre">partial.args</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.func"><code class="docutils literal notranslate"><span class="pre">partial.func</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.partial.keywords"><code class="docutils literal notranslate"><span class="pre">partial.keywords</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.profile"><code class="docutils literal notranslate"><span class="pre">profile()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.residual_interpolant"><code class="docutils literal notranslate"><span class="pre">residual_interpolant()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.residual_sample"><code class="docutils literal notranslate"><span class="pre">residual_sample()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygom.loss.simps"><code class="docutils literal notranslate"><span class="pre">simps()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
             
           </div>
           <footer class="bd-footer-content">
@@ -2269,7 +2090,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
