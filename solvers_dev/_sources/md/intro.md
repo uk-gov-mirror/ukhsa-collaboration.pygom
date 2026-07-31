@@ -8,9 +8,20 @@ The package source is freely available (hosted on [GitHub](https://github.com/uk
 
 ## Release notes:
 
-### [0.1.9] - 2026-07-30 (Latest release)
+### [0.1.10] - 2026-07-30 (Latest release)
 
-[... add release notes here ...]
+- Added
+- Changed
+    - Stochastic and Deterministic simulation now forms a separate module and has been substantially rewritten and tested
+    - Mathematical functions form a separate module
+- Deprecated
+    - Simulation output no longer of type tuple, but {class}`Output`
+- Removed
+    - ODE decomposition into transitions feature temporarily removed
+    - Python 3.9 support removed
+    - C++ build tools dependency removed
+- Fixed
+    - State and parameter storage for faster lookup in large models
 
 ### [0.1.9] - 2024-11-30
 

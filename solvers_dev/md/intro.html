@@ -427,7 +427,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-this-package-do">What does this package do?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release notes:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.9] - 2026-07-30 (Latest release)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.10] - 2026-07-30 (Latest release)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.9] - 2024-11-30</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">[0.1.8] - 2024-08-06</a></li>
 </ul>
@@ -456,8 +456,33 @@ The package source is freely available (hosted on <a class="reference external" 
 <section id="release-notes">
 <h2>Release notes:<a class="headerlink" href="#release-notes" title="Permalink to this heading">#</a></h2>
 <section id="latest-release">
-<h3>[0.1.9] - 2026-07-30 (Latest release)<a class="headerlink" href="#latest-release" title="Permalink to this heading">#</a></h3>
-<p>[… add release notes here …]</p>
+<h3>[0.1.10] - 2026-07-30 (Latest release)<a class="headerlink" href="#latest-release" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added</p></li>
+<li><p>Changed</p>
+<ul>
+<li><p>Stochastic and Deterministic simulation now forms a separate module and has been substantially rewritten and tested</p></li>
+<li><p>Mathematical functions form a separate module</p></li>
+</ul>
+</li>
+<li><p>Deprecated</p>
+<ul>
+<li><p>Simulation output no longer of type tuple, but <code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></p></li>
+</ul>
+</li>
+<li><p>Removed</p>
+<ul>
+<li><p>ODE decomposition into transitions feature temporarily removed</p></li>
+<li><p>Python 3.9 support removed</p></li>
+<li><p>C++ build tools dependency removed</p></li>
+</ul>
+</li>
+<li><p>Fixed</p>
+<ul>
+<li><p>State and parameter storage for faster lookup in large models</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="id1">
 <h3>[0.1.9] - 2024-11-30<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
@@ -606,7 +631,7 @@ To use the contents of a notebook as a starting point for trialling or developin
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-this-package-do">What does this package do?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release notes:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.9] - 2026-07-30 (Latest release)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.10] - 2026-07-30 (Latest release)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.9] - 2024-11-30</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">[0.1.8] - 2024-08-06</a></li>
 </ul>
