@@ -7,7 +7,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Welcome to the documentation for PyGOM &#8212; PyGOM documentation</title>
   
@@ -30,12 +30,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -47,17 +47,20 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'md/intro';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -161,18 +164,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -185,8 +177,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -196,15 +187,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../notebooks/insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -224,10 +210,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -275,9 +259,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -418,9 +402,9 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -443,8 +427,9 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-this-package-do">What does this package do?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release notes:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.9] - 2024-11-30 (Latest release)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.8] - 2024-08-06</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.10] - 2026-07-30 (Latest release)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.9] - 2024-11-30</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">[0.1.8] - 2024-08-06</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-this-documentation">Using this documentation</a></li>
@@ -464,14 +449,43 @@ document.write(`
 <h1>Welcome to the documentation for PyGOM<a class="headerlink" href="#welcome-to-the-documentation-for-pygom" title="Permalink to this heading">#</a></h1>
 <section id="what-does-this-package-do">
 <h2>What does this package do?<a class="headerlink" href="#what-does-this-package-do" title="Permalink to this heading">#</a></h2>
-<p>PyGOM (Python Generic ODE Model) is a Python package which provides a simple interface for users to construct Ordinary Differential Equation (ODE) models, with a focus on compartmental models and epidemiology.
+<p>PyGOM (Python Generic ODE Model) is a Python package which provides a simple interface for users to construct compartmental models, with a focus on epidemiology.
 This is backed by a comprehensive and easy to use tool–box implementing functions to easily perform common operations such as parameter estimation and solving for deterministic or stochastic time evolution.
 The package source is freely available (hosted on <a class="reference external" href="https://github.com/ukhsa-collaboration/pygom">GitHub</a>) and organized in a way that permits easy extension. With both the algebraic and numeric calculations performed automatically (but still accessible), the end user is freed to focus on model development.</p>
 </section>
 <section id="release-notes">
 <h2>Release notes:<a class="headerlink" href="#release-notes" title="Permalink to this heading">#</a></h2>
 <section id="latest-release">
-<h3>[0.1.9] - 2024-11-30 (Latest release)<a class="headerlink" href="#latest-release" title="Permalink to this heading">#</a></h3>
+<h3>[0.1.10] - 2026-07-30 (Latest release)<a class="headerlink" href="#latest-release" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added</p></li>
+<li><p>Changed</p>
+<ul>
+<li><p>Stochastic and Deterministic simulation now forms a separate module and has been substantially rewritten and tested</p></li>
+<li><p>Mathematical functions form a separate module</p></li>
+</ul>
+</li>
+<li><p>Deprecated</p>
+<ul>
+<li><p>Simulation output no longer of type tuple, but <code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></p></li>
+</ul>
+</li>
+<li><p>Removed</p>
+<ul>
+<li><p>ODE decomposition into transitions feature temporarily removed</p></li>
+<li><p>Python 3.9 support removed</p></li>
+<li><p>C++ build tools dependency removed</p></li>
+</ul>
+</li>
+<li><p>Fixed</p>
+<ul>
+<li><p>State and parameter storage for faster lookup in large models</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h3>[0.1.9] - 2024-11-30<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added</p>
 <ul>
@@ -500,8 +514,8 @@ The package source is freely available (hosted on <a class="reference external" 
 </li>
 </ul>
 </section>
-<section id="id1">
-<h3>[0.1.8] - 2024-08-06<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h3>[0.1.8] - 2024-08-06<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added</p>
 <ul>
@@ -617,8 +631,9 @@ To use the contents of a notebook as a starting point for trialling or developin
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-this-package-do">What does this package do?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release notes:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.9] - 2024-11-30 (Latest release)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.8] - 2024-08-06</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latest-release">[0.1.10] - 2026-07-30 (Latest release)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.1.9] - 2024-11-30</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">[0.1.8] - 2024-08-06</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-this-documentation">Using this documentation</a></li>
@@ -647,7 +662,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

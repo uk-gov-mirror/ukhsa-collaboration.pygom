@@ -29,12 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -46,17 +46,20 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <link rel="index" title="Index" href="#" />
@@ -159,18 +162,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -183,8 +175,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -194,15 +185,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="notebooks/model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks/insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -222,10 +208,8 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -273,9 +257,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -424,11 +408,9 @@ document.write(`
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.abbrev">abbrev (pygom.model.Quantity property)</a>
+</li>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.ABC">ABC (class in pygom.approximate_bayesian_computation)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.add_compiled_sympy_object">add_compiled_sympy_object() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.add_func">add_func() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.adjoint">adjoint() (pygom.model.DeterministicOde method)</a>
 </li>
@@ -472,8 +454,6 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.check_dimension">check_dimension() (in module pygom.model)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.cle">cle() (pygom.model.SimulateOde method)</a>
-</li>
       <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.clear">clear() (pygom.model.OrderedDict method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.CompileCanary">CompileCanary (class in pygom.model)</a>
@@ -484,9 +464,9 @@ document.write(`
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.compileCode.compileExprAndFormat">compileExprAndFormat() (pygom.model.compileCode method)</a>
-</li>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.ABC.continue_posterior_sample">continue_posterior_sample() (pygom.approximate_bayesian_computation.ABC method)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.convert_to">convert_to() (pygom.model.Quantity method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.copy">copy() (pygom.model.OrderedDict method)</a>
 </li>
@@ -538,8 +518,6 @@ document.write(`
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.diff_jacobian_T">diff_jacobian_T() (pygom.model.DeterministicOde method)</a>
-</li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.Gamma.diff_loss">diff_loss() (pygom.loss.Gamma method)</a>
 
       <ul>
@@ -574,10 +552,6 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.eval_forwardforward">eval_forwardforward() (pygom.model.DeterministicOde method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.eval_hessian">eval_hessian() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.eval_sens_jacobian_state">eval_sens_jacobian_state() (pygom.model.DeterministicOde method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.eval_sensitivity">eval_sensitivity() (pygom.model.DeterministicOde method)</a>
@@ -585,8 +559,6 @@ document.write(`
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.eval_sensitivityIV">eval_sensitivityIV() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.Event">Event (class in pygom.model)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.exact">exact() (pygom.model.SimulateOde method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -598,9 +570,11 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.forwardforward">forwardforward() (pygom.model.DeterministicOde method)</a>
 </li>
+      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.forwardforward_T">forwardforward_T() (pygom.model.DeterministicOde method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.forwardforward_T">forwardforward_T() (pygom.model.DeterministicOde method)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.free_symbols">free_symbols (pygom.model.Quantity property)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.fromkeys">fromkeys() (pygom.model.OrderedDict method)</a>
 </li>
@@ -624,25 +598,13 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.UnivariateSpline.get_coeffs">get_coeffs() (pygom.loss.UnivariateSpline method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_diff_jacobian_eqn">get_diff_jacobian_eqn() (pygom.model.DeterministicOde method)</a>
-</li>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.get_function">get_function() (in module pygom.approximate_bayesian_computation)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_grad_eqn">get_grad_eqn() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_grad_jacobian_eqn">get_grad_jacobian_eqn() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_hessian_eqn">get_hessian_eqn() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.get_init">get_init() (in module pygom.loss)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_jacobian_eqn">get_jacobian_eqn() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-loss.html#pygom.loss.UnivariateSpline.get_knots">get_knots() (pygom.loss.UnivariateSpline method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_ode_eqn">get_ode_eqn() (pygom.model.DeterministicOde method)</a>
+      <li><a href="rst/autodoc-loss.html#pygom.loss.UnivariateSpline.get_knots">get_knots() (pygom.loss.UnivariateSpline method)</a>
 </li>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.ABC.get_posterior_sample">get_posterior_sample() (pygom.approximate_bayesian_computation.ABC method)</a>
 </li>
@@ -654,21 +616,11 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.get_transition_graph">get_transition_graph() (pygom.model.DeterministicOde method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.get_TransitionJacobian">get_TransitionJacobian() (pygom.model.SimulateOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.get_TransitionMean">get_TransitionMean() (pygom.model.SimulateOde method)</a>
-</li>
       <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.get_transitions_from_ode">get_transitions_from_ode() (pygom.model.SimulateOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.get_TransitionVar">get_TransitionVar() (pygom.model.SimulateOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.get_unrolled_obj">get_unrolled_obj() (pygom.model.SimulateOde method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.grad_jacobianT">grad_jacobianT() (pygom.model.DeterministicOde method)</a>
-</li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.grad_sample">grad_sample() (in module pygom.loss)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.grad_T">grad_T() (pygom.model.DeterministicOde method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -676,11 +628,7 @@ document.write(`
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.hessian">hessian() (pygom.model.DeterministicOde method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.hybrid">hybrid() (pygom.model.SimulateOde method)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore.has_stochastic_parameters">has_stochastic_parameters (pygom.model.ParameterStore property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -696,25 +644,23 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.initial_values">initial_values (pygom.model.DeterministicOde property)</a>
 </li>
+      <li><a href="rst/autodoc-model.html#pygom.model.InputError">InputError</a>
+</li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.UnivariateSpline.integral">integral() (pygom.loss.UnivariateSpline method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.integrate">integrate() (in module pygom.model)</a>
-
-      <ul>
-        <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.integrate">(pygom.model.DeterministicOde method)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.integrate">integrate() (pygom.model.DeterministicOde method)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.integrate2">integrate2() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.integrateFuncJac">integrateFuncJac() (in module pygom.model)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.interpolate">interpolate() (in module pygom.loss)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.Transition.is_between_state">is_between_state() (pygom.model.Transition method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.is_list_like">is_list_like() (in module pygom.model)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.is_prefixed">is_prefixed (pygom.model.Quantity property)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.is_stiff">is_stiff() (pygom.model.DeterministicOde method)</a>
 </li>
@@ -731,8 +677,6 @@ document.write(`
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.jacobian_eigenvalue">jacobian_eigenvalue() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.jacobian_T">jacobian_T() (pygom.model.DeterministicOde method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -819,9 +763,11 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.NegBinom">NegBinom (class in pygom.loss)</a>
 </li>
+      <li><a href="rst/autodoc-loss.html#pygom.loss.NegBinomLoss">NegBinomLoss (class in pygom.loss)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-loss.html#pygom.loss.NegBinomLoss">NegBinomLoss (class in pygom.loss)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore.new_realisation">new_realisation() (pygom.model.ParameterStore method)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.Normal">Normal (class in pygom.loss)</a>
 </li>
@@ -847,10 +793,10 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivity_jacobian_T">ode_and_sensitivity_jacobian_T() (pygom.model.DeterministicOde method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivity_T">ode_and_sensitivity_T() (pygom.model.DeterministicOde method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivity_T">ode_and_sensitivity_T() (pygom.model.DeterministicOde method)</a>
+</li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivityIV">ode_and_sensitivityIV() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivityIV_jacobian">ode_and_sensitivityIV_jacobian() (pygom.model.DeterministicOde method)</a>
@@ -858,8 +804,6 @@ document.write(`
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivityIV_jacobian_T">ode_and_sensitivityIV_jacobian_T() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_and_sensitivityIV_T">ode_and_sensitivityIV_T() (pygom.model.DeterministicOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.ode_T">ode_T() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.ODEVariable">ODEVariable (class in pygom.model)</a>
 </li>
@@ -874,6 +818,8 @@ document.write(`
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.Parameter">Parameter (class in pygom.approximate_bayesian_computation)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore">ParameterStore (class in pygom.model)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.partial">partial (class in pygom.loss)</a>
 </li>
@@ -965,15 +911,17 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qexp">qexp() (in module pygom.utilR)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qgamma">qgamma() (in module pygom.utilR)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qnbinom">qnbinom() (in module pygom.utilR)</a>
 </li>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qnorm">qnorm() (in module pygom.utilR)</a>
 </li>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qpois">qpois() (in module pygom.utilR)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity">Quantity (class in pygom.model)</a>
 </li>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.qunif">qunif() (in module pygom.utilR)</a>
 </li>
@@ -997,13 +945,11 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.residual_interpolant">residual_interpolant() (in module pygom.loss)</a>
 </li>
-      <li><a href="rst/autodoc-loss.html#pygom.loss.residual_sample">residual_sample() (in module pygom.loss)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-utilR.html#pygom.utilR.rexp">rexp() (in module pygom.utilR)</a>
+      <li><a href="rst/autodoc-loss.html#pygom.loss.residual_sample">residual_sample() (in module pygom.loss)</a>
 </li>
-      <li><a href="rst/autodoc-utilR.html#pygom.utilR.rgamma">rgamma() (in module pygom.utilR)</a>
+      <li><a href="rst/autodoc-utilR.html#pygom.utilR.rexp">rexp() (in module pygom.utilR)</a>
 </li>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.rmvnorm">rmvnorm() (in module pygom.utilR)</a>
 </li>
@@ -1023,6 +969,8 @@ document.write(`
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.scale_factor">scale_factor (pygom.model.Quantity property)</a>
+</li>
       <li><a href="rst/autodoc-model.html#pygom.model.SEIR">SEIR() (in module pygom.model)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.SEIR_Birth_Death">SEIR_Birth_Death() (in module pygom.model)</a>
@@ -1035,8 +983,6 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.sens_jacobian_state">sens_jacobian_state() (pygom.model.DeterministicOde method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.sens_jacobian_state_T">sens_jacobian_state_T() (pygom.model.DeterministicOde method)</a>
-</li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.sensitivity">sensitivity() (pygom.model.DeterministicOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.sensitivity_T">sensitivity_T() (pygom.model.DeterministicOde method)</a>
@@ -1045,19 +991,21 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.DeterministicOde.sensitivityIV_T">sensitivityIV_T() (pygom.model.DeterministicOde method)</a>
 </li>
+      <li><a href="rst/autodoc-model.html#pygom.model.Quantity.set_global_relative_scale_factor">set_global_relative_scale_factor() (pygom.model.Quantity method)</a>
+</li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.UnivariateSpline.set_smoothing_factor">set_smoothing_factor() (pygom.loss.UnivariateSpline method)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore.set_value">set_value() (pygom.model.ParameterStore method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.setdefault">setdefault() (pygom.model.OrderedDict method)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.shapeAdjust">shapeAdjust (class in pygom.model)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/autodoc-model.html#pygom.model.shapeAdjust">shapeAdjust (class in pygom.model)</a>
+</li>
       <li><a href="rst/autodoc-abc.html#pygom.approximate_bayesian_computation.ABC.sigma_nearest_neighbours">sigma_nearest_neighbours() (pygom.approximate_bayesian_computation.ABC method)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.simps">simps() (in module pygom.loss)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.simulate_param">simulate_param() (pygom.model.SimulateOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde">SimulateOde (class in pygom.model)</a>
 </li>
@@ -1071,15 +1019,15 @@ document.write(`
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.SIS_Periodic">SIS_Periodic() (in module pygom.model)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.solve_determ">solve_determ() (pygom.model.SimulateOde method)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.solve_stochast">solve_stochast() (pygom.model.SimulateOde method)</a>
-</li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.Square">Square (class in pygom.loss)</a>
 </li>
       <li><a href="rst/autodoc-loss.html#pygom.loss.SquareLoss">SquareLoss (class in pygom.loss)</a>
 </li>
+      <li><a href="rst/autodoc-model.html#pygom.model.StateStore">StateStore (class in pygom.model)</a>
+</li>
       <li><a href="rst/autodoc-model.html#pygom.model.Transition.stochastic">stochastic (pygom.model.Transition property)</a>
+</li>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore.stochastic_parameters">stochastic_parameters (pygom.model.ParameterStore property)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.str_or_list">str_or_list() (in module pygom.model)</a>
 </li>
@@ -1090,8 +1038,6 @@ document.write(`
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rst/autodoc-utilR.html#pygom.utilR.test_seed">test_seed() (in module pygom.utilR)</a>
-</li>
-      <li><a href="rst/autodoc-model.html#pygom.model.SimulateOde.total_transition">total_transition() (pygom.model.SimulateOde method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.Transition">Transition (class in pygom.model)</a>
 </li>
@@ -1121,12 +1067,14 @@ document.write(`
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.values">values() (pygom.model.OrderedDict method)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.ParameterStore.values">values (pygom.model.ParameterStore property)</a>
 </li>
-      <li><a href="rst/autodoc-model.html#pygom.model.vanDerPol">vanDerPol() (in module pygom.model)</a>
+      <li><a href="rst/autodoc-model.html#pygom.model.OrderedDict.values">values() (pygom.model.OrderedDict method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="rst/autodoc-model.html#pygom.model.vanDerPol">vanDerPol() (in module pygom.model)</a>
+</li>
       <li><a href="rst/autodoc-model.html#pygom.model.shapeAdjust.vecToMatFF">vecToMatFF() (pygom.model.shapeAdjust method)</a>
 </li>
       <li><a href="rst/autodoc-model.html#pygom.model.shapeAdjust.vecToMatSens">vecToMatSens() (pygom.model.shapeAdjust method)</a>
@@ -1172,7 +1120,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>

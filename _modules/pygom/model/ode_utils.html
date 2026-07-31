@@ -29,12 +29,12 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -46,17 +46,20 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pygom/model/ode_utils';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -159,18 +162,7 @@
   
   
 </a></div>
-        <div class="sidebar-primary-item">
-
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -183,8 +175,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../md/installation.html">Installation</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="../../../md/building_doc.html">Building the documentation locally</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../md/building_doc.html">Building the Documentation Locally</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
 <ul class="nav bd-sidenav">
@@ -194,15 +185,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/model_spec_2.html">Defining a system of differential equations</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../notebooks/insights.html">ODE Insights</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/extract_info.html">Extracting model information</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/unroll/unrollSimple.html">Deducing transitions from equations</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/model_spec_2.html">Defining a Model</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/model_params.html">Parameterisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/model_solver.html">Finding ODE solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/model_solver.html">Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/time_dependent_params.html">Time dependent parameters</a></li>
 </ul>
 </details></li>
@@ -222,10 +208,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/SEIR.html">SEIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/SEIR_Multiple.html">SEIR, multiple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/SEIR_Birth_Death_Periodic_Waning_Intro.html">SEIR, birth, death, periodic, waning and introductions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
 </ul>
 </details></li>
@@ -273,9 +257,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -414,7 +398,7 @@ document.write(`
                                        <span class="n">InputError</span><span class="p">,</span>
                                        <span class="n">IntegrationError</span>
                                        <span class="p">)</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">.variable_store</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariableStore</span><span class="p">,</span> <span class="n">ParameterStore</span><span class="p">,</span> <span class="n">StateStore</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.compile_canary</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompileCanary</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.plot_det</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_det</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.plot_stoc</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_stoc</span>
@@ -427,14 +411,18 @@ document.write(`
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;shapeAdjust&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;integrate&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;integrateFuncJac&#39;</span><span class="p">,</span>
+    <span class="c1"># &#39;integrate&#39;,</span>
+    <span class="c1"># &#39;integrateFuncJac&#39;,</span>
     <span class="s1">&#39;compileCode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;CompileCanary&#39;</span><span class="p">,</span>
-    <span class="c1">#plots</span>
+    <span class="c1"># data structures</span>
+    <span class="s1">&#39;VariableStore&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ParameterStore&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;StateStore&#39;</span><span class="p">,</span>
+    <span class="c1"># plots</span>
     <span class="s1">&#39;plot_det&#39;</span><span class="p">,</span>
     <span class="s1">&#39;plot_stoc&#39;</span><span class="p">,</span>
-    <span class="c1">#checks and conversions</span>
+    <span class="c1"># checks and conversions</span>
     <span class="s1">&#39;check_array_type&#39;</span><span class="p">,</span>
     <span class="s1">&#39;check_dimension&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_list_like&#39;</span><span class="p">,</span>
@@ -534,7 +522,7 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span></div></div>
 
-<div class="viewcode-block" id="integrate"><a class="viewcode-back" href="../../../rst/autodoc-model.html#pygom.model.integrate">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="n">ode</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="n">ode</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A wrapper on top of :mod:`odeint &lt;scipy.integrate.odeint&gt;` using</span>
 <span class="sd">    :class:`DeterministicOde &lt;pygom.model.DeterministicOde&gt;`.</span>
@@ -551,6 +539,7 @@ document.write(`
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># INTEGRATE!!! (shout it out loud, in Dalek voice)</span>
+
     <span class="c1"># determine the number of output we want</span>
     <span class="n">solution</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">ode</span><span class="o">.</span><span class="n">ode</span><span class="p">,</span>
                                               <span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span>
@@ -564,9 +553,11 @@ document.write(`
         <span class="c1"># have both</span>
         <span class="k">return</span> <span class="n">solution</span><span class="p">,</span> <span class="n">output</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">solution</span></div>
+        <span class="k">return</span> <span class="n">solution</span>
 
-<div class="viewcode-block" id="integrateFuncJac"><a class="viewcode-back" href="../../../rst/autodoc-model.html#pygom.model.integrateFuncJac">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">integrateFuncJac</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">includeOrigin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="c1"># # TODO: mop up all &quot;integrate&quot; variants: integrate, integrate2, _integrate2, integrateFuncJac.</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">integrateFuncJac</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">includeOrigin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                      <span class="n">full_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A replacement for :mod:`scipy.integrate.odeint` which performs integration</span>
@@ -620,12 +611,14 @@ document.write(`
     <span class="c1"># determine the type of integrator we want</span>
     <span class="c1"># print &quot;we are in&quot;</span>
     <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">full_output</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
-            <span class="c1"># obtain the eigenvalue</span>
-            <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">jac</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="n">_determineIntegratorGivenEigenValue</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;lsoda&#39;</span>
+    <span class="c1"># if full_output==True:</span>
+        <span class="c1"># obtain the eigenvalue</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">jac</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">_determineIntegratorGivenEigenValue</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="c1"># else:</span>
+        <span class="c1"># method = &#39;lsoda&#39;</span>
+
+    <span class="c1"># TODO: what was going on above?</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">_setupIntegrator</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">)</span>
     <span class="c1"># print method</span>
@@ -648,6 +641,8 @@ document.write(`
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1">#</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Type of input time is not of a recognized type&quot;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: tidy up below</span>
 
     <span class="k">for</span> <span class="n">deltaT</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">full_output</span><span class="p">:</span>
@@ -679,7 +674,7 @@ document.write(`
         <span class="k">return</span> <span class="n">solution</span><span class="p">,</span> <span class="n">output</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># only the integration</span>
-        <span class="k">return</span> <span class="n">solution</span></div>
+        <span class="k">return</span> <span class="n">solution</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_integrateOneStep</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">jac</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -876,7 +871,7 @@ document.write(`
 <span class="sd">        those linked with Theano are not.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;...Finding available backend...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Finding available backend.&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
             <span class="n">expr</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">x</span>
@@ -914,7 +909,7 @@ document.write(`
                     <span class="c1"># stuff in a parallel setting where we create objects in</span>
                     <span class="c1"># pure computation nodes with no compile mechanism</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="s1">&#39;lambda&#39;</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;done: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="n">backend</span>
 
@@ -997,55 +992,9 @@ document.write(`
         <span class="k">if</span> <span class="n">compileType</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">compiledFunc</span><span class="p">,</span> <span class="n">compileTypeChosen</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">compiledFunc</span></div>
+            <span class="k">return</span> <span class="n">compiledFunc</span></div></div>
 
-<div class="viewcode-block" id="compileCode.compileExprAndFormat"><a class="viewcode-back" href="../../../rst/autodoc-model.html#pygom.model.compileCode.compileExprAndFormat">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">compileExprAndFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputSymb</span><span class="p">,</span> <span class="n">inputExpr</span><span class="p">,</span>
-                             <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compiles the expression given the symbols and determine which</span>
-<span class="sd">        type of output is it.  Transforms the output appropriately into</span>
-<span class="sd">        numpy</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        inputSymb: list</span>
-<span class="sd">            the set of symbols for the input expression</span>
-<span class="sd">        inputExpr: expr</span>
-<span class="sd">            expression in sympy</span>
-<span class="sd">        backend: optional</span>
-<span class="sd">            the backend we want to use to compile</span>
-<span class="sd">        modules: optional</span>
-<span class="sd">            in the event that f2py and Cython fails, which modules</span>
-<span class="sd">            do we want to try and compile against</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Function determined from the input using closures.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="n">a</span><span class="p">,</span> <span class="n">compileType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compileExpr</span><span class="p">(</span><span class="n">inputSymb</span><span class="p">,</span> <span class="n">inputExpr</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="n">numRow</span> <span class="o">=</span> <span class="n">inputExpr</span><span class="o">.</span><span class="n">rows</span>
-        <span class="n">numCol</span> <span class="o">=</span> <span class="n">inputExpr</span><span class="o">.</span><span class="n">cols</span>
-
-        <span class="c1"># define the different types of output</span>
-        <span class="k">if</span> <span class="n">outType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">numRow</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">numCol</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">outType</span> <span class="o">=</span> <span class="s2">&quot;vec&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">outType</span> <span class="o">=</span> <span class="s2">&quot;mat&quot;</span>
-
-        <span class="k">if</span> <span class="n">outType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;vec&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">compileType</span> <span class="o">==</span> <span class="s1">&#39;np&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">a</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">outType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;mat&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">compileType</span> <span class="o">==</span> <span class="s1">&#39;np&#39;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">a</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="nb">float</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Specified type of output not recognized&quot;</span><span class="p">)</span></div></div>
 
 </pre></div>
 
@@ -1085,7 +1034,7 @@ By UK Health Security Agency (previously Public Health England)
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
