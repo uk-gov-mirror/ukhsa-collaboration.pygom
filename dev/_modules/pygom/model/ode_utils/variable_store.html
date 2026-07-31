@@ -1,0 +1,1097 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pygom.model.ode_utils.variable_store &#8212; PyGOM documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pygom/model/ode_utils/variable_store';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../md/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_pygom.jpg" class="logo__image only-light" alt="PyGOM documentation - Home"/>
+    <script>document.write(`<img src="../../../../_static/logo_pygom.jpg" class="logo__image only-dark" alt="PyGOM documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../md/intro.html">
+                    Welcome to the documentation for PyGOM
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../md/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../md/building_doc.html">Building the Documentation Locally</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Compartmental models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/definition.html">Introduction</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/solution.html">Mathematical description</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PyGOM workflow</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/model_spec_2.html">Defining a Model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../md/solving.html">Producing forecasts</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/model_params.html">Parameterisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/model_solver.html">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/time_dependent_params.html">Time dependent parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../md/parameter_fitting.html">Parameter fitting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/paramfit/params_via_abc.html">Parameter Estimation: Approximate Bayesian Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/paramfit/params_via_optimization.html">Parameter Estimation: Maximum likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/paramfit/bvpSimple.html">Solving Boundary Value Problems</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/epijson.html">Reading and using EpiJSON data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Common biological compartmental models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../md/common_models.html">Pre-defined examples - common epi models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/SIS.html">SIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/SIR.html">SIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/SEIR.html">SEIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/SIS_Periodic.html">SIS, periodic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/SIR_Birth_Death.html">SIR, birth and death</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/Lotka_Volterra.html">Lotka Volterra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/Legrand_Ebola_SEIHFR.html">Legrand Ebola SEIHFR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../notebooks/common_models/FitzHugh.html">FitzHugh</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Frequently asked questions</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../md/faq.html">Frequently asked questions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/autodoc-model.html">model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/autodoc-loss.html">loss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/autodoc-abc.html">approximate_bayesian_computation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rst/autodoc-utilR.html">utilR</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../md/bib.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ukhsa-collaboration/pygom" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ukhsa-collaboration/pygom/issues/new?title=Issue%20on%20page%20%2F_modules/pygom/model/ode_utils/variable_store.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pygom.model.ode_utils.variable_store</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">An object to hold variables for a PyGOM ODE system</span>
+
+<span class="sd">This object is designed to:</span>
+<span class="sd">* Store all the variables</span>
+<span class="sd">* Provide a list of variables</span>
+<span class="sd">  * as symbols</span>
+<span class="sd">  * as values</span>
+<span class="sd">* Rapidly set a variable value from a list</span>
+<span class="sd">* Provide the index of a named parameter</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoneType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">indexed</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndexedOrderedDict</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">symbols</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats._distn_infrastructure</span><span class="w"> </span><span class="kn">import</span> <span class="n">rv_frozen</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..ode_variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">ODEVariable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.._model_errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">InputError</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;VariableStore&#39;</span><span class="p">,</span><span class="s1">&#39;ParameterStore&#39;</span><span class="p">,</span> <span class="s1">&#39;StateStore&#39;</span><span class="p">]</span>
+
+<span class="n">re_math</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[-+*</span><span class="se">\\</span><span class="s1">]&#39;</span><span class="p">)</span>
+<span class="n">re_underscore</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;^_&#39;</span><span class="p">)</span>
+<span class="n">re_symbol_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[A-Za-z_]+&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_generate_symbol</span><span class="p">(</span><span class="n">input_str</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="nb">tuple</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Symbol</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check the symbol name and turn it into a symbol </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># What type of definition are we dealing with?</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_str</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_str</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">):</span>
+                <span class="n">is_real</span> <span class="o">=</span> <span class="s1">&#39;False&#39;</span>
+                <span class="n">symbol_name</span> <span class="o">=</span> <span class="n">input_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_str</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;real&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">):</span>
+                <span class="n">is_real</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+                <span class="n">symbol_name</span> <span class="o">=</span> <span class="n">input_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Unexpected second argument for symbol&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Unexpected number of arguments for symbol&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># assume real unless stated otherwise</span>
+        <span class="n">is_real</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+        <span class="n">symbol_name</span> <span class="o">=</span> <span class="n">input_str</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Unexpected input type for symbol&quot;</span><span class="p">)</span>
+
+    <span class="c1">#Some basic name checks</span>
+    <span class="k">if</span> <span class="n">re_math</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">symbol_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Mathematical operators not allowed in symbol &#39;</span>
+                         <span class="s1">&#39;definition&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">re_underscore</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">symbol_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;A symbol cannot have underscore as first character.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">symbol_name</span> <span class="o">==</span> <span class="s1">&#39;lambda&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;lambda is a reserved keyword&#39;</span><span class="p">)</span>
+
+    <span class="n">tempSym</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="n">symbol_name</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="n">is_real</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tempSym</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tempSym</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tempSym</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tempSym</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Input symbol is not valid&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">tempSym</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Unexpected result using the input string:&quot;</span>
+                             <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tempSym</span><span class="p">))</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">IndexShim</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="n">item</span><span class="p">]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">VariableStore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">storage_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">,</span> 
+                 <span class="n">acceptable_value_types</span><span class="p">:</span><span class="nb">list</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The init method</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span> <span class="o">=</span> <span class="n">IndexedOrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variable_pos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span> <span class="o">=</span> <span class="n">storage_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">IndexShim</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Type checking for the values assigned to a parameter</span>
+        <span class="n">acceptable_value_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NoneType</span><span class="p">)</span> <span class="c1"># None is always ok</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acceptable_value_types</span> <span class="o">=</span> <span class="p">{</span><span class="n">avt</span><span class="p">:</span> <span class="n">avt</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">avt</span> <span class="ow">in</span> 
+                                       <span class="n">acceptable_value_types</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> 
+                                <span class="bp">self</span><span class="o">.</span><span class="n">acceptable_value_types</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span>
+
+        <span class="c1">#self.sibling_lists = []</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Getter when referencing the variable by name</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Symbol</span><span class="o">|</span><span class="n">ODEVariable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Setter when referencing by name</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Self defence, IDs have to be a string</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1"> IDs must be of str type, was&#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># convert the value to an ODEVariable</span>
+        <span class="n">var_list</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">ODEVariable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_variable</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">var_obj</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
+            <span class="c1">#TODO: Check that this new variable is not in the sibling lists</span>
+
+            <span class="c1"># check to see if we need to record the position of this key</span>
+            <span class="c1"># and record it if we do</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_variable_pos</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">)</span> 
+
+            <span class="c1"># Store the new / updated variable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_obj</span>
+
+            <span class="c1"># re-record the value</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">var_obj</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="c1"># deal with the bootstrapping problem (everything goes in None to start)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">NoneType</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+            <span class="c1"># Properly log the real value (maintains book-keeping)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The current length of the store</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        gives a string representation of the parameters</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1"> IDs must be of str type, was&#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the index of a particular variable </span>
+<span class="sd">        </span>
+<span class="sd">        This should be fast - O(1)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variable_pos</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+               <span class="n">variable</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Symbol</span><span class="o">|</span><span class="n">ODEVariable</span><span class="p">,</span> 
+               <span class="n">symbol</span><span class="p">:</span><span class="n">Symbol</span><span class="o">|</span><span class="kc">None</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+               <span class="n">real</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ODEVariable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a variable to the store</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variable: The name of variable to add. This will be appended at the end</span>
+<span class="sd">          of the list of variables</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">var_list</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">ODEVariable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_variable</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+                                                          <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span>
+                                                          <span class="n">real</span><span class="o">=</span><span class="n">real</span>
+                                                          <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">var_obj</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var_obj</span><span class="o">.</span><span class="n">ID</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You may not add a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1"> more &#39;</span>
+                                    <span class="sa">f</span><span class="s1">&#39;than once. </span><span class="si">{</span><span class="n">var_obj</span><span class="o">.</span><span class="n">ID</span><span class="si">}</span><span class="s1"> already exists.&#39;</span>
+                                    <span class="p">)</span>
+            <span class="c1"># Store the new variable</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">var_obj</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_obj</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">:</span><span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a list of variables to the store</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variables: A list of variables to add, either as a list of strings or</span>
+<span class="sd">        ODEVariables. These will be appended at the end of the list of variables</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+            <span class="c1"># Quick / safe way to generate the ID although we will &quot;check&quot; twice</span>
+            <span class="n">var_list</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">ODEVariable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_variable</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">var_obj</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">var_obj</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_obj</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                        <span class="n">variable</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Symbol</span><span class="o">|</span><span class="n">ODEVariable</span><span class="p">,</span>
+                        <span class="n">symbol</span><span class="p">:</span><span class="n">Symbol</span><span class="o">|</span><span class="kc">None</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                        <span class="n">real</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">limits</span><span class="p">:</span><span class="nb">tuple</span><span class="o">|</span><span class="kc">None</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="n">ODEVariable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Turn variable into a list of ODEVariables</span>
+
+<span class="sd">        This will often retun a list of length 1 but because of the way the </span>
+<span class="sd">        string conversion works it may be longer. E.g. a string &#39;y1:4&#39; will</span>
+<span class="sd">        result in a list of ODEVariables representing [y1, y2, y3, y4].</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+            
+        <span class="c1"># TODO: Surface the units part of ODEVariable</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Check what ID / symbol we are going to use</span>
+            <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Variable was a string and symbol was set. Will &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39; using ID given </span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1"> with symbol &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">symbols</span> <span class="o">=</span> <span class="n">symbol</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">symbols</span><span class="o">=</span><span class="n">_generate_symbol</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+
+            <span class="c1"># did the conversion result in one or more symbols?</span>
+            <span class="c1"># TODO: if a list i don&#39;t think thiw will work</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">var_obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">ODEVariable</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span>
+                                       <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span>
+                                       <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+                                       <span class="n">limits</span><span class="o">=</span><span class="n">limits</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var_obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">ODEVariable</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> 
+                                       <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span>
+                                       <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+                                       <span class="n">limits</span><span class="o">=</span><span class="n">limits</span><span class="p">)]</span>
+                
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">):</span>
+            <span class="n">var_obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">ODEVariable</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">),</span>
+                                   <span class="n">symbol</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+                                   <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+                                   <span class="n">limits</span><span class="o">=</span><span class="n">limits</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">ODEVariable</span><span class="p">):</span>
+            <span class="n">var_obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You may not add an object of type &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span><span class="si">}</span><span class="s1"> as a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">var_obj</span>
+
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the value of a variable</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variable: The name of the variable as a string</span>
+<span class="sd">        value: The value that the variable should take.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Book-keeping for the by-type dicts</span>
+        <span class="n">current_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">atn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceptable_value_types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">):</span>
+                <span class="n">current_type</span> <span class="o">=</span> <span class="n">atn</span>
+
+        <span class="n">new_type</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">atn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">acceptable_value_types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">at</span><span class="p">):</span>
+                <span class="n">new_type</span> <span class="o">=</span> <span class="n">atn</span>
+        
+
+        <span class="k">if</span> <span class="n">new_type</span> <span class="o">!=</span> <span class="n">current_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">current_type</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+           
+            <span class="k">if</span> <span class="n">new_type</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You may not add an object of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39; as a value for a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1">.&#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39; Only </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acceptable_value_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1"> are &#39;</span>
+                                 <span class="s1">&#39;permitted (or sub-classes).&#39;</span><span class="p">)</span>
+            
+            <span class="c1"># Set a pointer to the new location</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">new_type</span><span class="p">]</span> <span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+
+        <span class="c1"># Set the value   </span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span><span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the value of all the variables</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Values: A list, the same length as the number of variables, </span>
+<span class="sd">          containing the values </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">F</span><span class="s1">&#39;The length of the supplied list of values must &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;match the number of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1">. &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;Expected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">values</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_value_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the value of the variables</span>
+
+<span class="sd">        This is explicit and so the prefered way to set the variable values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Values: A dict keyed on the variable name with value equal to the value.</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all_values_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Have all the values been set?</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">NoneType</span><span class="o">.</span><span class="vm">__name__</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a list of strings of the names for all the variables </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">ID</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a list of all the values stored</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">values_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a list of all the values stored as ODEVariable objects</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">variable</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    
+    <span class="nd">@values</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">values</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="nb">float</span><span class="p">]</span><span class="o">|</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">float</span><span class="p">]]</span><span class="o">|</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the values for the parameters already defined.  Note that unless</span>
+<span class="sd">        the parameters are entered via a dictionary or a two element list,tuple</span>
+<span class="sd">        we assume that it is in the order of :meth:`.getParamList`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameters: dict of {parameter_ID: parameter_value} (prefered) _or_</span>
+<span class="sd">            a list which contains elements made of 2 element tuples </span>
+<span class="sd">            (string, numeric value) _or_ a single array like object with</span>
+<span class="sd">            length equal to the number of parameters, in the same order as they</span>
+<span class="sd">            were created.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Either a list or a dict</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="c1"># Looks like a list but is it a dict in disguise (list of tuples)?</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="c1"># do we have at least one tuple of length 2?</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">}</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_type</span><span class="si">}</span><span class="s1"> list&#39;</span> 
+                                         <span class="s1">&#39; supplied looked like a list of&#39;</span>
+                                         <span class="s1">&#39; tuples, (NAME, VALUE) and&#39;</span>
+                                         <span class="s1">&#39; PyGOM tried to evaluate it on that&#39;</span>
+                                         <span class="s1">&#39; basis but these entries &#39;</span>
+                                        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">[</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">!=</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">,&#39;</span>
+                                        <span class="s1">&#39; were not of length 2,&#39;</span>
+                                        <span class="s1">&#39; please check these.&#39;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+                    <span class="c1"># Set as dict</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_value_dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Not a dict in disguise, set as a list</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_value_list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># This is the way, a eplicit dict of [ID: value]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_value_dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expecting a dict, or iterable &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;input not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">symbol_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="n">Symbol</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a list of all the symbols stored in the order they were added</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">symbol_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="n">Symbol</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a OrderedDict of all the symbols stored, keyed on the str </span>
+<span class="sd">        representation and value equal to the symbol</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">symbol</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># class CallableParameter(object):</span>
+<span class="c1">#     &#39;&#39;&#39;A class to wrap a parameter supplied as a callable &#39;&#39;&#39;</span>
+<span class="c1">#     def __init__(self, value:tuple):</span>
+<span class="c1">#         &#39;&#39;&#39;</span>
+<span class="c1">#         parameters</span>
+<span class="c1">#         ----------</span>
+<span class="c1">#         value: tuple in either (callable, (paramerters....)) or </span>
+<span class="c1">#           (callable, {parameters})</span>
+<span class="c1">#         &#39;&#39;&#39;</span>
+        
+<span class="c1">#         if not callable(value[0]):</span>
+<span class="c1">#             raise InputError(&#39;First element should be a callable when using &#39;</span>
+<span class="c1">#                              &#39;multi argument distribution definition.  Type of &#39;</span>
+<span class="c1">#                              f&#39;input was {type(value[0])}.&#39;)</span>
+<span class="c1">#         self._callable = value[0] </span>
+
+<span class="c1">#         # Now deal with the parameters</span>
+<span class="c1">#         if isinstance(value[1], dict):</span>
+<span class="c1">#             self.kwargs = value[1]</span>
+<span class="c1">#             self.args = []</span>
+<span class="c1">#         elif isinstance(value[1], tuple):</span>
+<span class="c1">#             self.kwargs = {}</span>
+<span class="c1">#             self.args = value[1]</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             raise InputError(&#39;Second element should be either a tuple or a &#39;</span>
+<span class="c1">#                              &#39;dict when using multi-argument distribution &#39;</span>
+<span class="c1">#                              f&#39;definition. Type of input was {type(value[1])}.&#39;)</span>
+<span class="c1">#     def __call__(self, n=1):</span>
+<span class="c1">#         return self._callable(n, *self.args, **self.kwargs,)</span>
+    
+<span class="k">class</span><span class="w"> </span><span class="nc">CallableParameter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;First element must be callable.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># parse args/kwargs</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Second element should be either a tuple or a &#39;</span>
+                             <span class="s1">&#39;dict when using multi-argument distribution &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;definition. Type of input was </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># TODO: validate method to store rng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Call the underlying function.</span>
+
+<span class="sd">        If the function accepts an `rng` argument, pass it.</span>
+<span class="sd">        Otherwise fall back to the old behavior.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># try:</span>
+        <span class="c1">#     # Try passing rng explicitly</span>
+        <span class="c1">#     return self._callable(n, *self.args, rng=self.rng, **self.kwargs)</span>
+        <span class="c1"># except TypeError:</span>
+        <span class="c1">#     # Function did not accept rng → backwards compatible path</span>
+        <span class="c1">#     return self._callable(n, *self.args, **self.kwargs)</span>
+
+<div class="viewcode-block" id="ParameterStore"><a class="viewcode-back" href="../../../../rst/autodoc-model.html#pygom.model.ParameterStore">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ParameterStore</span><span class="p">(</span><span class="n">VariableStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A class to store parameters of an ODE system</span>
+
+<span class="sd">    This is a specialised version of VariableStore which is able to handle</span>
+<span class="sd">    values of a parameter that are draws from a stochatic distribution.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">storage_type</span><span class="o">=</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span>
+                         <span class="n">acceptable_value_types</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span>
+                                                 <span class="nb">float</span><span class="p">,</span> 
+                                                 <span class="n">rv_frozen</span><span class="p">,</span>
+                                                 <span class="n">CallableParameter</span>
+                                                 <span class="p">]</span>
+                         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ParameterStore.set_value"><a class="viewcode-back" href="../../../../rst/autodoc-model.html#pygom.model.ParameterStore.set_value">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the value of a variable</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># convert callables nested in tuples into callables class</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">CallableParameter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_stochastic_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Simple check to see if there are any stochastic parameters in the store</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rv_frozen</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">{}))</span>  <span class="o">+</span> 
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">CallableParameter</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">{})))</span> <span class="o">!=</span> <span class="mi">0</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stochastic_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="n">rv_frozen</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Provides a dict of stochastic parameters (i.e. ones where the variable)</span>
+<span class="sd">        has been defined as an instance of rv_frozen.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict keyed on parameter name with value = the distribution</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">rv_frozen</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values_by_type</span><span class="p">[</span><span class="n">CallableParameter</span><span class="o">.</span><span class="vm">__name__</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+<div class="viewcode-block" id="ParameterStore.new_realisation"><a class="viewcode-back" href="../../../../rst/autodoc-model.html#pygom.model.ParameterStore.new_realisation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">new_realisation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Generate a new realiasation of the parameters</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Just wipe the cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Provides the values for the parameters</span>
+<span class="sd">        </span>
+<span class="sd">        If there are stochastic parameters then a draw will be made and stored</span>
+<span class="sd">        and returned on subsequent calls to this method.</span>
+
+<span class="sd">        To generate a new realisation call new_realisation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A list of numeric values.</span>
+
+<span class="sd">        For each element in the list if a parameter isstochastic then a new </span>
+<span class="sd">        value is drawn, if it is deterministic then the value is simply added. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Check the cache for an existing set (and return that )</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span>
+        
+        <span class="c1"># Build a new parameter set</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="c1"># handle the different ways in which a stochastic parameter can get a </span>
+        <span class="c1"># new realisation</span>
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">rv_frozen</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">CallableParameter</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># The deterministic case</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        
+        <span class="c1">#cache the result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="o">=</span> <span class="n">result</span>
+        
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="nd">@values</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">values</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="nb">float</span><span class="p">]</span><span class="o">|</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">float</span><span class="p">]]</span><span class="o">|</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># set the values via the parent property</span>
+        <span class="n">VariableStore</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># Reset the cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="StateStore"><a class="viewcode-back" href="../../../../rst/autodoc-model.html#pygom.model.StateStore">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">StateStore</span><span class="p">(</span><span class="n">VariableStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A class to store parameters of an ODE system</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">storage_type</span><span class="o">=</span><span class="s1">&#39;state&#39;</span><span class="p">,</span>
+                         <span class="n">acceptable_value_types</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span>
+                                                 <span class="nb">float</span><span class="p">,</span> 
+                                                 <span class="p">]</span>
+                         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_realisation_vals</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                        <span class="n">variable</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="n">Symbol</span><span class="o">|</span><span class="n">ODEVariable</span><span class="p">,</span>
+                        <span class="n">symbol</span><span class="p">:</span><span class="n">Symbol</span><span class="o">|</span><span class="kc">None</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                        <span class="n">real</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">limits</span><span class="p">:</span><span class="nb">tuple</span><span class="o">|</span><span class="kc">None</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">ODEVariable</span><span class="p">:</span>
+
+        <span class="n">limits</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+        <span class="c1"># we expect a state defining tuple to be in the form:</span>
+        <span class="c1"># (&#39;NAME&#39;, (MIN, MAX)). Test this then create a suitable symbol</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Variable must be tuple of length 2&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Variable must be of type string&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Variable has no name&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Limits must be type tuple&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">!=</span><span class="mi">2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s2">&quot;Limit tuple must be length 2&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">limits</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">variable</span> <span class="o">=</span> <span class="n">variable</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">low</span>  <span class="o">=</span> <span class="n">limits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">limits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">limits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">limits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+            <span class="n">limits</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_variable</span><span class="p">(</span>
+            <span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+            <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">,</span>
+            <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+            <span class="n">limits</span><span class="o">=</span><span class="n">limits</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+        
+    
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By UK Health Security Agency (previously Public Health England)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
