@@ -16,7 +16,7 @@ build-backend = "setuptools.build_meta"
 
 name = "pygom"
 dynamic = ["version"]
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 description = "Compartmental modeling in Python."
 readme = "README.md"
 
