@@ -3,53 +3,13 @@ import numpy as np
 
 from .._model_errors import InputError
 
+# from ..simulate import SimulateOde
+
+from abc import ABC, abstractmethod
+
 class MathsMethod:
-    # Should be overloaded in child classes to the method name that the class 
-    # attaches.
-    method_name = None 
-    _cache_valid = False
-    _pickleable_compile = False
-    def __init__(self, parent_ode)->None:
-        '''
-        Init function
-
-        Parameters
-        ---------
-        parent_ode: The system to which this maths method is attached
-        backend: The compilation backend as suported by sympy
-        '''
-        # Save a pointer to the parent
-        self._parent_ode = parent_ode
-
-        # Use the parent_ode's compiler class (don't want each MM having their own).
-        self._SC = parent_ode._SC
-
-    def invalidate_cache(self):
-        '''
-        Marks the cached objects for recreation if called again
-        '''
-        self._cache_valid = False
-
-    def __call__(self,):
-        '''
-        Dunder function so that when added to the ODE system object it acts like a method
-        
-        Should be overloaded in child classes
-        '''
-        raise NotImplemented('This is the base class, implement this in a child class!')
-    
-    def get_equation(self):
-        '''
-        Give a symbolic form of the maths method
-
-        Returns
-        -------
-        A sympy object representing the symbolic form of this method
-        '''
-        raise NotImplemented('This is the base class, implement this in a child class!')
-class NumericMethod(MathsMethod):
     """
-    A class designed to be attached to an ode object the primary purpose is to 
+    A class designed to be attached to a model object the primary purpose is to 
     produce a numerical evaluation. The symbolic version will be compiled and 
     cached. By default you will need to provide the system state (as time and 
     state values) to perform the evaluation.
@@ -62,9 +22,74 @@ class NumericMethod(MathsMethod):
     # produces, if None this will be determined automatically
     outType = None 
 
+    # Should be overloaded in child classes to the method name that the class 
+    # attaches.
+    method_name = None 
+    _cache_valid = False
+    _pickleable_compile = False
+
+    # TODO: if we try to make sure that the object is SimulateODE type then we
+    #       get a circular import error. I think this indicates design flaw
+    #       Goal is to
+    #       1) Remove cache ownership from math objects to base pygom
+    #       2) Hand over model spec and other math functions via spec member of pygom, no
+    #       the entire model
+
+    # def __init__(self, parent_model: SimulateOde)->None:
+    def __init__(self, model_spec, compiler)->None:
+        '''
+        Initialise the maths method.
+
+        Parameters
+        ----------
+        model_spec:
+            Compartmental model info
+        '''
+        # Save a pointer to the parent
+        self._spec = model_spec
+        # Use the parent_model's compiler class (don't want each MM having their own).
+        self._SC = compiler
+
+    def invalidate_cache(self):
+        '''
+        Marks the cached objects for recreation if called again
+        '''
+        self._cache_valid = False
+
+    @abstractmethod
+    def __call__(self,):
+        '''
+        Dunder function so that when added to the model object it acts like a method
+        
+        Should be overloaded in child classes
+        '''
+        pass
+
+    @abstractmethod
+    def build_expression(self):
+        '''
+        Build a symbolic form of the maths method
+
+        Returns
+        -------
+        A sympy object representing the symbolic form of this method
+        '''
+        pass
+
+    @abstractmethod
+    def get_equation(self):
+        '''
+        Give a symbolic form of the maths method
+
+        Returns
+        -------
+        A sympy object representing the symbolic form of this method
+        '''
+        pass
+
     def __call__(self, state, time):
         '''
-        Dunder function so that when added to the ODE system object it acts 
+        Dunder function so that when added to the model object it acts 
         like a standard method.
         
         Parameters
@@ -79,64 +104,68 @@ class NumericMethod(MathsMethod):
         # perform the numerical calculation
         return self._compiled_obj(self._getEvalParam(state, time))
     
-    def T(self, t, state):
+    def T(self, time, state):
         '''
-        Same as :meth:`__call__` (the main method) but with t as first parameter
+        Same as :meth:`__call__` (the main method) but with time as first parameter
 
         This reordering is useful in the calling of integrate and similar 
         functions.
         '''
-        return self.__call__(state, t)
+        return self.__call__(state, time)
 
-    def compile_function(self) -> None:
-        '''
-        Compile the symbolic form so that rapid numerical evaluation may occur.
-        Transforms the output appropriately into numpy
-        '''
-        logging.debug(f'Compiling sympy object {self.method_name}.')
+    # def compile_function(self, inputExpr, outType, namespace) -> None:
+    #     '''
+    #     Compile the symbolic form so that rapid numerical evaluation may occur.
+    #     Transforms the output appropriately into numpy
+    #     '''
+    #     # logging.debug(f'Compiling sympy object {self.method_name}.')
 
-        inputExpr = self.get_equation()
+    #     # inputExpr = self.get_equation()
 
-        self._raw_fn, compileType = self._SC.compileExpr(self._parent_ode.states_and_parameters,
-                                                         inputExpr,
-                                                         backend=None, # set at ODE level
-                                                         compileType=True) # get additional info      
+    #     raw_fn, compileType = self.compileExpr(
+    #         namespace,
+    #         inputExpr,
+    #         backend=None,       # set at ODE level
+    #         compileType=True    # get additional info
+    #     )      
         
-        numRow = inputExpr.rows
-        numCol = inputExpr.cols
+    #     numRow = inputExpr.rows
+    #     numCol = inputExpr.cols
 
-        outType = self.outType
+    #     # define the different types of compile
+    #     if outType is None:
+    #         if numRow == 1 or numCol == 1:
+    #             outType = "vec"
+    #         else:
+    #             outType = "mat"
 
-        # define the different types of compile
-        if self.outType is None:
-            if numRow == 1 or numCol == 1:
-                outType = "vec"
-            else:
-                outType = "mat"
-
-        if outType.lower() == "vec":
-            if compileType == 'np':
-                self._compiled_obj = lambda x: self._raw_fn(*x).ravel()
-            else:
-                self._compiled_obj = lambda x: np.array(self._raw_fn(*x).tolist(),
-                                                        float).ravel()
-        elif outType.lower() == "mat":
-            if compileType == 'np':
-                self._compiled_obj = lambda x: self._raw_fn(*x)
-            else:
-                self._compiled_obj = lambda x: np.array(self._raw_fn(*x).tolist(), float)
-        else:
-            raise RuntimeError("Specified type of output not recognized")
+    #     if outType.lower() == "vec":
+    #         if compileType == 'np':
+    #             _compiled_obj = lambda x: raw_fn(*x).ravel()
+    #         else:
+    #             _compiled_obj = lambda x: np.array(
+    #                 raw_fn(*x).tolist(),
+    #                 float
+    #             ).ravel()
+    #     elif outType.lower() == "mat":
+    #         if compileType == 'np':
+    #             _compiled_obj = lambda x: raw_fn(*x)
+    #         else:
+    #             _compiled_obj = lambda x: np.array(raw_fn(*x).tolist(), float)
+    #     else:
+    #         raise RuntimeError("Specified type of output not recognized")
         
-        # Update the state
-        self._pickleable_compile = True if self._SC._backend == 'lambda' else False
-        self._cache_valid = True
+    #     # # Update the state
+    #     # self._pickleable_compile = True if self._SC._backend == 'lambda' else False
+    #     # self._cache_valid = True
 
-    def _getEvalParam(self, state:list[float], time:float)->list[float]:
+    #     return _compiled_obj
+
+    def _getEvalParam(self, state:list[float], time:float) -> list[float]:
         if state is None or time is None:
             raise InputError("Have to input both state and time")
 
-        elif not self._parent_ode._parameter_store.all_values_set:
+        elif not self._parent_model._parameter_store.all_values_set:
                 raise InputError("Have not set the parameters yet")
 
         if hasattr(state, '__iter__'):
@@ -145,7 +174,7 @@ class NumericMethod(MathsMethod):
         else:
             eval_param = [state] + [time]
 
-        return eval_param + self._parent_ode._parameter_store.values
+        return eval_param + self._parent_model._parameter_store.values
     
     ## Funcitons  to allow pickling and unpickling
     def __getstate__(self):
@@ -168,27 +197,22 @@ class NumericMethod(MathsMethod):
     #     Restore the classes state with reset of compile status
     #     '''
     #     self.__dict__.update(state)
-        
 
-
-class SymbolicMethod(MathsMethod):
-    """
-    A class designed to be attached to an ode object the primary purpose is to 
-    produce a symbolic representation. The symbolic representation will be 
-    cached.
-    """
-    _symbolic_function = None
-    def __call__(self):
-        '''
-        Returns the symbolic representation of the method
-        '''
-        # Check to see if we need to compile
-        if not self._cache_valid or self._symbolic_function is None:
-            self._symbolic_function = self.get_equation()
+# class SymbolicMethod(MathsMethod):
+#     """
+#     A class designed to be attached to a model object the primary purpose is to 
+#     produce a symbolic representation. The symbolic representation will be 
+#     cached.
+#     """
+#     _symbolic_function = None
+#     def __call__(self):
+#         '''
+#         Returns the symbolic representation of the method
+#         '''
+#         # Check to see if we need to compile
+#         if not self._cache_valid or self._symbolic_function is None:
+#             self._symbolic_function = self.get_equation()
             
-            self._cache_valid = True
+#             self._cache_valid = True
         
-        return self._symbolic_function
-
-
-
+#         return self._symbolic_function

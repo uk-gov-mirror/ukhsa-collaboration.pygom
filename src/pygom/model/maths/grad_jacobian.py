@@ -23,16 +23,18 @@ class GradJacobian(NumericMethod):
         :meth:`.get_grad_eqn`
 
         '''
-        self._GradJacobian = sympy.zeros(self._parent_ode.num_state*
-                                         self._parent_ode.num_param,
-                                         self._parent_ode.num_state)
+        self._GradJacobian = sympy.zeros(
+            self._parent_ode.num_state * self._parent_ode.num_param,
+            self._parent_ode.num_state
+        )
+        
         G = self._parent_ode.grad.get_equation()
-        for k in range(0, self._parent_ode.num_param):
-            for i in range(0, self._parent_ode.num_state):
+        for k in range(self._parent_ode.num_param):
+            for i in range(self._parent_ode.num_state):
                 for j, s in enumerate(self._parent_ode._iterStateList()):
-                    z = k*self._parent_ode.num_state + i
+                    z = k * self._parent_ode.num_state + i
                     eqn, isDifficult = simplifyEquation(diff(G[i,k], s, 1))
-                    self._GradJacobian[z,j] = eqn
+                    self._GradJacobian[z, j] = eqn
                     self._isDifficult = self._parent_ode._isDifficult or isDifficult
         # end of the triple loop.  All elements are now filled
 

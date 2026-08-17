@@ -2,16 +2,22 @@ import numpy as np
 
 from sympy import parse_expr
 
-from sympy.functions.elementary.exponential import (exp_polar, exp, log,
-    LambertW)
+from sympy.functions.elementary.exponential import (
+    exp_polar,
+    exp,
+    log,
+    LambertW
+)
 ln = log
 
-from sympy.functions.elementary.trigonometric import (sin, cos, tan,
-        sec, csc, cot, 
-        sinc, 
-        asin, acos, atan, 
-        asec, acsc, acot, 
-        atan2)
+from sympy.functions.elementary.trigonometric import (
+    sin, cos, tan,
+    sec, csc, cot, 
+    sinc, 
+    asin, acos, atan, 
+    asec, acsc, acot, 
+    atan2
+)
 arcsin = asin
 arccos = acos
 arctan = atan
@@ -19,8 +25,11 @@ arcsec = asec
 arccsc = acsc
 arccot = acot
 
-from sympy.functions.elementary.hyperbolic import (sinh, cosh, tanh, 
-        sech, csch, coth, asinh, acosh, atanh, acoth, asech)
+from sympy.functions.elementary.hyperbolic import (
+    sinh, cosh, tanh, 
+    sech, csch, coth,
+    asinh, acosh, atanh,
+    acoth, asech)
 arcsinh = asinh
 arccosh = acosh
 arctanh = atanh
@@ -29,14 +38,17 @@ arcsech = asech
 arccoth = acoth
 
 from sympy.functions.elementary.piecewise import Piecewise, piecewise_fold        
-from sympy.functions.combinatorial.factorials import (factorial, factorial2,
-    rf, ff, binomial, RisingFactorial, FallingFactorial, subfactorial)
+from sympy.functions.combinatorial.factorials import (
+    factorial, factorial2, rf, ff, binomial, RisingFactorial, FallingFactorial, subfactorial
+)
 from sympy.functions.elementary.integers import floor, ceiling, frac
-from sympy.functions.elementary.miscellaneous import (sqrt, root, Min, Max,
+from sympy.functions.elementary.miscellaneous import (
+    sqrt, root, Min, Max,
     Id, real_root, cbrt)
 from sympy.functions.elementary.complexes import Abs
 from sympy.core.numbers import pi
 from sympy import simplify, symbols, Expr
+
 # from sympy.physics.units import avogadro, mol
 def power(a,b): a**b
 
@@ -61,7 +73,15 @@ def simplifyEquation(input_str):
         return input_str, False
 
 
-def checkEquation(input_str, ode, subs_derived=True)->list:
+"""
+TODO: 
+1) Make imports of sympy functions cleaner
+2) Potentially make checkEquation independent of model class object (e.g. calls to ode.params and states)
+3) Currently, see how params and states are all stored.
+"""
+
+
+def checkEquation(input_str, state_param_namespace, derived_param_dict, subs_derived=True) -> list:
     """
     Convert a string into an equation using the symbols from the system and 
     checks its validity. 
@@ -77,73 +97,104 @@ def checkEquation(input_str, ode, subs_derived=True)->list:
     A single sympy equation or list of sympy equations (depending on if 
     input_str is a single string or a list) made from the string(s)
     """
-    # input_var = (ode._parameter_store.symbol_dict | 
-    #              ode._state_store.symbol_dict | 
-    #              ode._vectorStateDict)
+
+    assert isinstance(input_str, str), "Equation should be in string format"
+
+    eqn = parse_expr(input_str, state_param_namespace | derived_param_dict)
+
+    if subs_derived:
+        # because these are the derived parameters, we need to substitute
+        # them back in the formula
+        if isinstance(eqn, Expr):
+            for key, value in derived_param_dict:
+                eqn = eqn.subs(key, value)
+
+    return eqn
+
+
+# def checkEquation(input_str, ode, subs_derived=True) -> list:
+#     """
+#     Convert a string into an equation using the symbols from the system and 
+#     checks its validity. 
+
+#     Parameters
+#     ----------
+#     input_str: a str or list of str giving the equation
+#     ode: the parent ode
+#     subs_derived: should the derived parameters be substututed in?
+
+#     Returns
+#     -------
+#     A single sympy equation or list of sympy equations (depending on if 
+#     input_str is a single string or a list) made from the string(s)
+#     """
+#     # input_var = (ode._parameter_store.symbol_dict | 
+#     #              ode._state_store.symbol_dict | 
+#     #              ode._vectorStateDict)
      
-    derived_var = ode._derivedParamDict
+#     derived_var = ode._derivedParamDict
 
-    if isinstance(input_str, str):
-        input_str = [input_str]
-    assert hasattr(input_str, '__iter__'), "Expecting an iterable"
+#     if isinstance(input_str, str):
+#         input_str = [input_str]
+#     assert hasattr(input_str, '__iter__'), "Expecting an iterable"
     
-    list_out = list()
-    for _inputStr in input_str:
-        assert isinstance(_inputStr, str), "Equation should be in string format"
-        # # create the symbols in the local environment
-        # for _d in input_var:
-        #     #logging.debug(_d)
-        #     for _s in _d.keys():
-        #         #logging.debug(_s)
-        #         if isinstance(_d[_s], tuple):
-        #             # only the first element, as we made this as a vector
-        #             _isReal = True if _d[_s][0].is_real else False
-        #             _sString = [str(_sym) for _sym in _d[_s]]
-        #             _sConcat = ','
-        #             exec("""%s = symbols('%s',  real=%s)""" % (_s, _sConcat.join(_sString), _isReal))
-        #         else:
-        #             _isReal = True if _d[_s].is_real else False
-        #             exec("""%s = symbols('%s', real=%s)""" % (_s, _s, _isReal))
-        #     #logging.debug("\n")
-        # for _key, _value in derived_var.items():
-        #     _isReal = True if _value.is_real else False
-        #     exec("""%s = symbols('%s', real=%s)""" % (_key, _key, _isReal))
-        # # if the evaluation fails then there is a problem with the
-        # # variables (either state or parameters), success means that
-        # # it returns a symbolic expression 
-        # # _eqn = eval(_inputStr)
-        # _eqn = parse_expr(_inputStr, locals())
+#     list_out = list()
+#     for _inputStr in input_str:
+#         assert isinstance(_inputStr, str), "Equation should be in string format"
+#         # # create the symbols in the local environment
+#         # for _d in input_var:
+#         #     #logging.debug(_d)
+#         #     for _s in _d.keys():
+#         #         #logging.debug(_s)
+#         #         if isinstance(_d[_s], tuple):
+#         #             # only the first element, as we made this as a vector
+#         #             _isReal = True if _d[_s][0].is_real else False
+#         #             _sString = [str(_sym) for _sym in _d[_s]]
+#         #             _sConcat = ','
+#         #             exec("""%s = symbols('%s',  real=%s)""" % (_s, _sConcat.join(_sString), _isReal))
+#         #         else:
+#         #             _isReal = True if _d[_s].is_real else False
+#         #             exec("""%s = symbols('%s', real=%s)""" % (_s, _s, _isReal))
+#         #     #logging.debug("\n")
+#         # for _key, _value in derived_var.items():
+#         #     _isReal = True if _value.is_real else False
+#         #     exec("""%s = symbols('%s', real=%s)""" % (_key, _key, _isReal))
+#         # # if the evaluation fails then there is a problem with the
+#         # # variables (either state or parameters), success means that
+#         # # it returns a symbolic expression 
+#         # # _eqn = eval(_inputStr)
+#         # _eqn = parse_expr(_inputStr, locals())
 
-        eqn = parse_expr(_inputStr, ode.states_and_parameters_dict | derived_var)
-        # eqn = parse_expr(_inputStr, ode.states_and_parameters_dict)
+#         eqn = parse_expr(_inputStr, ode.states_and_parameters_dict | derived_var)
+#         # eqn = parse_expr(_inputStr, ode.states_and_parameters_dict)
 
-        # print _inputStr, type(_eqn), isinstance(_eqn, Expr)
-        if subs_derived:
-            # because these are the derived parameters, we need to substitute
-            # them back in the formula
-            if isinstance(eqn, Expr):
-                for key, value in ode._derivedParamDict.items():
-                    eqn = eqn.subs(key, value)
-        list_out.append(eqn)
-        # logging.debug(_eqn)
-        # logging.debug(_eqn.free_symbols)
+#         # print _inputStr, type(_eqn), isinstance(_eqn, Expr)
+#         if subs_derived:
+#             # because these are the derived parameters, we need to substitute
+#             # them back in the formula
+#             if isinstance(eqn, Expr):
+#                 for key, value in ode._derivedParamDict.items():
+#                     eqn = eqn.subs(key, value)
+#         list_out.append(eqn)
+#         # logging.debug(_eqn)
+#         # logging.debug(_eqn.free_symbols)
 
-    if len(list_out) == 1:
-        return list_out[0]
-    else:
-        return list_out
+#     if len(list_out) == 1:
+#         return list_out[0]
+#     else:
+#         return list_out
 
 
-def checkEquation2(input_str, list_vars):
-    """
-    Uses a functional programming approach
-    """
-    if hasattr(input_str, '__iter__'):
-        from functools import partial
-        f = partial(checkEquation2, _listOfVariablesStr=list_vars)
-        return map(f, input_str)
-    else:
-        for _s in list_vars:
-            exec("""%s = symbols('%s')""" % (_s, _s))
-        _eqn = eval(input_str)
-        return _eqn
+# def checkEquation2(input_str, list_vars):
+#     """
+#     Uses a functional programming approach
+#     """
+#     if hasattr(input_str, '__iter__'):
+#         from functools import partial
+#         f = partial(checkEquation2, _listOfVariablesStr=list_vars)
+#         return map(f, input_str)
+#     else:
+#         for _s in list_vars:
+#             exec("""%s = symbols('%s')""" % (_s, _s))
+#         _eqn = eval(input_str)
+#         return _eqn
