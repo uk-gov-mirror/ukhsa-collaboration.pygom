@@ -242,11 +242,11 @@ def solve_stochastic(
         wall_time_seconds = time.perf_counter() - start_time
         cpu_time_seconds = time.process_time() - start_cpu
 
-        perf = {}
-        perf['wall_time_seconds'] = wall_time_seconds
-        perf['cpu_time_seconds'] = cpu_time_seconds
+        metrics = {}
+        metrics['wall_time_seconds'] = wall_time_seconds
+        metrics['cpu_time_seconds'] = cpu_time_seconds
 
-        result.performance = PerformanceMetrics(**perf)
+        result.performance = PerformanceMetrics(**metrics)
 
     #################################
     # Post process simulation results

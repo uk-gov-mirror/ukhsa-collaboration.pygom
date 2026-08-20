@@ -8,8 +8,8 @@ from .hessian import Hessian
 
 # The symbolic methods
 from .state_change_matrix import StateChangeMatrix
-from .transition_mean import TransitionMean
-from .transition_variance import TransitionVariance
+from .transition_mean import TransitionMean, TransitionMeanMatrix
+from .transition_variance import TransitionVariance, TransitionVarianceMatrix
 from .transition_jacobian import TransitionJacobian
 from .event_rate_vector import EventRateVector
 from .pure_ode_vector import PureOdeVector
@@ -26,7 +26,9 @@ __all__ = ['ODESystem',
            'TransitionJacobian',
            'EventRateVector',
            'PureOdeVector',
-           'RatesJacobian'
+           'RatesJacobian',
+           'TransitionMeanMatrix',
+           'TransitionVarianceMatrix'
            ]
 
 
